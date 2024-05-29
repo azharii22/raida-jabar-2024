@@ -1,3 +1,35 @@
+# Installation
+
+## Setup this repository first
+
+Usage
+
+```bash
+git clone https://github.com/azharii22/raida-jabar-2024.git
+cd raida-jabar-2024
+```
+
+## Setup Laravel Packages and Migrations
+
+### Make sure you do this before setup on bash
+
+-   PHP version is on version 8
+-   .env File is available or exists
+-   Change database config on .env file
+-   Composer installed
+
+### Bash Usage
+
+```bash
+composer install && composer update
+cp .env.example .env
+php artisan key:generate
+php artisan migrate:fresh --seed
+php artisan settings:load-file
+npm install && npm run dev
+php artisan serve
+```
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
@@ -63,36 +95,3 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-
-# Installation
-
-## Setup this repository first
-
-Usage
-
-```bash
-git clone https://github.com/azharii22/raida-jabar-2024.git
-cd raida-jabar-2024
-```
-
-## Setup Laravel Packages and Migrations
-
-### Make sure you do this before setup on bash
-
--   PHP version is on version 8
--   .env File is available or exists
--   Change database config on .env file
--   Composer installed
-
-### Bash Usage
-
-```bash
-composer install && composer update
-cp .env.example .env
-php artisan key:generate
-php artisan migrate:fresh --seed
-php artisan settings:load-file
-npm install && npm run dev
-php artisan serve
-```
