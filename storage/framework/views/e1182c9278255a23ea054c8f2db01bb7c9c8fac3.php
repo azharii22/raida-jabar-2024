@@ -9,7 +9,7 @@
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu"><?php echo app('translator')->get('translation.Dashboards'); ?></li>
 
-                <li><a href="javascript: void(0);" class="waves-effect"> <i class="bx bx-home-circle"></i> <span key="t-dashboards"><?php echo app('translator')->get('translation.Dashboards'); ?></span> </a> </li>
+                <li><a href="/" class="waves-effect"> <i class="bx bx-home-circle"></i> <span key="t-dashboards"><?php echo app('translator')->get('translation.Dashboards'); ?></span> </a> </li>
 
                 <li class="menu-title" key="t-menu"><?php echo app('translator')->get('translation.Menu'); ?></li>
 
@@ -27,9 +27,9 @@
                     </a>
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="<?php echo e(route('admin-data-berkas-kontingen.index')); ?>" key="t-user-grid">Data Berkas Kontingen</a></li>
-                        <li><a href="<?php echo e(route('admin-data-berkas-kontingen.index')); ?>" key="t-user-list">Data Peserta</a></li>
-                        <li><a href="<?php echo e(route('admin-data-berkas-kontingen.index')); ?>" key="t-profile">Data Unsur Kontingen</a></li>
-                        <li><a href="<?php echo e(route('admin-data-berkas-kontingen.index')); ?>" key="t-profile">Data Pembayaran</a></li>
+                        <li><a href="<?php echo e(route('admin-data-peserta.index')); ?>" key="t-user-list">Data Peserta</a></li>
+                        <li><a href="<?php echo e(route('admin-data-unsur-kontingen.index')); ?>" key="t-profile">Data Unsur Kontingen</a></li>
+                        <li><a href="<?php echo e(route('admin-data-pembayaran.index')); ?>" key="t-pembayaran">Data Pembayaran</a></li>
                     </ul>
                 </li>
 

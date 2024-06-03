@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title','User')
+@section('title','Jadwal Kegiatan')
 
 @section('css')
 <!-- DataTables -->
@@ -11,7 +11,7 @@
 
 @component('components.breadcrumb')
 @slot('li_1') Dashboard @endslot
-@slot('title') User @endslot
+@slot('title') Jadwal Kegiatan @endslot
 @endcomponent
 
 <div class="row">
@@ -19,10 +19,10 @@
         <div class="card">
             <div class="card-body">
 
-                <h4 class="card-title mb-5">User Management</h4>
+                <h4 class="card-title mb-5">Jadwal Kegiatan</h4>
 
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add User</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Jadwal Kegiatan</button>
                 </div>
 
                 @if (count($errors) > 0)
@@ -41,35 +41,23 @@
                     <thead>
                         <tr>
                             <th class="text-center">No</th>
-                            <th class="text-center">Name</th>
-                            <th class="text-center">Fullname</th>
-                            <th class="text-center">Email</th>
-                            <th class="text-center">Tempat Tanggal Lahir</th>
-                            <th class="text-center">Avatar</th>
-                            <th class="text-center">Role</th>
+                            <th class="text-center">Tanggal Kegiatan</th>
+                            <th class="text-center">File</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
 
 
                     <tbody>
-                        @foreach ($user as $key => $data)
+                        @foreach ($jadwalKegiatan as $key => $data)
                         <tr>
                             <td class="text-center">{{ ++$key }}</td>
-                            <td class="text-center">{{ $data->name }}</td>
-                            <td class="text-center">{{ $data->fullname }}</td>
+                            <td class="text-center">{{ date('d-F-Y',strtotime($data->tanggal_giat)) }}</td>
                             <td class="text-center">
-                                <a href="mailto:{{ $data->email }}">
-                                    {{ $data->email }}
-                            </td>
-                            </a>
-                            <td class="text-center">{{ $data->pob }}, {{date('d-M-Y', strtotime($data->dob))}}</td>
-                            <td class="text-center">
-                                <a href="{{$data->avatar }}" target="_blank">
-                                    <img class="rounded-circle header-profile-user" src="{{$data->avatar}}" />
+                                <a href="{{ Storage::URL('jadwalKegiatan') }}/{{ $data->filename }}" target="_blank">
+                                    {{ $data->file }}
                                 </a>
                             </td>
-                            <td class="text-center ">{{ $data->role->name }}</td>
                             <td class="text-center">
                                 @include('layouts.edit-delete-button')
                             </td>
@@ -92,96 +80,16 @@
                 <h5 class="modal-title" id="myModalLabel">Form Add Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin-user.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form action="{{ route('admin-jadwal-kegiatan.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 @csrf
                 <div class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Name</label>
-                                <input name="name" type="text" class="form-control" id="validationCustom02" value="{{ old('name') }}" placeholder="Nama" required>
-                                <div class="valid-feedback">
-                                    Nama Harus Diisi!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Fullname</label>
-                                <input name="fullname" type="text" class="form-control" id="validationCustom02" value="{{ old('fullname') }}" placeholder="Nama Lengkap" required>
-                                <div class="valid-feedback">
-                                    Fullname Harus Diisi!
-                                </div>
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">Tanggal Kegiatan</label>
+                        <input name="tanggal_giat" type="date" class="form-control" id="validationCustom02" value="{{ old('tanggal_giat') }}" required>
                     </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Email</label>
-                                <input name="email" type="email" class="form-control" id="validationCustom02" value="{{ old('email') }}" placeholder="Email" required>
-                                <div class="valid-feedback">
-                                    Email Harus Diisi!
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
-                                <div class="input-group auth-pass-inputgroup">
-                                    <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
-                                    <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
-                                </div>
-                                <div class="valid-feedback">
-                                    Password Harus Diisi!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Password Confirmation</label>
-                                <div class="input-group auth-pass-inputgroup">
-                                    <input type="password" name="password" class="form-control" id="password" placeholder="Enter password confirmation" aria-label="Password" aria-describedby="password-confirmation-addon">
-                                    <button class="btn btn-light " type="button" id="password-confirmation-addon"><i class="mdi mdi-eye-outline"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Role User</label>
-                                <select name="role_id" class="form-control" id="validationCustom02" required>
-                                    <option disabled selected>---Pilih Role User ---</option>
-                                    @foreach ($role as $item)
-                                    <option value="{{ $item->id }}" @selected(old('role_id')==$item->id)>{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                                <div class="valid-feedback">
-                                    Role Harus Diisi!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Tempat, Tanggal Lahir</label>
-                                <div class="input-group">
-                                    <input name="pob" type="text" class="form-control" id="validationCustom02" value="{{ old('pob') }}" required placeholder="Tempat Lahir">
-                                    <input name="dob" type="date" class="form-control" id="validationCustom02" value="{{ date('Y-m-d', strtotime(old('dob'))) }}" required>
-                                    <div class="valid-feedback">
-                                        Tempat Tanggal Lahir Harus Diisi!
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Photo</label>
-                                <input name="avatar" type="file" class="form-control" id="validationCustom02">
-                            </div>
-                        </div>
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">File</label>
+                        <input name="file" type="file" class="form-control" id="validationCustom02" value="{{ old('File') }}" required accept=".pdf">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -195,7 +103,7 @@
 <!-- End modal add -->
 
 <!-- Start Edit Modal -->
-@foreach ($user as $data)
+@foreach ($jadwalKegiatan as $data)
 <div class="modal fade" id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -203,7 +111,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            @include('user.edit')
+            @include('jadwalKegiatan.edit')
         </div>
     </div>
 </div>
@@ -217,7 +125,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Delete Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin-user.destroy', $data->id) }}" method="POST">
+            <form action="{{ route('admin-jadwal-kegiatan.destroy', $data->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <div class="modal-body">
@@ -242,11 +150,4 @@
 <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
 <!-- Datatable init js -->
 <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
-<script>
-    $("#password-confirmation-addon").on('click', function() {
-        if ($(this).siblings('input').length > 0) {
-            $(this).siblings('input').attr('type') == "password" ? $(this).siblings('input').attr('type', 'input') : $(this).siblings('input').attr('type', 'password');
-        }
-    })
-</script>
 @endsection

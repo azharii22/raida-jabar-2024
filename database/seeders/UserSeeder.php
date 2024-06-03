@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('roles')->truncate();
+        // DB::table('roles')->truncate();
 
         $dataRole = [
             ['name' => 'Super Admin', 'created_at' => now(), 'updated_at' => now(),],
@@ -30,8 +30,8 @@ class UserSeeder extends Seeder
         }
 
         $roleSA = Role::where('name', 'Super Admin')->first();
-        $roleA = Role::where('name', 'Pinkonran')->first();
-        $roleA = Role::where('name', 'Pinkoncab')->first();
+        $roleRan = Role::where('name', 'Pinkonran')->first();
+        $roleCab = Role::where('name', 'Pinkoncab')->first();
         $roleU = Role::where('name', 'User')->first();
         
         $data   = [
@@ -55,7 +55,7 @@ class UserSeeder extends Seeder
                 'dob'               => '2000-10-10',
                 'email'             => 'admin@mail.com',
                 'password'          => bcrypt('12345678'),
-                'role_id'           => $roleA->id,
+                'role_id'           => $roleRan->id,
                 'email_verified_at' => '2022-01-02 17:04:58',
                 'avatar'            => 'images/avatar-1.jpg',
                 'created_at'        => now(),

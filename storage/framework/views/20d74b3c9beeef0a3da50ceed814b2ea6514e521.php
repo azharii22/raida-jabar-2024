@@ -21,7 +21,7 @@
             <div class="card-body">
                 <h4 class="card-title mb-5">Dokumentasi</h4>
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Dokumentasi</button>
+                    <a href="<?php echo e(route('admin-dokumentasi-kegiatan.index')); ?>" type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-left-arrow-alt"></i> Back To Dokumentasi</a>
                 </div>
 
                 <?php if(count($errors) > 0): ?>
@@ -51,9 +51,11 @@
                         <tr>
                             <td><?php echo e(++$i); ?></td>
                             <td><?php echo e($item->dokumentasi->judul); ?></td>
-                            <td><a href="<?php echo e(URL::asset('uploads/gallery')); ?>/<?php echo e($item->filename); ?>" target="_blank">
+                            <td>
+                                <a href="<?php echo e(URL::asset('uploads/gallery')); ?>/<?php echo e($item->filename); ?>" target="_blank">
                                     <img class="rounded-circle header-profile-user" src="<?php echo e(URL::asset('uploads/gallery')); ?>/<?php echo e($item->filename); ?>" id="formrow-foto-input" width="50px" height="50px" alt="">
-                                </a></td>
+                                </a>
+                            </td>
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </tbody>

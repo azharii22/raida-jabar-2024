@@ -1,11 +1,7 @@
-<form action="{{ route('admin-dokumen-penting.update', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+<form action="{{ route('admin-data-berkas-kontingen.update', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
     @csrf
     @method('PUT')
     <div class="modal-body">
-        <div class="mb-3">
-            <label for="validationCustom02" class="form-label">Nama</label>
-            <input name="name" type="text" class="form-control" id="validationCustom02" value="{{ $data->name }}" required>
-        </div>
         <div class="mb-3">
             <label for="validationCustom02" class="form-label">File</label>
             <input name="file" type="file" class="form-control" id="validationCustom02" required accept=".pdf">

@@ -21,7 +21,7 @@
             <div class="card-body">
                 <h4 class="card-title mb-5">Dokumentasi</h4>
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Dokumentasi</button>
+                    <a href="{{ route('admin-dokumentasi-kegiatan.index') }}" type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-left-arrow-alt"></i> Back To Dokumentasi</a>
                 </div>
 
                 @if (count($errors) > 0)

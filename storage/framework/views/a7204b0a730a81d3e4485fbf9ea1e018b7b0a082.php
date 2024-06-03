@@ -1,18 +1,18 @@
-@extends('layouts.master')
 
-@section('title','Kegiatan')
 
-@section('css')
+<?php $__env->startSection('title','Kegiatan'); ?>
+
+<?php $__env->startSection('css'); ?>
 <!-- DataTables -->
-<link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
-@endsection
+<link href="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.css')); ?>" rel="stylesheet" type="text/css" />
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
-@component('components.breadcrumb')
-@slot('li_1') Dashboard @endslot
-@slot('title') Kegiatan @endslot
-@endcomponent
+<?php $__env->startComponent('components.breadcrumb'); ?>
+<?php $__env->slot('li_1'); ?> Dashboard <?php $__env->endSlot(); ?>
+<?php $__env->slot('title'); ?> Kegiatan <?php $__env->endSlot(); ?>
+<?php echo $__env->renderComponent(); ?>
 
 <div class="row">
     <div class="col-12">
@@ -25,17 +25,17 @@
                     <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Kegiatan</button>
                 </div>
 
-                @if (count($errors) > 0)
+                <?php if(count($errors) > 0): ?>
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                     Error! <br />
                     <ul>
-                        @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                        @endforeach
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                @endif
+                <?php endif; ?>
 
                 <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                     <thead>
@@ -49,14 +49,14 @@
 
 
                     <tbody>
-                        @foreach ($kegiatan as $key => $data)
+                        <?php $__currentLoopData = $kegiatan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
-                            <td class="text-center">{{ ++$key }}</td>
-                            <td class="text-center">{{ $data->judul }}</td>
-                            <td class="text-center">{{ $data->item_giat }}</td>
-                            <td class="text-center"> @include('layouts.edit-delete-button') </td>
+                            <td class="text-center"><?php echo e(++$key); ?></td>
+                            <td class="text-center"><?php echo e($data->judul); ?></td>
+                            <td class="text-center"><?php echo e($data->item_giat); ?></td>
+                            <td class="text-center"> <?php echo $__env->make('layouts.edit-delete-button', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?> </td>
                         </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                     </tbody>
                 </table>
@@ -74,16 +74,16 @@
                 <h5 class="modal-title" id="myModalLabel">Form Add Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin-kegiatan.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
-                @csrf
+            <form action="<?php echo e(route('admin-kegiatan.store')); ?>" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <?php echo csrf_field(); ?>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="validationCustom02" class="form-label">Judul</label>
-                        <input name="judul" type="text" class="form-control" id="validationCustom02" value="{{ old('judul') }}" placeholder="Judul" required>
+                        <input name="judul" type="text" class="form-control" id="validationCustom02" value="<?php echo e(old('judul')); ?>" placeholder="Judul" required>
                     </div>
                     <div class="mb-3">
                         <label for="validationCustom02" class="form-label">Item Giat</label>
-                        <input name="item_giat" type="text" class="form-control" id="validationCustom02" value="{{ old('item_giat') }}" placeholder="Item Giat" required>
+                        <input name="item_giat" type="text" class="form-control" id="validationCustom02" value="<?php echo e(old('item_giat')); ?>" placeholder="Item Giat" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -97,31 +97,31 @@
 <!-- End modal add -->
 
 <!-- Start Edit Modal -->
-@foreach ($kegiatan as $data)
-<div class="modal fade" id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<?php $__currentLoopData = $kegiatan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<div class="modal fade" id="modal-edit-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            @include('kegiatan.edit')
+            <?php echo $__env->make('kegiatan.edit', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         </div>
     </div>
 </div>
 <!-- End Edit Modal -->
 
 <!-- Start Delete Modal -->
-<div class="modal fade" id="modal-delete-{{$data->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modal-delete-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Delete Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin-kegiatan.destroy', $data->id) }}" method="POST">
-                @csrf
-                @method('DELETE')
+            <form action="<?php echo e(route('admin-kegiatan.destroy', $data->id)); ?>" method="POST">
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('DELETE'); ?>
                 <div class="modal-body">
                     <p>Are you Sure?</p>
                 </div>
@@ -134,14 +134,15 @@
     </div>
 </div>
 <!-- End Delete Modal -->
-@endforeach
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-@endsection
-@section('script')
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('script'); ?>
 <!-- Required datatable js -->
-<script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
-<script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
-<script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
+<script src="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.js')); ?>"></script>
+<script src="<?php echo e(URL::asset('/assets/libs/jszip/jszip.min.js')); ?>"></script>
+<script src="<?php echo e(URL::asset('/assets/libs/pdfmake/pdfmake.min.js')); ?>"></script>
 <!-- Datatable init js -->
-<script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
-@endsection
+<script src="<?php echo e(URL::asset('/assets/js/pages/datatables.init.js')); ?>"></script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\WINDOWS\DOCUMENT\kerja\Azhari\Raida\resources\views/kegiatan/index.blade.php ENDPATH**/ ?>
