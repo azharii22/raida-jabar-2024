@@ -93,7 +93,7 @@
 
                                     <div>
                                         <h5 class="text-primary">Welcome Back ! To {{ config('settings.main.1_app_name') }}</h5>
-                                        <p class="text-muted">Sign in to continue to Skote.</p>
+                                        <p class="text-muted">Login to continue to {{ config('settings.main.1_app_name') }}.</p>
                                     </div>
 
                                     <div class="mt-4">
@@ -110,11 +110,6 @@
                                             </div>
 
                                             <div class="mb-3">
-                                                <div class="float-end">
-                                                    @if (Route::has('password.request'))
-                                                    <a href="{{ route('password.request') }}" class="text-muted">Forgot password?</a>
-                                                    @endif
-                                                </div>
                                                 <label class="form-label">Password</label>
                                                 <div class="input-group auth-pass-inputgroup @error('password') is-invalid @enderror">
                                                     <input type="password" name="password" class="form-control  @error('password') is-invalid @enderror" id="userpassword" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
@@ -127,51 +122,19 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="remember">
-                                                    Remember me
-                                                </label>
-                                            </div>
-
                                             <div class="mt-3 d-grid">
                                                 <button class="btn btn-primary waves-effect waves-light" type="submit">Log
                                                     In</button>
                                             </div>
-
-                                            <div class="mt-4 text-center">
-                                                <h5 class="font-size-14 mb-3">Sign in with</h5>
-
-                                                <ul class="list-inline">
-                                                    <li class="list-inline-item">
-                                                        <a href="#" class="social-list-item bg-primary text-white border-primary">
-                                                            <i class="mdi mdi-facebook"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="#" class="social-list-item bg-info text-white border-info">
-                                                            <i class="mdi mdi-twitter"></i>
-                                                        </a>
-                                                    </li>
-                                                    <li class="list-inline-item">
-                                                        <a href="#" class="social-list-item bg-danger text-white border-danger">
-                                                            <i class="mdi mdi-google"></i>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
                                         </form>
-                                        <div class="mt-5 text-center">
-                                            <p>Don't have an account ? <a href="{{ url('register') }}" class="fw-medium text-primary"> Signup now </a> </p>
-                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="mt-4 mt-md-5 text-center">
                                     <p class="mb-0">© <script>
                                             document.write(new Date().getFullYear())
-                                        </script> Raimuna. Crafted with <i class="mdi mdi-heart text-danger"></i> by
-                                        Raimuna</p>
+                                        </script> {{ config('settings.main.1_app_name') }}. Crafted with <i class="mdi mdi-heart text-danger"></i> by
+                                        {{ config('settings.main.1_app_name') }}</p>
                                 </div>
                             </div>
 

@@ -87,13 +87,11 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-
-                <div>
-                    <button type="button" class="btn btn-primary waves-effect waves-light mb-3" data-bs-toggle="modal" data-bs-target="#myModal"> <i class="bx bx-plus"></i>
-                        Add Pembayaran
-                    </button>
+                <h4 class="card-title mb-5">Data Pembayaran</h4>
+                <div class="card-title mb-5">
+                    <a href="{{ route('unsur-kontingen.admin-excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="{{ route('unsur-kontingen.admin-pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                 </div>
-
                 @if (count($errors) > 0)
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                     Error! <br />
@@ -105,39 +103,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
-
-                <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="myModalLabel">Form Pembayaran</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form action="{{ route('admin-data-pembayaran.store') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="status" value="terkirim">
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="formrow-firstname-input" class="form-label">Jumlah Terdaftar</label>
-                                        <input name="jumlah_terdaftar" type="number" class="form-control" id="formrow-nama-input" value="{{ old('jumlah_terdaftar') }}" placeholder="Jumlah Terdaftar">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="formrow-firstname-input" class="form-label">Nominal</label>
-                                        <input name="nominal" type="number" class="form-control" id="formrow-nama-input" value="{{ old('nominal') }}" placeholder="Nominal">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="formrow-jk" class="form-label">Upload Bukti Pembayaran</label>
-                                        <input name="file" type="file" class="form-control" id="formrow-nama-input" accept=".jpg,.png,.jpeg">
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
-                                </div>
-                            </form>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div>
 
                 <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                     <thead>
@@ -175,6 +140,9 @@
                             <td style="width: 10px;" class="text-center"><a class="btn btn-primary btn-sm mr-2" href="{{ Storage::url('public/pembayaran/').$data->file }}" target="_blank"><i class="bx bx-show"></i> Lihat</a></td>
                             <td style="width: 10px;">{{ date('d-F-Y H:i',strtotime($data->tanggal_upload)) }}</td>
                             <td class="text-center" style="width: 10px;">
+                                @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
+                                @endif
                                 <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i class="bx bx-pencil"></i> Edit</button>
                                 <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"> <i class="bx bx-trash"></i> Delete</button>
                             </td>
@@ -189,7 +157,7 @@
 <!-- end row -->
 @endif
 
-@if (auth()->user()->role_id == "2")
+@if (auth()->user()->role_id == "3")
 
 <div class="row">
     <div class="col-md-4">
@@ -261,10 +229,23 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <div>
-                    <a href="{{ route('export-pembayaran') }}" class="btn btn-success waves-effect waves-light mb-3" target="_blank"><i class="fa fa-file-excel"></i> Export Excel</a>
-
+                <h4 class="card-title mb-5">Data Pembayaran</h4>
+                <div class="card-title mb-5">
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#myModal"> <i class="bx bx-plus"></i> Add Pembayaran </button>
                 </div>
+
+                @if (count($errors) > 0)
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    Error! <br />
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+
                 <div class="table-responsive">
                     <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                         <thead>
@@ -289,24 +270,21 @@
                                 <td style="width: 10px;">{{ $data->jumlah_terdaftar }}</td>
                                 <td style="width: 10px;">@currency($data->nominal)</td>
                                 <td style="width: 10px;">
-                                    @if ($data->status === 'terkirim')
+                                    @if ($data->status->name === 'Terkirim')
                                     <span class="badge text-bg-primary">Terkirim</span>
-                                    @elseif ($data->status === 'diterima')
+                                    @elseif ($data->status->name === 'Diterima')
                                     <span class="badge text-bg-success">Diterima</span>
-                                    @elseif ($data->status === 'revisi')
+                                    @elseif ($data->status->name === 'Revisi')
                                     <span class="badge text-bg-warning">Revisi</span>
-                                    @elseif ($data->status === 'ditolak')
+                                    @elseif ($data->status->name === 'Ditolak')
                                     <span class="badge text-bg-danger">Ditolak</span>
                                     @endif
                                 </td>
-                                <td style="width: 10px;" class="text-center"><a href="{{ Storage::url('public/img/pembayaran/').$data->file_bukti_bayar }}" target="_blank"><img src="{{ Storage::url('public/img/pembayaran/').$data->file_bukti_bayar }}" width="100" height="100" /></a></td>
+                                <td style="width: 10px;" class="text-center"><a href="{{ Storage::url('public/pembayaran/').$data->file }}" target="_blank"><img src="{{ Storage::url('public/pembayaran/').$data->file }}" width="100" height="100" /></a></td>
                                 <td style="width: 10px;">{{ date('d-M-Y',strtotime($data->tanggal_upload)) }}</td>
                                 <td class="text-center" style="width: 10px;">
-                                    @if ($data->status->name === 'Revisi' || $data->status->name === 'Terkirim' || $data->status->name === 'Ditolak')
-                                    <button type="button" class="btn btn-info waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-status-{{ $data->id }}"> <i class="bx bx-pencil"></i> Update Status</button>
-                                    @else
-                                    <span class="badge text-bg-success"><i class="bx bx-minus"></i> </span>
-                                    @endif
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i class="bx bx-pencil"></i> Edit</button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"> <i class="bx bx-trash"></i> Delete</button>
                                 </td>
                             </tr>
                             @endforeach
@@ -319,6 +297,41 @@
 </div> <!-- end row -->
 
 @endif
+<!-- Start modal Add Start-->
+
+<div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Form Pembayaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin-data-pembayaran.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="hidden" name="status" value="terkirim">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="formrow-firstname-input" class="form-label">Jumlah Terdaftar</label>
+                        <input name="jumlah_terdaftar" type="number" class="form-control" id="formrow-nama-input" value="{{ old('jumlah_terdaftar') }}" placeholder="Jumlah Terdaftar">
+                    </div>
+                    <div class="mb-3">
+                        <label for="formrow-firstname-input" class="form-label">Nominal</label>
+                        <input name="nominal" type="number" class="form-control" id="formrow-nama-input" value="{{ old('nominal') }}" placeholder="Nominal">
+                    </div>
+                    <div class="mb-3">
+                        <label for="formrow-jk" class="form-label">Upload Bukti Pembayaran</label>
+                        <input name="file" type="file" class="form-control" id="formrow-nama-input" accept=".jpg,.png,.jpeg">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<!-- Start modal Add Delete-->
 
 <!-- Start modal Delete-->
 @foreach ($pembayaran as $data)
@@ -417,6 +430,42 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+
+<!-- Start Verifikasi Modal -->
+<div class="modal fade" id="modal-verifikasi-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Verifikasi Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('verifikasiPembayaran', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">Verifikasi Dokumen</label>
+                        <select name="status_id" class="form-select" id="validationCustom02">
+                            <option disabled selected>--- Silahkan Verifikasi Dokumen ---</option>
+                            @foreach ($status as $item)
+                            <option value="{{ $item->id }}" {{ $item->id == $data->status_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">Catatan Untuk Dokumen</label>
+                        <input type="text" name="catatan" class="form-control" value="{{ $data->catatan }}" placeholder="Silahkan isi jika perlu...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Verifikasi Modal -->
 @endforeach
 
 @endsection

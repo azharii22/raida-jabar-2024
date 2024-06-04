@@ -48,23 +48,35 @@ Route::resource('/admin-kategori', KategoriController::class);
 Route::resource('/admin-data-berkas-kontingen', BerkasController::class);
 Route::put('/berkas-verifikasi{id}', [BerkasController::class, 'verifikasi'])->name('berkas.verifikasi');
 
+Route::resource('/admin-data-unsur-kontingen', UnsurKontingenController::class);
+Route::put('/upload-foto-unsur-kontingen{id}', [UnsurKontingenController::class, 'uploadFoto'])->name('unsur-kontingen.foto');
+Route::put('/upload-kta-unsur-kontingen{id}', [UnsurKontingenController::class, 'uploadKta'])->name('unsur-kontingen.kta');
+Route::put('/upload-asuransi-unsur-kontingen{id}', [UnsurKontingenController::class, 'uploadAsuransi'])->name('unsur-kontingen.asuransi');
+Route::put('/upload-suket-unsur-kontingen{id}', [UnsurKontingenController::class, 'uploadSertif'])->name('unsur-kontingen.sertif');
+Route::put('/unsur-kontingen-verifikasi{id}', [UnsurKontingenController::class, 'verifikasi'])->name('unsur-kontingen.verifikasi');
+Route::get('unsur-kontingen-exportPDF{id}', [UnsurKontingenController::class, 'exportPDF'])->name('unsur-kontingen.pdf');
+Route::get('unsur-kontingen-exportExcel{id}', [UnsurKontingenController::class, 'exportExcel'])->name('unsur-kontingen.excel');
+Route::get('unsur-kontingen-exportadminExcel', [UnsurKontingenController::class, 'exportAdminExcel'])->name('unsur-kontingen.admin-excel');
+Route::get('unsur-kontingen-exportadminPDF', [UnsurKontingenController::class, 'exportAdminPDF'])->name('unsur-kontingen.admin-pdf');
+
 Route::resource('/admin-data-peserta', PesertaController::class);
 Route::put('/upload-foto{id}', [PesertaController::class, 'uploadFoto'])->name('peserta.foto');
-Route::put('/upload-vaksin{id}', [PesertaController::class, 'uploadVaksin'])->name('peserta.vaksin');
 Route::put('/upload-kta{id}', [PesertaController::class, 'uploadKta'])->name('peserta.kta');
 Route::put('/upload-asuransi{id}', [PesertaController::class, 'uploadAsuransi'])->name('peserta.asuransi');
-Route::put('/upload-suket{id}', [PesertaController::class, 'uploadSuket'])->name('peserta.suket');
+Route::put('/upload-sertif{id}', [PesertaController::class, 'uploadSertif'])->name('peserta.sertif');
+Route::put('/peserta-verifikasi{id}', [PesertaController::class, 'verifikasi'])->name('peserta.verifikasi');
+Route::get('peserta-exportPDF', [PesertaController::class, 'exportPDF'])->name('peserta.pdf');
+Route::get('peserta-exportExcel', [PesertaController::class, 'exportExcel'])->name('peserta.excel');
 
-Route::resource('/admin-data-unsur-kontingen', UnsurKontingenController::class);
-Route::put('/upload-foto-unsur-kontingen{id}', [PesertaController::class, 'uploadFoto'])->name('unsur-kontingen.foto');
-Route::put('/upload-vaksin-unsur-kontingen{id}', [PesertaController::class, 'uploadVaksin'])->name('unsur-kontingen.vaksin');
-Route::put('/upload-kta-unsur-kontingen{id}', [PesertaController::class, 'uploadKta'])->name('unsur-kontingen.kta');
-Route::put('/upload-asuransi-unsur-kontingen{id}', [PesertaController::class, 'uploadAsuransi'])->name('unsur-kontingen.asuransi');
-Route::put('/upload-suket-unsur-kontingen{id}', [PesertaController::class, 'uploadSuket'])->name('unsur-kontingen.suket');
 
 Route::resource('/admin-data-pembayaran', PembayaranController::class);
 Route::get('export-pembayaran', [\App\Http\Controllers\PembayaranController::class, 'export'])->name('export-pembayaran');
 Route::put('/pembayaran-verifikasi{id}', [App\Http\Controllers\PembayaranController::class, 'verifikasiPembayaran'])->name('verifikasiPembayaran');
+Route::get('pembayaran-exportPDF{id}', [PembayaranController::class, 'exportPDF'])->name('pembayaran.pdf');
+Route::get('pembayaran-exportExcel{id}', [PembayaranController::class, 'exportExcel'])->name('pembayaran.excel');
+Route::get('pembayaran-exportadminExcel', [PembayaranController::class, 'exportAdminExcel'])->name('pembayaran.admin-excel');
+Route::get('pembayaran-exportadminPDF', [PembayaranController::class, 'exportAdminPDF'])->name('pembayaran.admin-pdf');
+
 
 
 Route::resource('/admin-artikel', ArtikelController::class);

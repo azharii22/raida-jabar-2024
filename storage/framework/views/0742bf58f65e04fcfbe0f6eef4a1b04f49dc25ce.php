@@ -21,9 +21,11 @@
 
                 <h4 class="card-title mb-5">Berkas</h4>
 
+                <?php if(auth()->user()->role_id != 1): ?>
                 <div class="card-title mb-5">
                     <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Berkas</button>
                 </div>
+                <?php endif; ?>
 
                 <?php if(count($errors) > 0): ?>
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
@@ -55,17 +57,31 @@
                         <tr>
                             <td class="text-center"><?php echo e(++$key); ?></td>
                             <td class="text-center">
-                                <a href="<?php echo e(Storage::URL('dokumenPenting')); ?>/<?php echo e($data->filename); ?>" target="_blank">
+                                <a href="<?php echo e(Storage::URL('public/berkas')); ?>/<?php echo e($data->filename); ?>" target="_blank">
                                     <?php echo e($data->file); ?>
 
                                 </a>
                             </td>
-                            <td class="text-center"><?php echo e($data->status->name); ?></td>
+                            <td class="text-center">
+                                <?php if($data->status->name == 'Terkirim'): ?>
+                                <span class="badge bg-primary">Terkirim</span>
+                                <?php elseif($data->status->name == 'Revisi'): ?>
+                                <span class="badge bg-warning">Revisi</span>
+                                <?php elseif($data->status->name == 'Ditolak'): ?>
+                                <span class="badge bg-danger">Revisi</span>
+                                <?php elseif($data->status->name == 'Diterima'): ?>
+                                <span class="badge bg-success">Diterima</span>
+                                <?php endif; ?>
+                            </td>
                             <td class="text-center"><?php echo e($data->catatan); ?></td>
                             <td class="text-center"><?php echo e($data->user->name); ?></td>
                             <td class="text-center">
+                                <?php if(auth()->user()->role_id == 1 && $data->status->name == 'Terkirim' || $data->status->name == 'Ditolak' || $data->status->name == 'Revisi' ): ?>
                                 <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-<?php echo e($data->id); ?>"><i class=" bx bx-check-circle"></i> Verifikasi</button>
+                                <?php endif; ?>
+                                <?php if(auth()->user()->role_id != 1): ?>
                                 <?php echo $__env->make('layouts.edit-delete-button', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                <?php endif; ?>
                             </td>
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -165,8 +181,8 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="validationCustom02" class="form-label">Verifikasi Dokumen</label>
-                        <input type="text" name="catatan" class="form-control">
+                        <label for="validationCustom02" class="form-label">Catatan Untuk Dokumen</label>
+                        <input type="text" name="catatan" class="form-control" value="<?php echo e($data->catatan); ?>" placeholder="Silahkan isi jika perlu...">
                     </div>
                 </div>
                 <div class="modal-footer">

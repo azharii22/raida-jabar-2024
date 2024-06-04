@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <!-- <title> <?php echo $__env->yieldContent('title'); ?> | Skote - Responsive Bootstrap 4 Admin Dashboard</title> -->
-    <title><?php echo e(config('settings.main.1_app_name')); ?></title>
+    <title>Login | <?php echo e(config('settings.main.1_app_name')); ?></title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSRF Token -->

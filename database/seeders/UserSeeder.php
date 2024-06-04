@@ -17,21 +17,21 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // DB::table('roles')->truncate();
+        DB::table('roles')->truncate();
 
         $dataRole = [
-            ['name' => 'Super Admin', 'created_at' => now(), 'updated_at' => now(),],
-            ['name' => 'Pinkonran', 'created_at' => now(), 'updated_at' => now(),],
-            ['name' => 'Pinkoncab', 'created_at' => now(), 'updated_at' => now(),],
+            ['name' => 'DKD', 'created_at' => now(), 'updated_at' => now(),],
+            ['name' => 'DKR', 'created_at' => now(), 'updated_at' => now(),],
+            ['name' => 'DKC', 'created_at' => now(), 'updated_at' => now(),],
             ['name' => 'User', 'created_at' => now(), 'updated_at' => now(),],
         ];
         foreach ($dataRole as $key => $value) {
             Role::create($value);
         }
 
-        $roleSA = Role::where('name', 'Super Admin')->first();
-        $roleRan = Role::where('name', 'Pinkonran')->first();
-        $roleCab = Role::where('name', 'Pinkoncab')->first();
+        $roleDkd = Role::where('name', 'DKD')->first();
+        $roleDkr = Role::where('name', 'DKR')->first();
+        $roleDkc = Role::where('name', 'DKC')->first();
         $roleU = Role::where('name', 'User')->first();
         
         $data   = [
@@ -40,22 +40,48 @@ class UserSeeder extends Seeder
                 'fullname'          => 'Super Admin',
                 'pob'               => 'Djakarta',
                 'dob'               => '2000-10-10',
-                'email'             => 'superadmin@mail.com',
+                'email'             => 'admin@mail.com',
                 'password'          => bcrypt('12345678'),
-                'role_id'           => $roleSA->id,
+                'role_id'           => $roleDkd->id,
                 'email_verified_at' => '2022-01-02 17:04:58',
                 'avatar'            => 'images/avatar-1.jpg',
                 'created_at'        => now(),
                 'updated_at'        => now(),
             ],
             [
-                'name'              => 'Admin',
-                'fullname'          => 'Admin',
+                'name'              => 'DKD',
+                'fullname'          => 'DKD',
                 'pob'               => 'Djakarta',
                 'dob'               => '2000-10-10',
-                'email'             => 'admin@mail.com',
+                'email'             => 'dkd@mail.com',
                 'password'          => bcrypt('12345678'),
-                'role_id'           => $roleRan->id,
+                'role_id'           => $roleDkd->id,
+                'email_verified_at' => '2022-01-02 17:04:58',
+                'avatar'            => 'images/avatar-1.jpg',
+                'created_at'        => now(),
+                'updated_at'        => now(),
+            ],
+            [
+                'name'              => 'DKR',
+                'fullname'          => 'DKR',
+                'pob'               => 'Djakarta',
+                'dob'               => '2000-10-10',
+                'email'             => 'dkr@mail.com',
+                'password'          => bcrypt('12345678'),
+                'role_id'           => $roleDkr->id,
+                'email_verified_at' => '2022-01-02 17:04:58',
+                'avatar'            => 'images/avatar-1.jpg',
+                'created_at'        => now(),
+                'updated_at'        => now(),
+            ],
+            [
+                'name'              => 'DKC',
+                'fullname'          => 'DKC',
+                'pob'               => 'Djakarta',
+                'dob'               => '2000-10-10',
+                'email'             => 'dkc@mail.com',
+                'password'          => bcrypt('12345678'),
+                'role_id'           => $roleDkc->id,
                 'email_verified_at' => '2022-01-02 17:04:58',
                 'avatar'            => 'images/avatar-1.jpg',
                 'created_at'        => now(),

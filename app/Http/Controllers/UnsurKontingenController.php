@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UnsurKontingenAdminExport;
+use App\Exports\UnsurKontingenExport;
 use App\Models\Kategori;
 use App\Models\Status;
 use App\Models\UnsurKontingen;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UnsurKontingenController extends Controller
@@ -18,9 +22,14 @@ class UnsurKontingenController extends Controller
 
     public function index()
     {
-        $unsurKontingen = UnsurKontingen::orderBy('updated_at', 'DESC')->get();
+        if (Auth::user()->role_id == 1) {
+            $unsurKontingen = UnsurKontingen::orderBy('updated_at', 'DESC')->get();
+        } else {
+            $unsurKontingen = UnsurKontingen::where('user_id', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
+        }
         $kategori = Kategori::orderBy('updated_at', 'DESC')->get();
-        return view('unsurKontingen.index', compact('unsurKontingen', 'kategori'));
+        $status = Status::orderBy('name', 'DESC')->get();
+        return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
     }
 
     public function store(Request $request)
@@ -64,43 +73,9 @@ class UnsurKontingenController extends Controller
     public function update(Request $request, $id)
     {
         $unsurKontingen = UnsurKontingen::findOrFail($id);
-        if ($request->hasFile('foto')) {
-            $foto = $request->file('foto');
-            $nama_foto = time() . '-' . $foto->getClientOriginalName();
-            $foto->storeAs('public/img/unsur_kontingen', $nama_foto);
-            $unsurKontingen->update(array_merge($request->all(), [
-                'foto' => $nama_foto,
-                'user_id' => Auth::user()->id,
-            ]));
-        } elseif ($request->hasFile('kta')) {
-            $kta = $request->file('kta');
-            $nama_kta = time() . '-' . $kta->getClientOriginalName();
-            $kta->storeAs('public/img/unsur_kontingen', $nama_kta);
-            $unsurKontingen->update(array_merge($request->all(), [
-                'user_id' => Auth::user()->id,
-                'kta' => $nama_kta,
-            ]));
-        } elseif ($request->hasFile('asuransi_kesehatan')) {
-            $asuransi_kesehatan = $request->file('asuransi_kesehatan');
-            $nama_asuransi_kesehatan = time() . '-' . $asuransi_kesehatan->getClientOriginalName();
-            $asuransi_kesehatan->storeAs('public/img/unsur_kontingen', $nama_asuransi_kesehatan);
-            $unsurKontingen->update(array_merge($request->all(), [
-                'user_id' => Auth::user()->id,
-                'asuransi_kesehatan' => $nama_asuransi_kesehatan,
-            ]));
-        } elseif ($request->hasFile('sertif_sfh')) {
-            $sertif_sfh = $request->file('sertif_sfh');
-            $nama_sertif_sfh = time() . '-' . $sertif_sfh->getClientOriginalName();
-            $sertif_sfh->storeAs('public/img/unsur_kontingen', $nama_sertif_sfh);
-            $unsurKontingen->update(array_merge($request->all(), [
-                'user_id' => Auth::user()->id,
-                'sertif_sfh' => $nama_sertif_sfh,
-            ]));
-        } else {
-            $unsurKontingen->update(array_merge($request->all(), [
-                'user_id' => Auth::user()->id,
-            ]));
-        }
+        $unsurKontingen->update(array_merge($request->all(), [
+            'user_id' => Auth::user()->id,
+        ]));
         Alert::success('Success!', 'Data Updated Successfully');
         return back();
     }
@@ -111,5 +86,126 @@ class UnsurKontingenController extends Controller
         $unsurKontingen->delete();
         Alert::success('Success!', 'Data Deleted Successfully');
         return back();
+    }
+
+    public function uploadFoto(Request $request, $id)
+    {
+        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'foto.required' => 'Foto Tidak Boleh Kosong!',
+            'foto.image'    => 'Foto Harus Berupa Gambar!',
+            'foto.image'    => 'Foto Harus Format jpeg, png, jpg, gif, dan svg',
+            'foto.max'      => 'Ukuran Foto Maximal 2 Mb!',
+        ]);
+        $foto = $request->file('foto');
+        $nama_foto = time() . '-' . $foto->getClientOriginalName();
+        $foto->storeAs('public/img/unsur-kontingen/foto', $nama_foto);
+        $unsurKontingen->update(array_merge($request->all(), [
+            'foto' => $nama_foto,
+        ]));
+        Alert::success('Success!', 'Foto Berhasil Diupload');
+        return back();
+    }
+
+    public function uploadKta(Request $request, $id)
+    {
+        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $request->validate([
+            'KTA' => 'required|image|mimes:jpeg,png,jpg,gif ,svg|max:2048',
+        ], [
+            'KTA.required' => 'KTA Tidak Boleh Kosong!',
+            'KTA.image'    => 'KTA Harus Berupa Gambar!',
+            'KTA.mimes'    => 'KTA Harus Format jpeg, png, jpg, gif, dan svg',
+            'KTA.max'      => 'Ukuran KTA Maximal 2 Mb!',
+        ]);
+        $kta = $request->file('KTA');
+        $nama_kta = time() . '-' . $kta->getClientOriginalName();
+        $kta->storeAs('public/img/unsur-kontingen/kta', $nama_kta);
+        $unsurKontingen->update(array_merge($request->all(), [
+            'KTA' => $nama_kta,
+        ]));
+        Alert::success('Success!', 'KTA Berhasil Diupload');
+        return back();
+    }
+
+    public function uploadAsuransi(Request $request, $id)
+    {
+        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $request->validate([
+            'asuransi_kesehatan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'asuransi_kesehatan.required' => 'Asuransi Kesehatan Tidak Boleh Kosong!',
+            'asuransi_kesehatan.image'    => 'Asuransi Kesehatan Harus Berupa Gambar!',
+            'asuransi_kesehatan.mimes'    => 'Asuransi Kesehatan Harus Format jpeg, png , jpg, gif, dan svg',
+            'asuransi_kesehatan.max'      => 'Ukuran Asuransi Kesehatan Maximal 2 Mb!',
+        ]);
+        $asuransi = $request->file('asuransi_kesehatan');
+        $nama_asuransi = time() . '-' . $asuransi->getClientOriginalName();
+        $asuransi->storeAs('public/img/unsur-kontingen/asuransi-kesehatan', $nama_asuransi);
+        $unsurKontingen->update(array_merge($request->all(), [
+            'asuransi_kesehatan' => $nama_asuransi,
+        ]));
+        Alert::success('Success!', 'Asuransi Kesehatan Berhasil Diupload');
+        return back();
+    }
+
+    public function uploadSertif(Request $request, $id)
+    {
+        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $request->validate([
+            'sertif_sfh' => 'required|image|mimes:jpeg,png,jpg,gif ,svg|max:2048',
+        ], [
+            'sertif_sfh.required' => 'Sertif SFH Tidak Boleh Kosong!',
+            'sertif_sfh.image'    => 'Sertif SFH Harus Berupa Gambar!',
+            'sertif_sfh.mimes'    => 'Sertif SFH Harus Format jpeg, png, jpg, gif, dan svg',
+            'sertif_sfh.max'      => 'Ukuran Sertif SFH Maximal 2 Mb!',
+        ]);
+        $sertif = $request->file('sertif_sfh');
+        $nama_sertif = time() . '-' . $sertif->getClientOriginalName();
+        $sertif->storeAs('public/img/unsur-kontingen/sertif-sfh', $nama_sertif);
+        $unsurKontingen->update(array_merge($request->all(), [
+            'sertif_sfh' => $nama_sertif,
+        ]));
+        Alert::success('Success!', 'Sertif SFH Berhasil Diupload');
+        return back();
+    }
+
+    public function verifikasi(Request $request, $id)
+    {
+        $peserta = UnsurKontingen::FindOrFail($id);
+        $peserta->update($request->all());
+        Alert::success('Success!', 'Data Verification Successfully');
+        return back();
+    }
+
+    public function exportExcel($id)
+    {
+        return Excel::download(new UnsurKontingenExport($id), 'Unsur-Kontingen.xlsx');
+    }
+
+
+    public function exportAdminExcel()
+    {
+        return Excel::download(new UnsurKontingenAdminExport(), 'Unsur-Kontingen.xlsx');
+    }
+
+    public function exportPDF($id)
+    {
+        $data = UnsurKontingen::with('kategori', 'user')
+        ->where('user_id', $id)
+            ->where('nama', 'not like', '%super admin%')
+            ->where('nama', 'not like', '%admin%')
+            ->get();
+        $pdf = Pdf::loadView('unsurKontingen.pdf', compact('data'))->setPaper('a4', 'portrait');
+        return $pdf->download('Unsur-Kontingen.pdf');
+    }
+
+    public function exportadminPDF()
+    {
+        $data = UnsurKontingen::with('kategori', 'user')->orderBy('nama_lengkap')->get();
+        $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a4', 'portrait');
+        return $pdf->download('Unsur-Kontingen.pdf');
     }
 }

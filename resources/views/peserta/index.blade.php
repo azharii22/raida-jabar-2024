@@ -24,7 +24,8 @@
                 <h4 class="card-title mb-5">Peserta</h4>
 
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
+                    <a href="{{ route('peserta.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="{{ route('peserta.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                 </div>
 
                 @if (count($errors) > 0)
@@ -81,24 +82,24 @@
                                 </td>
                                 <td>
                                     @if ($data->foto != NULL)
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/').$data->foto }}" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/foto/').$data->foto }}" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
                                     @else
                                     <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-{{ $data->id }}"><i class="bx bx-upload"></i> Foto</button>
                                     @endif
-                                    @if ($data->kta != NULL)
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/').$data->kta }}" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
+                                    @if ($data->KTA != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/kta/').$data->KTA }}" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
                                     @else
                                     <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-{{ $data->id }}"><i class="bx bx-upload"></i> KTA</button>
                                     @endif
                                     @if ($data->asuransi_kesehatan != NULL)
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/').$data->asuransi_kesehatan }}" target="_blank"><i class="bx bx-check-circle"></i> Asuransi</a>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/asuransi-kesehatan/').$data->asuransi_kesehatan }}" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan </a>
                                     @else
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-askes-{{ $data->id }}"><i class="bx bx-upload"></i> Asuransi</button>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-{{ $data->id }}"><i class="bx bx-upload"></i> Asuransi Kesehatan </button>
                                     @endif
                                     @if ($data->sertif_sfh != NULL)
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/').$data->sertif_sfh }}" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/sertif-sfh/').$data->sertif_sfh }}" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>
                                     @else
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-sfh-{{ $data->id }}"><i class="bx bx-upload"></i> Sertif SFH</button>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-{{ $data->id }}"><i class="bx bx-upload"></i> Sertif SFH</button>
                                     @endif
                                 </td>
                                 <td>
@@ -106,14 +107,21 @@
                                     <div style="color: red;">
                                         <li>{{ $data->catatan }}</li>
                                     </div>
+                                    @else
+                                    {{ $data->catatan }}
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-info waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}"> <i class="bx bx-show"></i> Detail</button>
-                                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i class="bx bx-pencil"></i> Edit</button>
-                                    @if ($data->status->name === 'Revisi')
+                                    @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                    <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
                                     @endif
+                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}"> <i class="bx bx-show"></i> Detail</button>
+                                    @if ($data->status->name === 'Revisi')
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i class="bx bx-pencil"></i> Edit</button>
+                                    @endif
+                                    @if (auth()->user()->role_id != 1)
                                     <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"> <i class="bx bx-trash"></i> Delete</button>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -124,19 +132,44 @@
         </div>
     </div> <!-- end col -->
 </div> <!-- end row -->
-@else
+@elseif (auth()->user()->role_id == 2)
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+
+                <h4 class="card-title mb-5">Peserta</h4>
+
+                <div class="card-title mb-5">
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
+                    <a href="{{ route('peserta.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="{{ route('peserta.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                </div>
+
+                @if (count($errors) > 0)
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    Error! <br />
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+
                 <div class="table-responsive">
-                    <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
                         <thead>
                             <tr>
                                 <th style="width: 10px;">No</th>
-                                <th>Nama</th>
-                                <th>Partisipan</th>
-                                <th style="text-align: center;">Action</th>
+                                <th>Nama Lengkap</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Kategori</th>
+                                <th>Status</th>
+                                <th>Berkas Peserta</th>
+                                <th>Catatan</th>
+                                <th style="width: 10px;">Action</th>
                             </tr>
                         </thead>
 
@@ -145,10 +178,66 @@
                             @foreach ($peserta as $i =>$data)
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td class="text-uppercase">{{ $data->nama }}</td>
-                                <td>{{ $data->partisipan->count('user_id') }} Orang</td>
-                                <td align="center">
-                                    <a href="{{ route('detailPeserta', $data->id) }}" class="btn btn-info waves-effect waves-light btn-sm mr-2"> <i class="bx bx-show"></i> Detail</a>
+                                <td class="text-uppercase">{{ $data->nama_lengkap }}</td>
+                                <td>
+                                    @if ($data->jenis_kelamin == 1)
+                                    <span>Laki - Laki</span>
+                                    @else
+                                    <span>Perempuan</span>
+                                    @endif
+                                </td>
+                                <td>{{ $data->kategori?->name }}</td>
+                                <td>
+                                    @if ($data->status->name === 'Terkirim')
+                                    <span class="badge text-bg-primary">Terkirim</span>
+                                    @elseif ($data->status->name === 'Diterima')
+                                    <span class="badge text-bg-success">Diterima</span>
+                                    @elseif ($data->status->name === 'Revisi')
+                                    <span class="badge text-bg-warning">Revisi</span>
+                                    @elseif ($data->status->name === 'Ditolak')
+                                    <span class="badge text-bg-danger">Ditolak</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($data->foto != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/foto/').$data->foto }}" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
+                                    @else
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-{{ $data->id }}"><i class="bx bx-upload"></i> Foto</button>
+                                    @endif
+                                    @if ($data->KTA != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/kta/').$data->KTA }}" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
+                                    @else
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-{{ $data->id }}"><i class="bx bx-upload"></i> KTA</button>
+                                    @endif
+                                    @if ($data->asuransi_kesehatan != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/asuransi-kesehatan/').$data->asuransi_kesehatan }}" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan </a>
+                                    @else
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-{{ $data->id }}"><i class="bx bx-upload"></i> Asuransi Kesehatan </button>
+                                    @endif
+                                    @if ($data->sertif_sfh != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/sertif-sfh/').$data->sertif_sfh }}" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>
+                                    @else
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-{{ $data->id }}"><i class="bx bx-upload"></i> Sertif SFH</button>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($data->status->name === 'Revisi')
+                                    <div style="color: red;">
+                                        <li>{{ $data->catatan }}</li>
+                                    </div>
+                                    @else
+                                    {{$data->catatan}}
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                    <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
+                                    @endif
+                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}"> <i class="bx bx-show"></i> Detail</button>
+                                    @if (auth()->user()->role_id != 1)
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i class="bx bx-pencil"></i> Edit</button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"> <i class="bx bx-trash"></i> Delete</button>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -158,7 +247,111 @@
             </div>
         </div>
     </div> <!-- end col -->
-</div> <!-- end row -->
+</div>
+@elseif (auth()->user()->role_id == 3)
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title mb-5">Peserta</h4>
+
+                <div class="card-title mb-5">
+                    <a href="{{ route('peserta.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="{{ route('peserta.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                </div>
+
+                @if (count($errors) > 0)
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    Error! <br />
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px;">No</th>
+                                <th>Nama Lengkap</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Kategori</th>
+                                <th>Status</th>
+                                <th>Berkas Peserta</th>
+                                <th>Catatan</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            @foreach ($peserta as $i =>$data)
+                            <tr>
+                                <td>{{ ++$i }}</td>
+                                <td class="text-uppercase">{{ $data->nama_lengkap }}</td>
+                                <td>
+                                    @if ($data->jenis_kelamin == 1)
+                                    <span>Laki - Laki</span>
+                                    @else
+                                    <span>Perempuan</span>
+                                    @endif
+                                </td>
+                                <td>{{ $data->kategori?->name }}</td>
+                                <td>
+                                    @if ($data->status->name === 'Terkirim')
+                                    <span class="badge text-bg-primary">Terkirim</span>
+                                    @elseif ($data->status->name === 'Diterima')
+                                    <span class="badge text-bg-success">Diterima</span>
+                                    @elseif ($data->status->name === 'Revisi')
+                                    <span class="badge text-bg-warning">Revisi</span>
+                                    @elseif ($data->status->name === 'Ditolak')
+                                    <span class="badge text-bg-danger">Ditolak</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($data->foto != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/foto/').$data->foto }}" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
+                                    @else
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-{{ $data->id }}"><i class="bx bx-upload"></i> Foto</button>
+                                    @endif
+                                    @if ($data->KTA != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/kta/').$data->KTA }}" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
+                                    @else
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-{{ $data->id }}"><i class="bx bx-upload"></i> KTA</button>
+                                    @endif
+                                    @if ($data->asuransi_kesehatan != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/asuransi-kesehatan/').$data->asuransi_kesehatan }}" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan </a>
+                                    @else
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-{{ $data->id }}"><i class="bx bx-upload"></i> Asuransi Kesehatan </button>
+                                    @endif
+                                    @if ($data->sertif_sfh != NULL)
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/sertif-sfh/').$data->sertif_sfh }}" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>
+                                    @else
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-{{ $data->id }}"><i class="bx bx-upload"></i> Sertif SFH</button>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($data->status->name === 'Revisi')
+                                    <div style="color: red;">
+                                        <li>{{ $data->catatan }}</li>
+                                    </div>
+                                    @else
+                                    {{$data->catatan}}
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
 
 @endif
 
@@ -400,6 +593,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 <!-- End modal Delete -->
+
 <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-foto-{{ $data->id }}">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -424,30 +618,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
-<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-vaksin-{{ $data->id }}">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Upload Vaksin</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('peserta.vaksin', $data->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="formrow-firstname-input" class="form-label">Upload Vaksin</label>
-                        <input name="kta" type="file" class="form-control" id="formrow-nama-input">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success waves-effect waves-light"><i class="bx bx-upload"></i> Upload</button>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
 <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-kta-{{ $data->id }}">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -461,7 +631,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="formrow-firstname-input" class="form-label">Upload KTA</label>
-                        <input name="asuransi_kesehatan" type="file" class="form-control" id="formrow-nama-input">
+                        <input name="KTA" type="file" class="form-control" id="formrow-nama-input">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -476,7 +646,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Upload Asuransi</h5>
+                <h5 class="modal-title" id="myModalLabel">Upload Asuransi Kesehatan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form action="{{ route('peserta.asuransi', $data->id) }}" method="POST" enctype="multipart/form-data">
@@ -484,7 +654,31 @@
                 @method('PUT')
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="formrow-firstname-input" class="form-label">Upload Asuransi</label>
+                        <label for="formrow-firstname-input" class="form-label">Upload Asuransi Kesehatan</label>
+                        <input name="asuransi_kesehatan" type="file" class="form-control" id="formrow-nama-input">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success waves-effect waves-light"><i class="bx bx-upload"></i> Upload</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-sertif-{{ $data->id }}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Upload Sertifikat SFH</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('peserta.sertif', $data->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="formrow-firstname-input" class="form-label">Upload Sertifikat SFH</label>
                         <input name="sertif_sfh" type="file" class="form-control" id="formrow-nama-input">
                     </div>
                 </div>
@@ -570,16 +764,16 @@
                                 <tbody>
                                     <tr>
                                         <td class="border p-2" style="width: 100%;">
-                                            <img style="border-radius: 10px;" src="{{ isset($data->foto) ? asset(Storage::url('public/img/peserta/').$data->foto) : asset('/assets/images/x.png') }}" id="formrow-foto-input" width="100px" height="100px" alt="">
+                                            <img style="border-radius: 10px;" src="{{ isset($data->foto) ? asset(Storage::url('public/img/peserta/foto/').$data->foto) : asset('/assets/images/x.png') }}" id="formrow-foto-input" width="100px" height="100px" alt="">
                                         </td>
                                         <td class="border p-2" style="width: 100%;">
-                                            <img style="border-radius: 10px;" src="{{ isset($data->kta) ? asset(Storage::url('public/img/peserta/').$data->kta) : asset('/assets/images/x.png') }}" id="formrow-foto-input" width="100px" height="100px" alt="">
+                                            <img style="border-radius: 10px;" src="{{ isset($data->KTA) ? asset(Storage::url('public/img/peserta/kta/').$data->KTA) : asset('/assets/images/x.png') }}" id="formrow-foto-input" width="100px" height="100px" alt="">
                                         </td>
                                         <td class="border p-2" style="width: 100%;">
-                                            <img style="border-radius: 10px;" src="{{ isset($data->asuransi_kesehatan) ? asset(Storage::url('public/img/peserta/').$data->asuransi_kesehatan) : asset('/assets/images/x.png') }}" id="formrow-foto-input" width="100px" height="100px" alt="">
+                                            <img style="border-radius: 10px;" src="{{ isset($data->asuransi_kesehatan) ? asset(Storage::url('public/img/peserta/asuransi-kesehatan/').$data->asuransi_kesehatan) : asset('/assets/images/x.png') }}" id="formrow-foto-input" width="100px" height="100px" alt="">
                                         </td>
                                         <td class="border p-2" style="width: 100%;">
-                                            <img style="border-radius: 10px;" src="{{ isset($data->sertif_sfh) ? asset(Storage::url('public/img/peserta/').$data->sertif_sfh) : asset('/assets/images/x.png') }}" id="formrow-foto-input" width="100px" height="100px" alt="">
+                                            <img style="border-radius: 10px;" src="{{ isset($data->sertif_sfh) ? asset(Storage::url('public/img/peserta/sertif-sfh/').$data->sertif_sfh) : asset('/assets/images/x.png') }}" id="formrow-foto-input" width="100px" height="100px" alt="">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -594,6 +788,42 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+
+<!-- Start Verifikasi Modal -->
+<div class="modal fade" id="modal-verifikasi-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Verifikasi Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('peserta.verifikasi', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">Verifikasi Dokumen</label>
+                        <select name="status_id" class="form-select" id="validationCustom02">
+                            <option disabled selected>--- Silahkan Verifikasi Dokumen ---</option>
+                            @foreach ($status as $item)
+                            <option value="{{ $item->id }}" {{ $item->id == $data->status_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">Catatan Untuk Dokumen</label>
+                        <input type="text" name="catatan" class="form-control" value="{{ $data->catatan }}" placeholder="Silahkan isi jika perlu...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Verifikasi Modal -->
 @endforeach
 @endsection
 

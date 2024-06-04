@@ -28,10 +28,12 @@ class PembayaranController extends Controller
             $pembayaran = Pembayaran::with('user')->orderBy('user_id', 'ASC')->get();
             $terdaftar  = Pembayaran::sum('jumlah_terdaftar');
             $nominal    = Pembayaran::sum('nominal');
+            $status     = Status::orderBy('name', 'ASC')->get();
         } else {
             $pembayaran = Pembayaran::with('user')->where('user_id', auth()->user()->id)->orderBy('user_id', 'ASC')->get();
             $terdaftar  = Pembayaran::where('user_id', auth()->user()->id)->sum('jumlah_terdaftar');
             $nominal    = Pembayaran::where('user_id', auth()->user()->id)->sum('nominal');
+            $status     = Status::orderBy('name', 'ASC')->get();
             // $partisipan = Partisipan::get();
         }
         return view('pembayaran.index', compact([
@@ -39,6 +41,7 @@ class PembayaranController extends Controller
             'pembayaran',
             'terdaftar',
             'nominal',
+            'status',
         ]));
     }
 
@@ -105,8 +108,9 @@ class PembayaranController extends Controller
         return back();
     }
 
-    public function destroy(Pembayaran $pembayaran)
+    public function destroy($id)
     {
+        $pembayaran = Pembayaran::findOrFail($id);
         Storage::delete('public/pembayaran/' . $pembayaran->file);
         $pembayaran->delete();
         Alert::success('Success!', 'Data has been deleted');

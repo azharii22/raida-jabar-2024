@@ -24,7 +24,8 @@
                 <h4 class="card-title mb-5">Unsur Kontingen</h4>
 
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Unsur Kontingen</button>
+                    <a href="<?php echo e(route('unsur-kontingen.admin-excel')); ?>" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="<?php echo e(route('unsur-kontingen.admin-pdf')); ?>" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                 </div>
 
                 <?php if(count($errors) > 0): ?>
@@ -81,24 +82,24 @@
                                 </td>
                                 <td>
                                     <?php if($data->foto != NULL): ?>
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/peserta/').$data->foto); ?>" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/foto/').$data->foto); ?>" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
                                     <?php else: ?>
                                     <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Foto</button>
                                     <?php endif; ?>
-                                    <?php if($data->kta != NULL): ?>
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/peserta/').$data->kta); ?>" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
+                                    <?php if($data->KTA != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/kta/').$data->KTA); ?>" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
                                     <?php else: ?>
                                     <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> KTA</button>
                                     <?php endif; ?>
                                     <?php if($data->asuransi_kesehatan != NULL): ?>
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/peserta/').$data->asuransi_kesehatan); ?>" target="_blank"><i class="bx bx-check-circle"></i> Asuransi</a>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/asuransi-kesehatan/').$data->asuransi_kesehatan); ?>" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan </a>
                                     <?php else: ?>
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-askes-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Asuransi</button>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Asuransi Kesehatan </button>
                                     <?php endif; ?>
                                     <?php if($data->sertif_sfh != NULL): ?>
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/peserta/').$data->sertif_sfh); ?>" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/sertif-sfh/').$data->sertif_sfh); ?>" target="_blank"><i class="bx bx-check-circle"></i> Sertifikat SFH</a>
                                     <?php else: ?>
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-sfh-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Sertif SFH</button>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Sertifikat SFH</button>
                                     <?php endif; ?>
                                 </td>
                                 <td>
@@ -109,10 +110,121 @@
                                     <?php endif; ?>
                                 </td>
                                 <td class="text-center">
-                                    <button type="button" class="btn btn-info waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-<?php echo e($data->id); ?>"> <i class="bx bx-show"></i> Detail</button>
-                                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-<?php echo e($data->id); ?>"> <i class="bx bx-pencil"></i> Edit</button>
-                                    <?php if($data->status->name === 'Revisi'): ?>
+                                    <?php if($data->status->name != 'Diterima'): ?>
+                                    <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-<?php echo e($data->id); ?>"><i class=" bx bx-check-circle"></i> Verifikasi</button>
                                     <?php endif; ?>
+                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-<?php echo e($data->id); ?>"> <i class="bx bx-show"></i> Detail</button>
+                                </td>
+                            </tr>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row -->
+<?php elseif(auth()->user()->role_id == 2): ?>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title mb-5">Unsur Kontingen</h4>
+
+                <div class="card-title mb-5">
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
+                    <a href="<?php echo e(route('unsur-kontingen.excel', auth()->user()->id)); ?>" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="<?php echo e(route('unsur-kontingen.pdf', auth()->user()->id)); ?>" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                </div>
+
+                <?php if(count($errors) > 0): ?>
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    Error! <br />
+                    <ul>
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php endif; ?>
+
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px;">No</th>
+                                <th>Nama Lengkap</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Kategori</th>
+                                <th>Status</th>
+                                <th>Berkas Peserta</th>
+                                <th>Catatan</th>
+                                <th style="width: 10px;">Action</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            <?php $__currentLoopData = $unsurKontingen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i =>$data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <tr>
+                                <td><?php echo e(++$i); ?></td>
+                                <td class="text-uppercase"><?php echo e($data->nama_lengkap); ?></td>
+                                <td>
+                                    <?php if($data->jenis_kelamin == 1): ?>
+                                    <span>Laki - Laki</span>
+                                    <?php else: ?>
+                                    <span>Perempuan</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo e($data->kategori?->name); ?></td>
+                                <td>
+                                    <?php if($data->status->name === 'Terkirim'): ?>
+                                    <span class="badge text-bg-primary">Terkirim</span>
+                                    <?php elseif($data->status->name === 'Diterima'): ?>
+                                    <span class="badge text-bg-success">Diterima</span>
+                                    <?php elseif($data->status->name === 'Revisi'): ?>
+                                    <span class="badge text-bg-warning">Revisi</span>
+                                    <?php elseif($data->status->name === 'Ditolak'): ?>
+                                    <span class="badge text-bg-danger">Ditolak</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if($data->foto != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/foto/').$data->foto); ?>" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
+                                    <?php else: ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Foto</button>
+                                    <?php endif; ?>
+                                    <?php if($data->KTA != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/kta/').$data->KTA); ?>" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
+                                    <?php else: ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> KTA</button>
+                                    <?php endif; ?>
+                                    <?php if($data->asuransi_kesehatan != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/asuransi-kesehatan/').$data->asuransi_kesehatan); ?>" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan </a>
+                                    <?php else: ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Asuransi Kesehatan </button>
+                                    <?php endif; ?>
+                                    <?php if($data->sertif_sfh != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/sertif-sfh/').$data->sertif_sfh); ?>" target="_blank"><i class="bx bx-check-circle"></i> Sertifikat SFH</a>
+                                    <?php else: ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Sertifikat SFH</button>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if($data->status->name === 'Revisi'): ?>
+                                    <div style="color: red;">
+                                        <li><?php echo e($data->catatan); ?></li>
+                                    </div>
+                                    <?php else: ?>
+                                    <?php echo e($data->status->name); ?>
+
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-<?php echo e($data->id); ?>"> <i class="bx bx-show"></i> Detail</button>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-<?php echo e($data->id); ?>"> <i class="bx bx-pencil"></i> Edit</button>
                                     <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-<?php echo e($data->id); ?>"> <i class="bx bx-trash"></i> Delete</button>
                                 </td>
                             </tr>
@@ -124,19 +236,49 @@
         </div>
     </div> <!-- end col -->
 </div> <!-- end row -->
-<?php else: ?>
+<?php elseif(auth()->user()->role_id == 3): ?>
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-body">
+
+                <h4 class="card-title mb-5">Unsur Kontingen</h4>
+
+                <div class="card-title mb-5">
+                    <?php if(auth()->user()->role_id != 1): ?>
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
+                    <a href="<?php echo e(route('unsur-kontingen.excel', auth()->user()->id)); ?>" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="<?php echo e(route('unsur-kontingen.pdf', auth()->user()->id)); ?>" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                    <?php else: ?>
+                    <a href="<?php echo e(route('unsur-kontingen.admin-excel')); ?>" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="<?php echo e(route('unsur-kontingen.admin-pdf')); ?>" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                    <?php endif; ?>
+                </div>
+
+                <?php if(count($errors) > 0): ?>
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    Error! <br />
+                    <ul>
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php endif; ?>
+
                 <div class="table-responsive">
-                    <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
+                    <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
                         <thead>
                             <tr>
                                 <th style="width: 10px;">No</th>
-                                <th>Nama</th>
-                                <th>Partisipan</th>
-                                <th style="text-align: center;">Action</th>
+                                <th>Nama Lengkap</th>
+                                <th>Jenis Kelamin</th>
+                                <th>Kategori</th>
+                                <th>Status</th>
+                                <th>Berkas Peserta</th>
+                                <th>Catatan</th>
+                                <th style="width: 10px;">Action</th>
                             </tr>
                         </thead>
 
@@ -145,10 +287,59 @@
                             <?php $__currentLoopData = $unsurKontingen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i =>$data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td><?php echo e(++$i); ?></td>
-                                <td class="text-uppercase"><?php echo e($data->nama); ?></td>
-                                <td><?php echo e($data->partisipan->count('user_id')); ?> Orang</td>
-                                <td align="center">
-                                    <a href="<?php echo e(route('detailPeserta', $data->id)); ?>" class="btn btn-info waves-effect waves-light btn-sm mr-2"> <i class="bx bx-show"></i> Detail</a>
+                                <td class="text-uppercase"><?php echo e($data->nama_lengkap); ?></td>
+                                <td>
+                                    <?php if($data->jenis_kelamin == 1): ?>
+                                    <span>Laki - Laki</span>
+                                    <?php else: ?>
+                                    <span>Perempuan</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td><?php echo e($data->kategori?->name); ?></td>
+                                <td>
+                                    <?php if($data->status->name === 'Terkirim'): ?>
+                                    <span class="badge text-bg-primary">Terkirim</span>
+                                    <?php elseif($data->status->name === 'Diterima'): ?>
+                                    <span class="badge text-bg-success">Diterima</span>
+                                    <?php elseif($data->status->name === 'Revisi'): ?>
+                                    <span class="badge text-bg-warning">Revisi</span>
+                                    <?php elseif($data->status->name === 'Ditolak'): ?>
+                                    <span class="badge text-bg-danger">Ditolak</span>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if($data->foto != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/foto/').$data->foto); ?>" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
+                                    <?php else: ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Foto</button>
+                                    <?php endif; ?>
+                                    <?php if($data->KTA != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/kta/').$data->KTA); ?>" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
+                                    <?php else: ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> KTA</button>
+                                    <?php endif; ?>
+                                    <?php if($data->asuransi_kesehatan != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/asuransi-kesehatan/').$data->asuransi_kesehatan); ?>" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan </a>
+                                    <?php else: ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Asuransi Kesehatan </button>
+                                    <?php endif; ?>
+                                    <?php if($data->sertif_sfh != NULL): ?>
+                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/unsur-kontingen/sertif-sfh/').$data->sertif_sfh); ?>" target="_blank"><i class="bx bx-check-circle"></i> Sertifikat SFH</a>
+                                    <?php else: ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Sertifikat SFH</button>
+                                    <?php endif; ?>
+                                </td>
+                                <td>
+                                    <?php if($data->status->name === 'Revisi'): ?>
+                                    <div style="color: red;">
+                                        <li><?php echo e($data->catatan); ?></li>
+                                    </div>
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-<?php echo e($data->id); ?>"> <i class="bx bx-show"></i> Detail</button>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-<?php echo e($data->id); ?>"> <i class="bx bx-pencil"></i> Edit</button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-<?php echo e($data->id); ?>"> <i class="bx bx-trash"></i> Delete</button>
                                 </td>
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -268,7 +459,6 @@
 </div>
 <!-- End modal add -->
 
-<!-- Start modal Delete-->
 <?php $__currentLoopData = $unsurKontingen; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <!-- Start modal Edit -->
 <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-edit-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -376,7 +566,9 @@
     </div><!-- /.modal-dialog -->
 </div>
 <!-- End modal Edit -->
-<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-delete-<?php echo e($data->id); ?>">
+
+<!-- Start modal Delete-->
+<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-delete-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -400,7 +592,8 @@
     </div><!-- /.modal-dialog -->
 </div>
 <!-- End modal Delete -->
-<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-foto-<?php echo e($data->id); ?>">
+
+<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-foto-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -424,31 +617,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
-<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-vaksin-<?php echo e($data->id); ?>">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Upload Vaksin</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="<?php echo e(route('unsur-kontingen.vaksin', $data->id)); ?>" method="POST" enctype="multipart/form-data">
-                <?php echo csrf_field(); ?>
-                <?php echo method_field('PUT'); ?>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="formrow-firstname-input" class="form-label">Upload Vaksin</label>
-                        <input name="kta" type="file" class="form-control" id="formrow-nama-input">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success waves-effect waves-light"><i class="bx bx-upload"></i> Upload</button>
-                </div>
-            </form>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-kta-<?php echo e($data->id); ?>">
+<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-kta-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -461,6 +630,30 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="formrow-firstname-input" class="form-label">Upload KTA</label>
+                        <input name="KTA" type="file" class="form-control" id="formrow-nama-input">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success waves-effect waves-light"><i class="bx bx-upload"></i> Upload</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-asuransi-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Upload Asuransi Kesehatan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="<?php echo e(route('unsur-kontingen.asuransi', $data->id)); ?>" method="POST" enctype="multipart/form-data">
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('PUT'); ?>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="formrow-firstname-input" class="form-label">Upload Asuransi Kesehatan</label>
                         <input name="asuransi_kesehatan" type="file" class="form-control" id="formrow-nama-input">
                     </div>
                 </div>
@@ -472,19 +665,19 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
-<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-asuransi-<?php echo e($data->id); ?>">
+<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-sertif-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Upload Asuransi</h5>
+                <h5 class="modal-title" id="myModalLabel">Upload Sertifikat SFH</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?php echo e(route('unsur-kontingen.asuransi', $data->id)); ?>" method="POST" enctype="multipart/form-data">
+            <form action="<?php echo e(route('unsur-kontingen.sertif', $data->id)); ?>" method="POST" enctype="multipart/form-data">
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('PUT'); ?>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="formrow-firstname-input" class="form-label">Upload Asuransi</label>
+                        <label for="formrow-firstname-input" class="form-label">Upload Sertifikat SFH</label>
                         <input name="sertif_sfh" type="file" class="form-control" id="formrow-nama-input">
                     </div>
                 </div>
@@ -496,7 +689,8 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
-<div id="modal-detail-<?php echo e($data->id); ?>" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+
+<div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-detail-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -570,16 +764,16 @@
                                 <tbody>
                                     <tr>
                                         <td class="border p-2" style="width: 100%;">
-                                            <img style="border-radius: 10px;" src="<?php echo e(isset($data->foto) ? asset(Storage::url('public/img/peserta/').$data->foto) : asset('/assets/images/x.png')); ?>" id="formrow-foto-input" width="100px" height="100px" alt="">
+                                            <img style="border-radius: 10px;" src="<?php echo e(isset($data->foto) ? asset(Storage::url('public/img/unsur-kontingen/foto/').$data->foto) : asset('/assets/images/x.png')); ?>" id="formrow-foto-input" width="100px" height="100px" alt="">
                                         </td>
                                         <td class="border p-2" style="width: 100%;">
-                                            <img style="border-radius: 10px;" src="<?php echo e(isset($data->kta) ? asset(Storage::url('public/img/peserta/').$data->kta) : asset('/assets/images/x.png')); ?>" id="formrow-foto-input" width="100px" height="100px" alt="">
+                                            <img style="border-radius: 10px;" src="<?php echo e(isset($data->KTA) ? asset(Storage::url('public/img/unsur-kontingen/kta/').$data->KTA) : asset('/assets/images/x.png')); ?>" id="formrow-foto-input" width="100px" height="100px" alt="">
                                         </td>
                                         <td class="border p-2" style="width: 100%;">
-                                            <img style="border-radius: 10px;" src="<?php echo e(isset($data->asuransi_kesehatan) ? asset(Storage::url('public/img/peserta/').$data->asuransi_kesehatan) : asset('/assets/images/x.png')); ?>" id="formrow-foto-input" width="100px" height="100px" alt="">
+                                            <img style="border-radius: 10px;" src="<?php echo e(isset($data->asuransi_kesehatan) ? asset(Storage::url('public/img/unsur-kontingen/asuransi-kesehatan/').$data->asuransi_kesehatan) : asset('/assets/images/x.png')); ?>" id="formrow-foto-input" width="100px" height="100px" alt="">
                                         </td>
                                         <td class="border p-2" style="width: 100%;">
-                                            <img style="border-radius: 10px;" src="<?php echo e(isset($data->sertif_sfh) ? asset(Storage::url('public/img/peserta/').$data->sertif_sfh) : asset('/assets/images/x.png')); ?>" id="formrow-foto-input" width="100px" height="100px" alt="">
+                                            <img style="border-radius: 10px;" src="<?php echo e(isset($data->sertif_sfh) ? asset(Storage::url('public/img/unsur-kontingen/sertif-sfh/').$data->sertif_sfh) : asset('/assets/images/x.png')); ?>" id="formrow-foto-input" width="100px" height="100px" alt="">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -594,6 +788,42 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div>
+
+<!-- Start Verifikasi Modal -->
+<div class="modal fade" id="modal-verifikasi-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Verifikasi Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="<?php echo e(route('unsur-kontingen.verifikasi', $data->id)); ?>" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('PUT'); ?>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">Verifikasi Dokumen</label>
+                        <select name="status_id" class="form-select" id="validationCustom02">
+                            <option disabled selected>--- Silahkan Verifikasi Dokumen ---</option>
+                            <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($item->id); ?>" <?php echo e($item->id == $data->status_id ? 'selected' : ''); ?>><?php echo e($item->name); ?></option>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">Catatan Untuk Dokumen</label>
+                        <input type="text" name="catatan" class="form-control" value="<?php echo e($data->catatan); ?>" placeholder="Silahkan isi jika perlu...">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End Verifikasi Modal -->
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 <?php $__env->stopSection(); ?>
 

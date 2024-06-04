@@ -21,9 +21,11 @@
 
                 <h4 class="card-title mb-5">Berkas</h4>
 
+                @if (auth()->user()->role_id != 1)
                 <div class="card-title mb-5">
                     <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Berkas</button>
                 </div>
+                @endif
 
                 @if (count($errors) > 0)
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
@@ -55,16 +57,30 @@
                         <tr>
                             <td class="text-center">{{ ++$key }}</td>
                             <td class="text-center">
-                                <a href="{{ Storage::URL('dokumenPenting') }}/{{ $data->filename }}" target="_blank">
+                                <a href="{{ Storage::URL('public/berkas') }}/{{ $data->filename }}" target="_blank">
                                     {{ $data->file }}
                                 </a>
                             </td>
-                            <td class="text-center">{{ $data->status->name }}</td>
+                            <td class="text-center">
+                                @if ($data->status->name == 'Terkirim')
+                                <span class="badge bg-primary">Terkirim</span>
+                                @elseif ($data->status->name == 'Revisi')
+                                <span class="badge bg-warning">Revisi</span>
+                                @elseif ($data->status->name == 'Ditolak')
+                                <span class="badge bg-danger">Revisi</span>
+                                @elseif ($data->status->name == 'Diterima')
+                                <span class="badge bg-success">Diterima</span>
+                                @endif
+                            </td>
                             <td class="text-center">{{ $data->catatan }}</td>
                             <td class="text-center">{{ $data->user->name }}</td>
                             <td class="text-center">
+                                @if (auth()->user()->role_id == 1 && $data->status->name == 'Terkirim' || $data->status->name == 'Ditolak' || $data->status->name == 'Revisi' )
                                 <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
+                                @endif
+                                @if (auth()->user()->role_id != 1)
                                 @include('layouts.edit-delete-button')
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -164,8 +180,8 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="validationCustom02" class="form-label">Verifikasi Dokumen</label>
-                        <input type="text" name="catatan" class="form-control">
+                        <label for="validationCustom02" class="form-label">Catatan Untuk Dokumen</label>
+                        <input type="text" name="catatan" class="form-control" value="{{ $data->catatan }}" placeholder="Silahkan isi jika perlu...">
                     </div>
                 </div>
                 <div class="modal-footer">

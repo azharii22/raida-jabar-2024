@@ -151,12 +151,5 @@
 <script src="<?php echo e(URL::asset('/assets/libs/pdfmake/pdfmake.min.js')); ?>"></script>
 <!-- Datatable init js -->
 <script src="<?php echo e(URL::asset('/assets/js/pages/datatables.init.js')); ?>"></script>
-<script>
-    $("#password-confirmation-addon").on('click', function() {
-        if ($(this).siblings('input').length > 0) {
-            $(this).siblings('input').attr('type') == "password" ? $(this).siblings('input').attr('type', 'input') : $(this).siblings('input').attr('type', 'password');
-        }
-    })
-</script>
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\WINDOWS\DOCUMENT\kerja\Azhari\Raida\resources\views/jadwalKegiatan/index.blade.php ENDPATH**/ ?>

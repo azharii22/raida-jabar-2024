@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Berkas;
 use App\Models\Status;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -18,9 +19,14 @@ class BerkasController extends Controller
 
     public function index()
     {
-        $berkas = Berkas::with('status', 'user')->orderBy('updated_at', 'DESC')->get();
-        $status = Status::orderBy('name', 'ASC')->get();
-        return view('berkas.index', compact('berkas', 'status'));
+        if (Auth::user()->role_id == 1) {
+            $berkas = Berkas::with('status', 'user')->orderBy('updated_at', 'DESC')->get();
+            $status = Status::orderBy('name', 'ASC')->get();
+        } else {
+            $berkas = Berkas::with('status', 'user')->where('user_id', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
+            $status = Status::orderBy('name', 'ASC')->get();
+        }
+        return view('berkas.index', compact('berkas','status'));
     }
 
     public function store(Request $request)
