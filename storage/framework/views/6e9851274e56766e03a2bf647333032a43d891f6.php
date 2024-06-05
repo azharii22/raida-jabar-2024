@@ -156,8 +156,7 @@ unset($__errorArgs, $__bag); ?>
                                             </div>
 
                                             <div class="mt-3 d-grid">
-                                                <button class="btn btn-primary waves-effect waves-light" type="submit">Log
-                                                    In</button>
+                                                <button class="btn btn-primary waves-effect waves-light" type="submit">Log In</button>
                                             </div>
                                         </form>
                                     </div>

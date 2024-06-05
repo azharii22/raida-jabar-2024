@@ -36,30 +36,24 @@
                         <tr>
                             <td class="text-center">{{ ++$key }}</td>
                             <td>
-                                @if ($data->key == 'main.3_app_logo')
-                                <span>Logo Aplikasi</span>
-                                @elseif ($data->key == 'main.6_app_sidebar_color')
-                                <span>Warna Sidebar</span>
-                                @elseif ($data->key == 'main.7_app_background_color')
-                                <span>Warna Background Aplikasi</span>
-                                @elseif ($data->key == 'main.4_app_login_image')
-                                <span>Logo Login</span>
-                                @elseif ($data->key == 'main.5_app_sidebar_image')
-                                <span>Logo Sidebar</span>
-                                @elseif ($data->key == 'main.1_app_name')
+                                @if ($data->key == 'main.1_app_name')
                                 <span>Nama Aplikasi</span>
                                 @elseif ($data->key == 'main.2_app_description')
                                 <span>Deskripsi Aplikasi</span>
+                                @elseif ($data->key == 'main.3_app_logo')
+                                <span>Logo Aplikasi</span>
                                 @endif
                             </td>
                             <td>
                                 {{ $data->value }}
-                                @if ($data->key == 'main.6_app_sidebar_color')
-                                <input class="form-control form-control-color mw-100" type="color" value="#556ee6" id="example-color-input">
-                                @endif
                             </td>
                             <td class="text-center">
+                                @if ($data->key != 'main.3_app_logo')
                                 @include('layouts.edit-delete-button')
+                                @else
+                                <button type="button" class="btn btn-warning btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-file-{{ $data->id }}"><i class=" bx bx-pencil"></i> Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"><i class=" bx bx-trash"></i> Delete</button>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -71,8 +65,8 @@
         </div>
     </div> <!-- end col -->
 </div>
-<!-- Start Edit Modal -->
 @foreach ($setting as $data)
+<!-- Start Edit Modal -->
 <div class="modal fade" id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -85,6 +79,37 @@
     </div>
 </div>
 <!-- End Edit Modal -->
+
+<!-- Start File Modal -->
+<div class="modal fade" id="modal-file-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ route('admin-settings.update',$data->id) }}" method="post" class="needs-validation" novalidate>
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="validationCustom02" class="form-label">Value</label>
+                        <input value="{{ $data->key }}" hidden>
+                        <input type="file" class="form-control" id="validationCustom02" name="value" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End File Modal -->
 
 <!-- Start Delete Modal -->
 <div class="modal fade" id="modal-delete-{{$data->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">

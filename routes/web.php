@@ -13,6 +13,7 @@ use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UnsurKontingenController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ViewUserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -31,7 +32,8 @@ Route::get('phpinfo', function () {
 });
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
+Route::get('/admin', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
+Route::get('/', [ViewUserController::class, 'index'])->name('viewUser');
 Route::resource('/admin-settings', SettingController::class);
 Route::resource('/admin-user', UserController::class);
 
