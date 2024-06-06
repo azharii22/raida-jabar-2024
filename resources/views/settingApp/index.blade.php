@@ -20,6 +20,18 @@
 
                 <h4 class="card-title mb-5">Setting Aplikasi</h4>
 
+                @if (count($errors) > 0)
+                <div class="alert alert-danger alert-dismissible fade show mt-3 mb-5" role="alert">
+                    Error! <br />
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+                
                 <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                     <thead>
                         <tr>
@@ -45,7 +57,11 @@
                                 @endif
                             </td>
                             <td>
+                                @if ($data->key === 'main.3_app_logo')
+                                <img src="{{ Storage::url('public/setting'.'/'.$data->value) }}" width="150px" height="150px" style="border-radius: 20px">
+                                @else
                                 {{ $data->value }}
+                                @endif
                             </td>
                             <td class="text-center">
                                 @if ($data->key != 'main.3_app_logo')
@@ -88,14 +104,13 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin-settings.update',$data->id) }}" method="post" class="needs-validation" novalidate>
+            <form action="{{ route('admin-setting.file' ,$data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="validationCustom02" class="form-label">Value</label>
-                        <input value="{{ $data->key }}" hidden>
-                        <input type="file" class="form-control" id="validationCustom02" name="value" required>
+                        <input type="file" class="form-control" id="validationCustom02" name="value" required accept=".jpg, .png, .jpeg, .svg, .gif">
                         <div class="valid-feedback">
                             Looks good!
                         </div>

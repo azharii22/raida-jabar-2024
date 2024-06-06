@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <title> <?php echo $__env->yieldContent('title'); ?> | <?php echo e(config('settings.main.1_app_name')); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Raida" name="description" />
     <meta content="<?php echo e(config('settings.main.1_app_name')); ?>" name="author" />
+    <meta content="<?php echo e(config('settings.main.2_app_description')); ?>" style="border-radius: 20px" name="description" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="<?php echo e(URL::asset('assets/images/favicon.ico')); ?>">
+    <link rel="shortcut icon" href="<?php echo e(Storage::url('public/setting'.'/'.config('settings.main.3_app_logo'))); ?>">
     <?php echo $__env->make('layouts.head-css', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </head>
 

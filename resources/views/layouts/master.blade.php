@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <title> @yield('title') | {{ config('settings.main.1_app_name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="Raida" name="description" />
     <meta content="{{ config('settings.main.1_app_name') }}" name="author" />
+    <meta content="{{ config('settings.main.2_app_description') }}" style="border-radius: 20px" name="description" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ Storage::url('public/setting'.'/'.config('settings.main.3_app_logo')) }}">
     @include('layouts.head-css')
 </head>
 

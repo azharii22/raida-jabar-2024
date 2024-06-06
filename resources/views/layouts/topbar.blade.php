@@ -3,21 +3,21 @@
         <div class="d-flex">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <a href="index" class="logo logo-dark">
+                <a href="/admin" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ URL::asset('assets/images/logo.svg') }}" alt="" height="22">
+                        <img src="{{ Storage::url('public/setting'.'/'.config('settings.main.3_app_logo')) }}" alt="" height="50" style="border-radius: 10px" class="mt-3">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ URL::asset('assets/images/logo-dark.png') }}" alt="" height="17">
+                        <img src="{{ Storage::url('public/setting'.'/'.config('settings.main.3_app_logo')) }}" alt="" height="50" style="border-radius: 10px" class="mt-3">
                     </span>
                 </a>
 
-                <a href="index" class="logo logo-light">
+                <a href="/admin" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ URL::asset('assets/images/logo-light.svg') }}" alt="" height="22">
+                        <img src="{{ Storage::url('public/setting'.'/'.config('settings.main.3_app_logo')) }}" alt="" height="22" style="border-radius: 10px" class="mt-3">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ URL::asset('assets/images/logo-light.png') }}" alt="" height="19">
+                        <img src="{{ Storage::url('public/setting'.'/'.config('settings.main.3_app_logo')) }}" alt="" height="50" style="border-radius: 10px" class="mt-3">
                     </span>
                 </a>
             </div>

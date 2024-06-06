@@ -48,8 +48,6 @@ class BerkasController extends Controller
             'user_id'   => Auth::user()->id,
             'status_id' => $status->id
         ]));
-        Alert::success('Success!', 'Data Created Successfully');
-        return redirect()->back();
 
         Alert::success('Sucess!', 'Data Created Successfully');
         return back();

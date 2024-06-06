@@ -35,6 +35,7 @@ Auth::routes();
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 Route::get('/', [ViewUserController::class, 'index'])->name('viewUser');
 Route::resource('/admin-settings', SettingController::class);
+Route::put('/admin-settings-uploadFile{id}', [SettingController::class, 'uploadFile'])->name('admin-setting.file');
 Route::resource('/admin-user', UserController::class);
 
 Route::resource('/admin-dokumentasi-kegiatan', DokumentasiKegiatanController::class);

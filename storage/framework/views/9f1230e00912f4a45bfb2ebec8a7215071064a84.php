@@ -20,6 +20,18 @@
 
                 <h4 class="card-title mb-5">Setting Aplikasi</h4>
 
+                <?php if(count($errors) > 0): ?>
+                <div class="alert alert-danger alert-dismissible fade show mt-3 mb-5" role="alert">
+                    Error! <br />
+                    <ul>
+                        <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <li><?php echo e($error); ?></li>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php endif; ?>
+                
                 <table id="datatable" class="table table-bordered dt-responsive  nowrap w-100">
                     <thead>
                         <tr>
@@ -45,8 +57,12 @@
                                 <?php endif; ?>
                             </td>
                             <td>
+                                <?php if($data->key === 'main.3_app_logo'): ?>
+                                <img src="<?php echo e(Storage::url('public/setting'.'/'.$data->value)); ?>" width="150px" height="150px" style="border-radius: 20px">
+                                <?php else: ?>
                                 <?php echo e($data->value); ?>
 
+                                <?php endif; ?>
                             </td>
                             <td class="text-center">
                                 <?php if($data->key != 'main.3_app_logo'): ?>
@@ -89,14 +105,13 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?php echo e(route('admin-settings.update',$data->id)); ?>" method="post" class="needs-validation" novalidate>
+            <form action="<?php echo e(route('admin-setting.file' ,$data->id)); ?>" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('PUT'); ?>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="validationCustom02" class="form-label">Value</label>
-                        <input value="<?php echo e($data->key); ?>" hidden>
-                        <input type="file" class="form-control" id="validationCustom02" name="value" required>
+                        <input type="file" class="form-control" id="validationCustom02" name="value" required accept=".jpg, .png, .jpeg, .svg, .gif">
                         <div class="valid-feedback">
                             Looks good!
                         </div>

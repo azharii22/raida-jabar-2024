@@ -9,7 +9,7 @@
     <meta content="<?php echo e(config('settings.main.2_app_description')); ?>" name="description">
 
     <!-- Favicon -->
-    <link href="<?php echo e(URL::asset('assets/viewUser/img/favicon.ico')); ?>" rel="icon">
+    <link href="<?php echo e(Storage::url('public/setting'.'/'.config('settings.main.3_app_logo'))); ?>" rel="icon">
 
     <?php echo $__env->make('viewUser.layouts.head-css', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php echo $__env->yieldContent('css'); ?>

@@ -142,4 +142,25 @@ class SettingController extends Controller
 
         return back();
     }
+
+    public function uploadFile(Request $request, $id)
+    {
+        $request->validate([
+            'value'  => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
+        ], [
+            'value.required' => 'File harus diisi!',
+            'value.image'    => 'File harus Berupa Foto',
+            'value.mimes'    => 'File harus berupa jpg, jpeg, png, svg, gif',
+            'value.max'      => 'File tidak boleh lebih dari 2 MB',
+        ]);
+        $setting = setting::findOrFail($id);    
+        $file   = $request->file('value');
+        $filename = time() . '-' . $file->getClientOriginalName();
+        $file->storeAs('public/setting/', $filename);
+        $setting->update(array_merge($request->all(), [
+            'value'     => $filename,
+        ]));
+        Alert::success('Success!', 'Data Updated Successfully');
+        return back();
+    }
 }

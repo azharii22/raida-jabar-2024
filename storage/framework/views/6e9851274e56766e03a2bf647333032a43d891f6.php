@@ -82,9 +82,9 @@
 
                             <div class="d-flex flex-column h-100">
                                 <div class="mb-4 mb-md-5">
-                                    <a href="index" class="d-block auth-logo">
-                                        <img src="<?php echo e(URL::asset('assets/images/logo-dark.png')); ?>" alt="" height="18" class="auth-logo-dark">
-                                        <img src="<?php echo e(URL::asset('assets/images/logo-light.png')); ?>" alt="" height="18" class="auth-logo-light">
+                                    <a href="/login" class="d-block auth-logo">
+                                        <img src="<?php echo e(Storage::url('public/setting'.'/'.config('settings.main.3_app_logo'))); ?>" alt="" height="180px" style="border-radius: 20px" class="auth-logo-light">
+                                        <img src="<?php echo e(Storage::url('public/setting'.'/'.config('settings.main.3_app_logo'))); ?>" alt="" height="180px" style="border-radius: 20px" class="auth-logo-dark">
                                     </a>
                                 </div>
                                 <div class="my-auto">

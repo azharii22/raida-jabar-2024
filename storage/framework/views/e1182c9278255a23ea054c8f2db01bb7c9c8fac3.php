@@ -11,7 +11,7 @@
             <!-- Menu DKD / Admin Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu"><?php echo app('translator')->get('translation.Dashboards'); ?></li>
-                <li><a href="/" class="waves-effect"> <i class="bx bx-home-circle"></i> <span key="t-dashboards"><?php echo app('translator')->get('translation.Dashboards'); ?></span> </a> </li>
+                <li><a href="/admin" class="waves-effect"> <i class="bx bx-home-circle"></i> <span key="t-dashboards"><?php echo app('translator')->get('translation.Dashboards'); ?></span> </a> </li>
                 <li class="menu-title" key="t-menu"><?php echo app('translator')->get('translation.Menu'); ?></li>
                 <li><a href="<?php echo e(route('admin-artikel.index')); ?>" class="waves-effect"> <i class="bx bx-archive"></i> <span key="t-dashboards">Artikel</span> </a> </li>
                 <li><a href="<?php echo e(route('admin-dokumentasi-kegiatan.index')); ?>" key="t-tui-dokumentasi"><i class="bx bx-photo-album"></i><span key="t-dokumentasi">Dokumentasi Kegiatan</span></a></li>
