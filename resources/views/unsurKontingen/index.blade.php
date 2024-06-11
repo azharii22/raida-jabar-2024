@@ -394,7 +394,15 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="validationCustom02" class="form-label">Ukuran Kaos <i class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                <input name="ukuran_kaos" type="text" class="form-control" id="validationCustom02" value="{{ old('ukuran_kaos') }}" placeholder="Ukuran Kaos" required>
+                                <select class="form-select" name="ukuran_kaos">
+                                    <option disabled selected>--- Pilih Ukuran Kaos ---</option>
+                                    <option value="S" @selected(old('ukuran_kaos')=='S' )>S</option>
+                                    <option value="M" @selected(old('ukuran_kaos')=='M' )>M</option>
+                                    <option value="L" @selected(old('ukuran_kaos')=='L' )>L</option>
+                                    <option value="XL" @selected(old('ukuran_kaos')=='XL' )>XL</option>
+                                    <option value="XXL" @selected(old('ukuran_kaos')=='XXL' )>XXL</option>
+                                    <option value="XXXL" @selected(old('ukuran_kaos')=='XXXL' )>XXXL</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -435,7 +443,13 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="golongan_darah" class="form-label">Golongan Darah <i class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                <input name="golongan_darah" type="text" id="golongan_darah" value="{{ old('golongan_darah') }}" placeholder="Golongan Darah" class="form-control">
+                                <select class="form-select" name="golongan_darah">
+                                    <option disabled selected>--- Pilih Golongan Darah ---</option>
+                                    <option value="A" @selected(old('golongan_darah')=='A' )>A</option>
+                                    <option value="B" @selected(old('golongan_darah')=='B' )>B</option>
+                                    <option value="O" @selected(old('golongan_darah')=='O' )>O</option>
+                                    <option value="AB" @selected(old('golongan_darah')=='AB' )>AB</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -443,7 +457,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="riwayat_penyakit" class="form-label">Riwayat Penyakit</label>
-                                <input name="riwayat_penyakit" type="text" id="riwayat_penyakit" value="{{ old('riwayat_penyakit') }}" placeholder="Riwayat Penyakit" class="form-control">
+                                <input name="riwayat_penyakit" type="text" id="riwayat_penyakit" value="{{ old('riwayat_penyakit') }}" placeholder="Riwayat Penyakit (Isi Jika Ada....)" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -502,7 +516,15 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="validationCustom02" class="form-label">Ukuran Kaos <i class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                <input name="ukuran_kaos" type="text" class="form-control" id="validationCustom02" value="{{ $data->ukuran_kaos }}" placeholder="Ukuran Kaos" required>
+                                <select class="form-select" name="ukuran_kaos">
+                                    <option disabled selected>--- Pilih Ukuran Kaos ---</option>
+                                    <option value="S" @selected($data->ukuran_kaos =='S' )>S</option>
+                                    <option value="M" @selected($data->ukuran_kaos =='M' )>M</option>
+                                    <option value="L" @selected($data->ukuran_kaos =='L' )>L</option>
+                                    <option value="XL" @selected($data->ukuran_kaos =='XL' )>XL</option>
+                                    <option value="XXL" @selected($data->ukuran_kaos =='XXL' )>XXL</option>
+                                    <option value="XXXL" @selected($data->ukuran_kaos =='XXXL' )>XXXL</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -543,7 +565,13 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="golongan_darah" class="form-label">Golongan Darah <i class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                <input name="golongan_darah" type="text" id="golongan_darah" value="{{ $data->golongan_darah }}" placeholder="Golongan Darah" class="form-control">
+                                <select class="form-select" name="golongan_darah">
+                                    <option disabled selected>--- Pilih Golongan Darah ---</option>
+                                    <option value="A" @selected($data->golongan_darah =='A' )>A</option>
+                                    <option value="B" @selected($data->golongan_darah =='B' )>B</option>
+                                    <option value="O" @selected($data->golongan_darah =='O' )>O</option>
+                                    <option value="AB" @selected($data->golongan_darah ='AB' )>AB</option>
+                                </select>
                             </div>
                         </div>
                     </div>
