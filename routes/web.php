@@ -10,6 +10,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UnsurKontingenController;
 use App\Http\Controllers\UserController;
@@ -47,6 +48,7 @@ Route::resource('/admin-kegiatan', KegiatanController::class);
 Route::resource('/admin-jadwal-kegiatan', JadwalKegiatanController::class);
 Route::resource('/admin-dokumen-penting', DokumenPentingController::class);
 Route::resource('/admin-kategori', KategoriController::class);
+Route::resource('/admin-region', RegionController::class);
 
 Route::resource('/admin-data-berkas-kontingen', BerkasController::class);
 Route::put('/berkas-verifikasi{id}', [BerkasController::class, 'verifikasi'])->name('berkas.verifikasi');

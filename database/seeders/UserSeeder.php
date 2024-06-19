@@ -17,7 +17,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('roles')->truncate();
 
         $dataRole = [
             ['name' => 'DKD', 'created_at' => now(), 'updated_at' => now(),],

@@ -395,7 +395,15 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="validationCustom02" class="form-label">Ukuran Kaos <i class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                <input name="ukuran_kaos" type="text" class="form-control" id="validationCustom02" value="<?php echo e(old('ukuran_kaos')); ?>" placeholder="Ukuran Kaos" required>
+                                <select class="form-select" name="ukuran_kaos">
+                                    <option disabled selected>--- Pilih Ukuran Kaos ---</option>
+                                    <option value="S" <?php if(old('ukuran_kaos')=='S' ): echo 'selected'; endif; ?>>S</option>
+                                    <option value="M" <?php if(old('ukuran_kaos')=='M' ): echo 'selected'; endif; ?>>M</option>
+                                    <option value="L" <?php if(old('ukuran_kaos')=='L' ): echo 'selected'; endif; ?>>L</option>
+                                    <option value="XL" <?php if(old('ukuran_kaos')=='XL' ): echo 'selected'; endif; ?>>XL</option>
+                                    <option value="XXL" <?php if(old('ukuran_kaos')=='XXL' ): echo 'selected'; endif; ?>>XXL</option>
+                                    <option value="XXXL" <?php if(old('ukuran_kaos')=='XXXL' ): echo 'selected'; endif; ?>>XXXL</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -436,7 +444,13 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="golongan_darah" class="form-label">Golongan Darah <i class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                <input name="golongan_darah" type="text" id="golongan_darah" value="<?php echo e(old('golongan_darah')); ?>" placeholder="Golongan Darah" class="form-control">
+                                <select class="form-select" name="golongan_darah">
+                                    <option disabled selected>--- Pilih Golongan Darah ---</option>
+                                    <option value="A" <?php if(old('golongan_darah')=='A' ): echo 'selected'; endif; ?>>A</option>
+                                    <option value="B" <?php if(old('golongan_darah')=='B' ): echo 'selected'; endif; ?>>B</option>
+                                    <option value="O" <?php if(old('golongan_darah')=='O' ): echo 'selected'; endif; ?>>O</option>
+                                    <option value="AB" <?php if(old('golongan_darah')=='AB' ): echo 'selected'; endif; ?>>AB</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -444,7 +458,7 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="riwayat_penyakit" class="form-label">Riwayat Penyakit</label>
-                                <input name="riwayat_penyakit" type="text" id="riwayat_penyakit" value="<?php echo e(old('riwayat_penyakit')); ?>" placeholder="Riwayat Penyakit" class="form-control">
+                                <input name="riwayat_penyakit" type="text" id="riwayat_penyakit" value="<?php echo e(old('riwayat_penyakit')); ?>" placeholder="Riwayat Penyakit (Isi Jika Ada....)" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -503,7 +517,15 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="validationCustom02" class="form-label">Ukuran Kaos <i class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                <input name="ukuran_kaos" type="text" class="form-control" id="validationCustom02" value="<?php echo e($data->ukuran_kaos); ?>" placeholder="Ukuran Kaos" required>
+                                <select class="form-select" name="ukuran_kaos">
+                                    <option disabled selected>--- Pilih Ukuran Kaos ---</option>
+                                    <option value="S" <?php if($data->ukuran_kaos =='S' ): echo 'selected'; endif; ?>>S</option>
+                                    <option value="M" <?php if($data->ukuran_kaos =='M' ): echo 'selected'; endif; ?>>M</option>
+                                    <option value="L" <?php if($data->ukuran_kaos =='L' ): echo 'selected'; endif; ?>>L</option>
+                                    <option value="XL" <?php if($data->ukuran_kaos =='XL' ): echo 'selected'; endif; ?>>XL</option>
+                                    <option value="XXL" <?php if($data->ukuran_kaos =='XXL' ): echo 'selected'; endif; ?>>XXL</option>
+                                    <option value="XXXL" <?php if($data->ukuran_kaos =='XXXL' ): echo 'selected'; endif; ?>>XXXL</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -544,7 +566,13 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="golongan_darah" class="form-label">Golongan Darah <i class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                <input name="golongan_darah" type="text" id="golongan_darah" value="<?php echo e($data->golongan_darah); ?>" placeholder="Golongan Darah" class="form-control">
+                                <select class="form-select" name="golongan_darah">
+                                    <option disabled selected>--- Pilih Golongan Darah ---</option>
+                                    <option value="A" <?php if($data->golongan_darah =='A' ): echo 'selected'; endif; ?>>A</option>
+                                    <option value="B" <?php if($data->golongan_darah =='B' ): echo 'selected'; endif; ?>>B</option>
+                                    <option value="O" <?php if($data->golongan_darah =='O' ): echo 'selected'; endif; ?>>O</option>
+                                    <option value="AB" <?php if($data->golongan_darah ='AB' ): echo 'selected'; endif; ?>>AB</option>
+                                </select>
                             </div>
                         </div>
                     </div>

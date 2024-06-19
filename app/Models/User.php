@@ -31,6 +31,7 @@ class User extends Authenticatable
         'dob',
         'avatar',
         'role_id',
+        'region_id',
     ];
 
     /**
