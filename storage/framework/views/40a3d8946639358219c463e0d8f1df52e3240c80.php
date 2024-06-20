@@ -1,19 +1,21 @@
 
 
-<?php $__env->startSection('title','User'); ?>
+<?php $__env->startSection('title', 'User'); ?>
 
 <?php $__env->startSection('css'); ?>
-<!-- DataTables -->
-<link href="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('/assets/libs/select2/select2.min.css')); ?>" rel="stylesheet" type="text/css" />
+    <link href="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.css')); ?>" rel="stylesheet" type="text/css" />
+
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('content'); ?>
 
-<?php $__env->startComponent('components.breadcrumb'); ?>
-<?php $__env->slot('li_1'); ?> Dashboard <?php $__env->endSlot(); ?>
-<?php $__env->slot('title'); ?> User <?php $__env->endSlot(); ?>
-<?php echo $__env->renderComponent(); ?>
+    <?php $__env->startComponent('components.breadcrumb'); ?>
+        <?php $__env->slot('li_1'); ?> Dashboard <?php $__env->endSlot(); ?>
+        <?php $__env->slot('title'); ?> User <?php $__env->endSlot(); ?>
+    <?php echo $__env->renderComponent(); ?>
 
+    
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -47,6 +49,7 @@
                             <th class="text-center">Tempat Tanggal Lahir</th>
                             <th class="text-center">Avatar</th>
                             <th class="text-center">Role</th>
+                            <th class="text-center">Region</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -71,8 +74,10 @@
                                 </a>
                             </td>
                             <td class="text-center "><?php echo e($data->role->name); ?></td>
+                            <td class="text-center "><?php echo e($data->region?->dkr_name); ?>, <?php echo e($data->region?->dkc_name); ?></td>
                             <td class="text-center">
-                                <?php echo $__env->make('layouts.edit-delete-button', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                <button onclick="editModal(<?php echo e(json_encode($data->id)); ?>)" type="button" class="btn btn-warning btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-edit-<?php echo e($data->id); ?>" ><i class=" bx bx-pencil"></i> Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-delete-<?php echo e($data->id); ?>"><i class=" bx bx-trash"></i> Delete</button>
                             </td>
                         </tr>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -151,8 +156,8 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Role User</label>
-                                <select name="role_id" class="form-control" id="validationCustom02" required>
+                                <label class="form-label">Role User</label>
+                                <select name="role_id" class="form-select">
                                     <option disabled selected>---Pilih Role User ---</option>
                                     <?php $__currentLoopData = $role; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                     <option value="<?php echo e($item->id); ?>" <?php if(old('role_id')==$item->id): echo 'selected'; endif; ?>><?php echo e($item->name); ?></option>
@@ -179,6 +184,19 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
+                                <label class="form-label">Region</label>
+                                <select class="form-select select2" name="region_id" id="mySelect2">
+                                    <option disabled selected>---Pilih Region User ---</option>
+                                    <?php $__currentLoopData = $region; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($item->id); ?>" <?php if(old('region_id')==$item->id): echo 'selected'; endif; ?>><?php echo e($item->dkc_name); ?>, <?php echo e($item->dkr_name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
                                 <label for="validationCustom02" class="form-label">Photo</label>
                                 <input name="avatar" type="file" class="form-control" id="validationCustom02">
                             </div>
@@ -204,7 +222,94 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <?php echo $__env->make('user.edit', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+            <form action="<?php echo e(route('admin-user.update', $data->id)); ?>" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <?php echo csrf_field(); ?>
+                <?php echo method_field('PUT'); ?>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Name</label>
+                                <input name="name" type="text" class="form-control" id="validationCustom02" value="<?php echo e($data->name); ?>" placeholder="Nama" required>
+                                <div class="valid-feedback">
+                                    Nama Harus Diisi!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Fullname</label>
+                                <input name="fullname" type="text" class="form-control" id="validationCustom02" value="<?php echo e($data->fullname); ?>" placeholder="Nama Lengkap" required>
+                                <div class="valid-feedback">
+                                    Fullname Harus Diisi!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Email</label>
+                                <input name="email" type="email" class="form-control" id="validationCustom02" value="<?php echo e($data->email); ?>" placeholder="Email" required>
+                                <div class="valid-feedback">
+                                    Email Harus Diisi!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Role User</label>
+                                <select name="role_id" class="form-control" id="validationCustom02">
+                                    <option disabled selected>---Pilih Role User ---</option>
+                                    <?php $__currentLoopData = $role; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($item->id); ?>" <?php echo e($item->id == $data->role_id ? 'selected' : ''); ?>><?php echo e($item->name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                                <div class="valid-feedback">
+                                    Role Harus Diisi!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Tempat, Tanggal Lahir</label>
+                                <div class="input-group">
+                                    <input name="pob" type="text" class="form-control" id="validationCustom02" value="<?php echo e($data->pob); ?>">
+                                    <input name="dob" type="date" class="form-control" id="validationCustom02" value="<?php echo e(date('Y-m-d', strtotime($data->dob))); ?>">
+                                    <div class="valid-feedback">
+                                        Tempat Tanggal Lahir Harus Diisi!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Region</label>
+                                <select name="region_id" class="form-select select2" id="editSelect2<?php echo e($data->id); ?>">
+                                    <option disabled selected>---Pilih Region User ---</option>
+                                    <?php $__currentLoopData = $region; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($item->id); ?>" <?php if($data->region_id == $item->id ): echo 'selected'; endif; ?>><?php echo e($item->dkc_name); ?>, <?php echo e($item->dkr_name); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Photo</label>
+                                <input name="avatar" type="file" class="form-control" id="validationCustom02">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -237,18 +342,26 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('script'); ?>
-<!-- Required datatable js -->
-<script src="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.js')); ?>"></script>
-<script src="<?php echo e(URL::asset('/assets/libs/jszip/jszip.min.js')); ?>"></script>
-<script src="<?php echo e(URL::asset('/assets/libs/pdfmake/pdfmake.min.js')); ?>"></script>
-<!-- Datatable init js -->
-<script src="<?php echo e(URL::asset('/assets/js/pages/datatables.init.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('/assets/libs/select2/select2.min.js')); ?>"></script>
+    <script src="<?php echo e(URL::asset('/assets/libs/datatables/datatables.min.js')); ?>"></script>
+    <!-- form advanced init -->
+    <script src="<?php echo e(URL::asset('/assets/js/pages/datatables.init.js')); ?>"></script>
 <script>
-    $("#password-confirmation-addon").on('click', function() {
-        if ($(this).siblings('input').length > 0) {
-            $(this).siblings('input').attr('type') == "password" ? $(this).siblings('input').attr('type', 'input') : $(this).siblings('input').attr('type', 'password');
-        }
-    })
+    $('#mySelect2').select2({
+        dropdownParent: $('#modal-add'),
+        width: '100%'
+    });
 </script>
+<script>
+    function editModal(id){
+        let id_modal = id;
+        $('#editSelect2' + id_modal).select2({
+            dropdownParent: $('#modal-edit-'+id_modal ),
+            width: '100%'
+         });
+    }
+</script>
+
 <?php $__env->stopSection(); ?>
+
 <?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\WINDOWS\DOCUMENT\kerja\Azhari\Raida\resources\views/user/index.blade.php ENDPATH**/ ?>

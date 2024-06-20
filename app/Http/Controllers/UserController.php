@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Region;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -19,9 +20,10 @@ class UserController extends Controller
 
     public function index()
     {
-        $user = User::with('role')->orderBy('updated_at', 'DESC')->get();
-        $role = Role::all();
-        return view('user.index', compact('user', 'role'));
+        $user   = User::with('role', 'region')->orderBy('updated_at', 'DESC')->get();
+        $role   = Role::all();
+        $region = Region::orderBy('dkc_name', 'ASC')->get();
+        return view('user.index', compact('user', 'role', 'region'));
     }
 
     public function store(Request $request)

@@ -1,19 +1,21 @@
 @extends('layouts.master')
 
-@section('title','User')
+@section('title', 'User')
 
 @section('css')
-<!-- DataTables -->
-<link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('/assets/libs/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+
 @endsection
 
 @section('content')
 
-@component('components.breadcrumb')
-@slot('li_1') Dashboard @endslot
-@slot('title') User @endslot
-@endcomponent
+    @component('components.breadcrumb')
+        @slot('li_1') Dashboard @endslot
+        @slot('title') User @endslot
+    @endcomponent
 
+    
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -47,6 +49,7 @@
                             <th class="text-center">Tempat Tanggal Lahir</th>
                             <th class="text-center">Avatar</th>
                             <th class="text-center">Role</th>
+                            <th class="text-center">Region</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
@@ -70,8 +73,10 @@
                                 </a>
                             </td>
                             <td class="text-center ">{{ $data->role->name }}</td>
+                            <td class="text-center ">{{ $data->region?->dkr_name }}, {{ $data->region?->dkc_name }}</td>
                             <td class="text-center">
-                                @include('layouts.edit-delete-button')
+                                <button onclick="editModal({{ json_encode($data->id) }})" type="button" class="btn btn-warning btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}" ><i class=" bx bx-pencil"></i> Edit</button>
+                                <button type="button" class="btn btn-danger btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"><i class=" bx bx-trash"></i> Delete</button>
                             </td>
                         </tr>
                         @endforeach
@@ -150,8 +155,8 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">Role User</label>
-                                <select name="role_id" class="form-control" id="validationCustom02" required>
+                                <label class="form-label">Role User</label>
+                                <select name="role_id" class="form-select">
                                     <option disabled selected>---Pilih Role User ---</option>
                                     @foreach ($role as $item)
                                     <option value="{{ $item->id }}" @selected(old('role_id')==$item->id)>{{ $item->name }}</option>
@@ -178,6 +183,19 @@
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
+                                <label class="form-label">Region</label>
+                                <select class="form-select select2" name="region_id" id="mySelect2">
+                                    <option disabled selected>---Pilih Region User ---</option>
+                                    @foreach ($region as $item)
+                                    <option value="{{ $item->id }}" @selected(old('region_id')==$item->id)>{{ $item->dkc_name }}, {{ $item->dkr_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
                                 <label for="validationCustom02" class="form-label">Photo</label>
                                 <input name="avatar" type="file" class="form-control" id="validationCustom02">
                             </div>
@@ -203,7 +221,94 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            @include('user.edit')
+            <form action="{{ route('admin-user.update', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                @csrf
+                @method('PUT')
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Name</label>
+                                <input name="name" type="text" class="form-control" id="validationCustom02" value="{{ $data->name }}" placeholder="Nama" required>
+                                <div class="valid-feedback">
+                                    Nama Harus Diisi!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Fullname</label>
+                                <input name="fullname" type="text" class="form-control" id="validationCustom02" value="{{ $data->fullname }}" placeholder="Nama Lengkap" required>
+                                <div class="valid-feedback">
+                                    Fullname Harus Diisi!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Email</label>
+                                <input name="email" type="email" class="form-control" id="validationCustom02" value="{{ $data->email }}" placeholder="Email" required>
+                                <div class="valid-feedback">
+                                    Email Harus Diisi!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Role User</label>
+                                <select name="role_id" class="form-control" id="validationCustom02">
+                                    <option disabled selected>---Pilih Role User ---</option>
+                                    @foreach ($role as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->role_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                                <div class="valid-feedback">
+                                    Role Harus Diisi!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Tempat, Tanggal Lahir</label>
+                                <div class="input-group">
+                                    <input name="pob" type="text" class="form-control" id="validationCustom02" value="{{ $data->pob }}">
+                                    <input name="dob" type="date" class="form-control" id="validationCustom02" value="{{ date('Y-m-d', strtotime($data->dob)) }}">
+                                    <div class="valid-feedback">
+                                        Tempat Tanggal Lahir Harus Diisi!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label class="form-label">Region</label>
+                                <select name="region_id" class="form-select select2" id="editSelect2{{ $data->id }}">
+                                    <option disabled selected>---Pilih Region User ---</option>
+                                    @foreach ($region as $item)
+                                    <option value="{{ $item->id }}" @selected($data->region_id == $item->id )>{{ $item->dkc_name }}, {{ $item->dkr_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="validationCustom02" class="form-label">Photo</label>
+                                <input name="avatar" type="file" class="form-control" id="validationCustom02">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
@@ -236,17 +341,24 @@
 
 @endsection
 @section('script')
-<!-- Required datatable js -->
-<script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
-<script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
-<script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
-<!-- Datatable init js -->
-<script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
+    <!-- form advanced init -->
+    <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
 <script>
-    $("#password-confirmation-addon").on('click', function() {
-        if ($(this).siblings('input').length > 0) {
-            $(this).siblings('input').attr('type') == "password" ? $(this).siblings('input').attr('type', 'input') : $(this).siblings('input').attr('type', 'password');
-        }
-    })
+    $('#mySelect2').select2({
+        dropdownParent: $('#modal-add'),
+        width: '100%'
+    });
 </script>
+<script>
+    function editModal(id){
+        let id_modal = id;
+        $('#editSelect2' + id_modal).select2({
+            dropdownParent: $('#modal-edit-'+id_modal ),
+            width: '100%'
+         });
+    }
+</script>
+
 @endsection

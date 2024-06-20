@@ -62,6 +62,19 @@
             </div>
             <div class="col-lg-6">
                 <div class="mb-3">
+                    <label class="form-label">Region</label>
+                    <select name="region_id" class="form-select select2" id="editSelect2">
+                        <option disabled selected>---Pilih Region User ---</option>
+                        <?php $__currentLoopData = $region; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($item->id); ?>" <?php echo e($item->id == $data->region_id ? 'selected' : ''); ?>><?php echo e($item->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="mb-3">
                     <label for="validationCustom02" class="form-label">Photo</label>
                     <input name="avatar" type="file" class="form-control" id="validationCustom02">
                 </div>
