@@ -1,4 +1,4 @@
-W/******/ (function() { // webpackBootstrap
+/******/ (function() { // webpackBootstrap
 var __webpack_exports__ = {};
 /*!***********************************************!*\
   !*** ./resources/js/pages/datatables.init.js ***!

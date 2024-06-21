@@ -31,7 +31,8 @@ class User extends Authenticatable
         'dob',
         'avatar',
         'role_id',
-        'region_id',
+        'regency_id',
+        'villages_id',
     ];
 
     /**
@@ -58,8 +59,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
-    public function region()
+    
+    public function regency()
     {
-        return $this->belongsTo(Region::class);
+        return $this->belongsTo(Regency::class);
+    }
+    
+    public function villages()
+    {
+        return $this->belongsTo(Villages::class);
     }
 }

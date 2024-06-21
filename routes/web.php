@@ -10,11 +10,13 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\RegionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UnsurKontingenController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewUserController;
+use App\Http\Controllers\VillagesController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +39,12 @@ Route::get('/admin', [App\Http\Controllers\HomeController::class, 'root'])->name
 Route::get('/', [ViewUserController::class, 'index'])->name('viewUser');
 Route::resource('/admin-settings', SettingController::class);
 Route::put('/admin-settings-uploadFile{id}', [SettingController::class, 'uploadFile'])->name('admin-setting.file');
+
+Route::get('/admin-create-dkd', [UserController::class, 'createDkd'])->name('createDkd');
+Route::get('/admin-create-dkc', [UserController::class, 'createDkc'])->name('createDkc');
+Route::get('/admin-create-dkr', [UserController::class, 'createDkr'])->name('createDkr');
+Route::get('selectRegency', [RegencyController::class, 'index'])->name('regency.index');
+Route::get('selectVillages-{id}', [RegencyController::class, 'villages'])->name('villages.index');
 Route::resource('/admin-user', UserController::class);
 
 Route::resource('/admin-dokumentasi-kegiatan', DokumentasiKegiatanController::class);
@@ -48,7 +56,7 @@ Route::resource('/admin-kegiatan', KegiatanController::class);
 Route::resource('/admin-jadwal-kegiatan', JadwalKegiatanController::class);
 Route::resource('/admin-dokumen-penting', DokumenPentingController::class);
 Route::resource('/admin-kategori', KategoriController::class);
-Route::resource('/admin-region', RegionController::class);
+Route::resource('/admin-region', VillagesController::class);
 
 Route::resource('/admin-data-berkas-kontingen', BerkasController::class);
 Route::put('/berkas-verifikasi{id}', [BerkasController::class, 'verifikasi'])->name('berkas.verifikasi');

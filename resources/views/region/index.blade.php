@@ -52,8 +52,8 @@
                         @foreach ($region as $key => $data)
                         <tr>
                             <td class="text-center">{{ ++$key }}</td>
-                            <td class="text-center">{{ $data->dkc_name }}</td>
-                            <td class="text-center">{{ $data->dkr_name }}</td>
+                            <td class="text-center">{{ $data->regency->name }}</td>
+                            <td class="text-center">{{ $data->name }}</td>
                             <td class="text-center">
                                 @include('layouts.edit-delete-button')
                             </td>

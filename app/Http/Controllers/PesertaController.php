@@ -6,7 +6,10 @@ use App\Exports\PesertaAdminExport;
 use App\Exports\PesertaExport;
 use App\Models\Kategori;
 use App\Models\Peserta;
+use App\Models\Regency;
 use App\Models\Status;
+use App\Models\User;
+use App\Models\Villages;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,9 +25,20 @@ class PesertaController extends Controller
 
     public function index()
     {
-        $peserta = Peserta::orderBy('updated_at', 'DESC')->get();
-        $kategori = Kategori::orderBy('name', 'DESC')->get();
-        $status = Status::orderBy('name', 'DESC')->get();
+        if (Auth::user()->role_id === 1) {
+            $kategori = Kategori::orderBy('name', 'DESC')->get();
+            $peserta = Peserta::orderBy('updated_at', 'DESC')->get();
+            $kategori = Kategori::orderBy('name', 'DESC')->get();
+            $status = Status::orderBy('name', 'DESC')->get();
+        } elseif (Auth::user()->role_id === 2) {
+            $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->get();
+            $kategori = Kategori::orderBy('name', 'DESC')->get();
+            $status = Status::orderBy('name', 'DESC')->get();
+        } elseif (Auth::user()->role_id === 3) {
+            $peserta = Peserta::where('regency_id', Auth::user()->regency_id)->get();
+            $kategori = Kategori::orderBy('name', 'DESC')->get();
+            $status = Status::orderBy('name', 'DESC')->get();
+        }
         return view('peserta.index', compact('peserta', 'kategori', 'status'));
     }
 

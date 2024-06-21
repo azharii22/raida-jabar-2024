@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Regency;
 use App\Models\Region;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Villages;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -18,11 +20,33 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    public function createDkd()
+    {
+        $role = Role::where('name', 'DKD')->first();
+        return view('user.createDkd', compact('role'));
+    }
+
+    public function createDkc()
+    {
+        $role = Role::where('name', 'DKC')->first();
+        $region = Regency::orderBy('name')->get();
+        return view('user.createDkc', compact('region', 'role'));
+    }
+
+    public function createDkr()
+    {
+        $role = Role::where('name', 'DKR')->first();
+        $regency = Regency::orderBy('name')->get();
+        $villages = Villages::orderBy('regency_id')->get();
+        return view('user.createDkr', compact('regency', 'role', 'villages'));
+    }
+
+
     public function index()
     {
-        $user   = User::with('role', 'region')->orderBy('updated_at', 'DESC')->get();
+        $user   = User::with('role', 'regency', 'villages')->orderBy('updated_at', 'DESC')->get();
         $role   = Role::all();
-        $region = Region::orderBy('dkc_name', 'ASC')->get();
+        $region = Villages::orderBy('regency_id')->get();
         return view('user.index', compact('user', 'role', 'region'));
     }
 
@@ -70,7 +94,7 @@ class UserController extends Controller
             ]));
         }
         Alert::success('Success!', 'Data Saved Successfully');
-        return back();
+        return redirect()->route('admin-user.index');
     }
 
     public function show(User $user)
@@ -98,7 +122,7 @@ class UserController extends Controller
             $user->update($request->all());
         }
         Alert::success('Success!', 'Data Updated Successfully');
-        return back();
+        return redirect()->route('admin-user.index');
     }
 
     public function destroy($id)

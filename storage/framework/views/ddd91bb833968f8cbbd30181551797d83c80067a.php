@@ -1,6 +1,6 @@
 
 
-<?php $__env->startSection('title','Region'); ?>
+<?php $__env->startSection('title','Kategori'); ?>
 
 <?php $__env->startSection('css'); ?>
 <!-- DataTables -->
@@ -11,7 +11,7 @@
 
 <?php $__env->startComponent('components.breadcrumb'); ?>
 <?php $__env->slot('li_1'); ?> Dashboard <?php $__env->endSlot(); ?>
-<?php $__env->slot('title'); ?> Region <?php $__env->endSlot(); ?>
+<?php $__env->slot('title'); ?> Kategori <?php $__env->endSlot(); ?>
 <?php echo $__env->renderComponent(); ?>
 
 <div class="row">
@@ -19,10 +19,10 @@
         <div class="card">
             <div class="card-body">
 
-                <h4 class="card-title mb-5">Region</h4>
+                <h4 class="card-title mb-5">Kategori</h4>
 
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Region</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Kategori</button>
                 </div>
 
                 <?php if(count($errors) > 0): ?>
@@ -41,18 +41,16 @@
                     <thead>
                         <tr>
                             <th class="text-center">No</th>
-                            <th class="text-center">DKC Name</th>
-                            <th class="text-center">DKR Name</th>
+                            <th class="text-center">Name</th>
                             <th class="text-center">Action</th>
                         </tr>
                     </thead>
 
 
                     <tbody>
-                        <?php $__currentLoopData = $region; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php $__currentLoopData = $kategori; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <tr>
                             <td class="text-center"><?php echo e(++$key); ?></td>
-                            <td class="text-center"><?php echo e($data->regency->name); ?></td>
                             <td class="text-center"><?php echo e($data->name); ?></td>
                             <td class="text-center">
                                 <?php echo $__env->make('layouts.edit-delete-button', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
@@ -76,20 +74,17 @@
                 <h5 class="modal-title" id="myModalLabel">Form Add Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?php echo e(route('admin-region.store')); ?>" method="POST" class="needs-validation" novalidate>
+            <form action="<?php echo e(route('admin-kategori.store')); ?>" method="POST" class="needs-validation" novalidate>
                 <?php echo csrf_field(); ?>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">DKC Name</label>
-                                <input name="dkc_name" type="text" class="form-control" id="validationCustom02" value="<?php echo e(old('dkc_name')); ?>" placeholder="Nama DKC" required>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">DKR Name</label>
-                                <input name="dkr_name" type="text" class="form-control" id="validationCustom02" value="<?php echo e(old('dkr_name')); ?>" placeholder="Nama DKR" required>
+                                <label for="validationCustom02" class="form-label">Name</label>
+                                <input name="name" type="text" class="form-control" id="validationCustom02" value="<?php echo e(old('name')); ?>" placeholder="Nama" required>
+                                <div class="valid-feedback">
+                                    Nama Harus Diisi!
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -105,7 +100,7 @@
 <!-- End modal add -->
 
 <!-- Start Edit Modal -->
-<?php $__currentLoopData = $region; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+<?php $__currentLoopData = $kategori; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
 <div class="modal fade" id="modal-edit-<?php echo e($data->id); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -113,21 +108,18 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Edit Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?php echo e(route('admin-region.update', $data->id)); ?>" method="POST" class="needs-validation" novalidate>
+            <form action="<?php echo e(route('admin-kategori.update', $data->id)); ?>" method="POST" class="needs-validation" novalidate>
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('PUT'); ?>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
                             <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">DKC Name</label>
-                                <input name="dkc_name" type="text" class="form-control" id="validationCustom02" value="<?php echo e($data->dkc_name); ?>" required>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="validationCustom02" class="form-label">DKR Name</label>
-                                <input name="dkr_name" type="text" class="form-control" id="validationCustom02" value="<?php echo e($data->dkr_name); ?>" required>
+                                <label for="validationCustom02" class="form-label">Name</label>
+                                <input name="name" type="text" class="form-control" id="validationCustom02" value="<?php echo e($data->name); ?>">
+                                <div class="valid-feedback">
+                                    Nama Harus Diisi!
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -150,7 +142,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Delete Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="<?php echo e(route('admin-region.destroy', $data->id)); ?>" method="POST">
+            <form action="<?php echo e(route('admin-kategori.destroy', $data->id)); ?>" method="POST">
                 <?php echo csrf_field(); ?>
                 <?php echo method_field('DELETE'); ?>
                 <div class="modal-body">
@@ -176,4 +168,4 @@
 <!-- Datatable init js -->
 <script src="<?php echo e(URL::asset('/assets/js/pages/datatables.init.js')); ?>"></script>
 <?php $__env->stopSection(); ?>
-<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\WINDOWS\DOCUMENT\kerja\Azhari\Raida\resources\views/region/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH D:\WINDOWS\DOCUMENT\kerja\Azhari\Raida\resources\views/kategori/index.blade.php ENDPATH**/ ?>

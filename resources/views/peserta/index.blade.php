@@ -461,6 +461,8 @@
                             <div class="mb-3">
                                 <label for="riwayat_penyakit" class="form-label">Riwayat Penyakit</label>
                                 <input name="riwayat_penyakit" type="text" id="riwayat_penyakit" value="{{ old('riwayat_penyakit') }}" placeholder="Riwayat Penyakit" class="form-control">
+                                <input name="regency_id" value="{{ Auth::user()->regency_id }}" hidden>
+                                <input name="villages_id" value="{{ Auth::user()->villages_id }}" hidden>
                             </div>
                         </div>
                     </div>
@@ -584,6 +586,8 @@
                             <div class="mb-3">
                                 <label for="riwayat_penyakit" class="form-label">Riwayat Penyakit</label>
                                 <input name="riwayat_penyakit" type="text" id="riwayat_penyakit" value="{{ $data->riwayat_penyakit }}" placeholder="Riwayat Penyakit" class="form-control">
+                                <input name="regency_id" value="{{ Auth::user()->regency_id }}" hidden>
+                                <input name="villages_id" value="{{ Auth::user()->villages_id }}" hidden>
                             </div>
                         </div>
                     </div>

@@ -13,16 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('regions', function (Blueprint $table) {
+        Schema::create('regencies', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('dkc_name');
-            $table->string('dkr_name');
+            $table->string('name');
             $table->timestamps();
             $table->softDeletes();
-        });
-
-        Schema::table('users', function (Blueprint $table) {
-            $table->uuid('region_id')->nullable();
         });
     }
 
@@ -33,9 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('regions');
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('region_id');
-        });
+        Schema::dropIfExists('regencies');
     }
 };
