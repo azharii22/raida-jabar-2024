@@ -23,7 +23,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title mb-5">User Management</h4>
+                    <h4 class="card-title mb-5">Edit User Management</h4>
 
                     @if (count($errors) > 0)
                         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
@@ -37,25 +37,20 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('admin-user.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <form action="{{ route('admin-user.update', $user->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                         @csrf
+                        @method('PUT')
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="validationCustom02" class="form-label">Name</label>
-                                    <input name="name" type="text" class="form-control" id="validationCustom02" value="{{ old('name') }}" placeholder="Nama" required>
-                                    <div class="valid-feedback">
-                                        Nama Harus Diisi!
-                                    </div>
+                                    <input name="name" type="text" class="form-control" id="validationCustom02" value="{{ $user->name }}" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="validationCustom02" class="form-label">Fullname</label>
-                                    <input name="fullname" type="text" class="form-control" id="validationCustom02" value="{{ old('fullname') }}" placeholder="Nama Lengkap" required>
-                                    <div class="valid-feedback">
-                                        Fullname Harus Diisi!
-                                    </div>
+                                    <input name="fullname" type="text" class="form-control" id="validationCustom02" value="{{ $user->fullname }}" required>
                                 </div>
                             </div>
                         </div>
@@ -63,21 +58,15 @@
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="validationCustom02" class="form-label">Email</label>
-                                    <input name="email" type="email" class="form-control" id="validationCustom02" value="{{ old('email') }}" placeholder="Email" required>
-                                    <div class="valid-feedback">
-                                        Email Harus Diisi!
-                                    </div>
+                                    <input name="email" type="email" class="form-control" id="validationCustom02" value="{{ $user->email }}" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="validationCustom02" class="form-label">Tempat, Tanggal Lahir</label>
                                     <div class="input-group">
-                                        <input name="pob" type="text" class="form-control" id="validationCustom02" value="{{ old('pob') }}" required placeholder="Tempat Lahir">
-                                        <input name="dob" type="date" class="form-control" id="validationCustom02" value="{{ date('Y-m-d', strtotime(old('dob'))) }}" required>
-                                        <div class="valid-feedback">
-                                            Tempat Tanggal Lahir Harus Diisi!
-                                        </div>
+                                        <input name="pob" type="text" class="form-control" id="validationCustom02" value="{{ $user->pob }}" required>
+                                        <input name="dob" type="date" class="form-control" id="validationCustom02" value="{{ date('Y-m-d', strtotime($user->dob)) }}" required>
                                     </div>
                                 </div>
                             </div>
@@ -85,27 +74,15 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
-                                    <label for="password" class="form-label">Password</label>
-                                    <div class="input-group auth-pass-inputgroup">
-                                        <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon">
-                                        <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
-                                    </div>
-                                    <div class="valid-feedback">
-                                        Password Harus Diisi!
-                                    </div>
+                                    <label class="form-label">Region</label>
+                                    <select class="form-control select2" name="regency_id">
+                                        <option disabled selected>---Pilih Region User ---</option>
+                                        @foreach ($region as $item)
+                                            <option value="{{ $item->id }}" @selected($user->regency_id == $item->id)>{{ $item->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="validationCustom02" class="form-label">Password Confirmation</label>
-                                    <div class="input-group auth-pass-inputgroup">
-                                        <input type="password" name="password_confirmation" class="form-control" id="password" placeholder="Enter password confirmation" aria-label="Password" aria-describedby="password-confirmation-addon">
-                                        <button class="btn btn-light " type="button" id="password-confirmation-addon"><i class="mdi mdi-eye-outline"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-lg-6">
                                 <div class="mb-3">
                                     <label for="validationCustom02" class="form-label">Photo</label>

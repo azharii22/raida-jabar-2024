@@ -97,11 +97,17 @@
                                 
                                 @elseif ($data->role_id == 2)
                                 {{ $data->villages?->name }}, {{ $data->regency?->name }}
-                            </td>
-                                
                                 @endif
+                            </td>
                             <td class="text-center">
-                                <button onclick="editModal({{ json_encode($data->id) }})" type="button" class="btn btn-warning btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}" ><i class=" bx bx-pencil"></i> Edit</button>
+                                @if ($data->role_id === 1)
+                                <a href="{{ route('editDkd', $data->id) }}" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>    
+                                @elseif ($data->role_id == 3)
+                                <a href="{{ route('editDkc', $data->id) }}" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>
+                                @elseif ($data->role_id == 2)
+                                <a href="{{ route('editDkr', $data->id) }}" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>
+                                @endif
+                                {{-- <button onclick="editModal({{ json_encode($data->id) }})" type="button" class="btn btn-warning btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}" ><i class=" bx bx-pencil"></i> Edit</button> --}}
                                 <button type="button" class="btn btn-danger btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"><i class=" bx bx-trash"></i> Delete</button>
                             </td>
                         </tr>

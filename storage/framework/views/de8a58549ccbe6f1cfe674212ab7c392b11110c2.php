@@ -41,88 +41,25 @@
                 <?php endif; ?>
 
                 <div class="table-responsive">
-                    <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                    <table id="datatable" class="table table-bordered table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
                                 <th style="width: 10px;">No</th>
-                                <th>Nama Lengkap</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Kategori</th>
-                                <th>Status</th>
-                                <th>Berkas Peserta</th>
-                                <th>Catatan</th>
-                                <th style="width: 10px;">Action</th>
+                                <th class="text-center">Kwarcab</th>
+                                <th class="text-center">Jumlah Pendaftar</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
 
 
                         <tbody>
-                            <?php $__currentLoopData = $peserta; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i =>$data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php $__currentLoopData = $regency; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i =>$data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td><?php echo e(++$i); ?></td>
-                                <td class="text-uppercase"><?php echo e($data->nama_lengkap); ?></td>
-                                <td>
-                                    <?php if($data->jenis_kelamin == 1): ?>
-                                    <span>Laki - Laki</span>
-                                    <?php else: ?>
-                                    <span>Perempuan</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td><?php echo e($data->kategori?->name); ?></td>
-                                <td>
-                                    <?php if($data->status->name === 'Terkirim'): ?>
-                                    <span class="badge text-bg-primary">Terkirim</span>
-                                    <?php elseif($data->status->name === 'Diterima'): ?>
-                                    <span class="badge text-bg-success">Diterima</span>
-                                    <?php elseif($data->status->name === 'Revisi'): ?>
-                                    <span class="badge text-bg-warning">Revisi</span>
-                                    <?php elseif($data->status->name === 'Ditolak'): ?>
-                                    <span class="badge text-bg-danger">Ditolak</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if($data->foto != NULL): ?>
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/peserta/foto/').$data->foto); ?>" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
-                                    <?php else: ?>
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Foto</button>
-                                    <?php endif; ?>
-                                    <?php if($data->KTA != NULL): ?>
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/peserta/kta/').$data->KTA); ?>" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
-                                    <?php else: ?>
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> KTA</button>
-                                    <?php endif; ?>
-                                    <?php if($data->asuransi_kesehatan != NULL): ?>
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/peserta/asuransi-kesehatan/').$data->asuransi_kesehatan); ?>" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan </a>
-                                    <?php else: ?>
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Asuransi Kesehatan </button>
-                                    <?php endif; ?>
-                                    <?php if($data->sertif_sfh != NULL): ?>
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="<?php echo e(Storage::url('public/img/peserta/sertif-sfh/').$data->sertif_sfh); ?>" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>
-                                    <?php else: ?>
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-<?php echo e($data->id); ?>"><i class="bx bx-upload"></i> Sertif SFH</button>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if($data->status->name === 'Revisi'): ?>
-                                    <div style="color: red;">
-                                        <li><?php echo e($data->catatan); ?></li>
-                                    </div>
-                                    <?php else: ?>
-                                    <?php echo e($data->catatan); ?>
-
-                                    <?php endif; ?>
-                                </td>
+                                <td class="text-uppercase text-center"><?php echo e($data->name); ?></td>
+                                <td class="text-uppercase text-center"><?php echo e(count($regency)); ?></td>
                                 <td class="text-center">
-                                    <?php if(auth()->user()->role_id == 1 && $data->status->name != 'Diterima'): ?>
-                                    <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-<?php echo e($data->id); ?>"><i class=" bx bx-check-circle"></i> Verifikasi</button>
-                                    <?php endif; ?>
-                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-<?php echo e($data->id); ?>"> <i class="bx bx-show"></i> Detail</button>
-                                    <?php if($data->status->name === 'Revisi'): ?>
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-<?php echo e($data->id); ?>"> <i class="bx bx-pencil"></i> Edit</button>
-                                    <?php endif; ?>
-                                    <?php if(auth()->user()->role_id != 1): ?>
-                                    <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-<?php echo e($data->id); ?>"> <i class="bx bx-trash"></i> Delete</button>
-                                    <?php endif; ?>
+                                    <a href="<?php echo e(route('admin-data-peserta.detailRegency',$data->id)); ?>" class="btn btn-success waves-effect waves-light btn-sm mr-2"> Lihat <i class="bx bx-right-arrow-alt"></i></a>
                                 </td>
                             </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
@@ -280,6 +217,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10px;">No</th>
+                                <th>Wilayah</th>
                                 <th>Nama Lengkap</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Kategori</th>
@@ -294,6 +232,7 @@
                             <?php $__currentLoopData = $peserta; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i =>$data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td><?php echo e(++$i); ?></td>
+                                <td class="text-uppercase"><?php echo e($data->villages->name); ?></td>
                                 <td class="text-uppercase"><?php echo e($data->nama_lengkap); ?></td>
                                 <td>
                                     <?php if($data->jenis_kelamin == 1): ?>

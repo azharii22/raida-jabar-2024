@@ -97,9 +97,34 @@ class UserController extends Controller
         return redirect()->route('admin-user.index');
     }
 
-    public function show(User $user)
+    public function show($id)
     {
+        $user = User::findOrFail($id);
         return $user;
+    }
+
+    public function editDkd($id)
+    {
+        $user = User::find($id);
+        $role = Role::where('name', 'DKD')->first();
+        return view('user.editDkd', compact('user', 'role'));
+    }
+
+    public function editDkc($id)
+    {
+        $user = User::find($id);
+        $role = Role::where('name', 'DKC')->first();
+        $region = Regency::orderBy('name')->get();
+        return view('user.editDkc', compact('user', 'region', 'role'));
+    }
+
+    public function editDkr($id)
+    {
+        $user = User::find($id)->load(['regency', 'villages']);
+        $role = Role::where('name', 'DKR')->first();
+        $regency = Regency::orderBy('name')->get();
+        $villages = Villages::orderBy('regency_id')->get();
+        return view('user.editDkr', compact('user', 'regency', 'role', 'villages'));
     }
 
     public function update(Request $request, $id)

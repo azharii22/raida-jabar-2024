@@ -41,87 +41,25 @@
                 @endif
 
                 <div class="table-responsive">
-                    <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
+                    <table id="datatable" class="table table-bordered table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
                                 <th style="width: 10px;">No</th>
-                                <th>Nama Lengkap</th>
-                                <th>Jenis Kelamin</th>
-                                <th>Kategori</th>
-                                <th>Status</th>
-                                <th>Berkas Peserta</th>
-                                <th>Catatan</th>
-                                <th style="width: 10px;">Action</th>
+                                <th class="text-center">Kwarcab</th>
+                                <th class="text-center">Jumlah Pendaftar</th>
+                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
 
 
                         <tbody>
-                            @foreach ($peserta as $i =>$data)
+                            @foreach ($regency as $i =>$data)
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td class="text-uppercase">{{ $data->nama_lengkap }}</td>
-                                <td>
-                                    @if ($data->jenis_kelamin == 1)
-                                    <span>Laki - Laki</span>
-                                    @else
-                                    <span>Perempuan</span>
-                                    @endif
-                                </td>
-                                <td>{{ $data->kategori?->name }}</td>
-                                <td>
-                                    @if ($data->status->name === 'Terkirim')
-                                    <span class="badge text-bg-primary">Terkirim</span>
-                                    @elseif ($data->status->name === 'Diterima')
-                                    <span class="badge text-bg-success">Diterima</span>
-                                    @elseif ($data->status->name === 'Revisi')
-                                    <span class="badge text-bg-warning">Revisi</span>
-                                    @elseif ($data->status->name === 'Ditolak')
-                                    <span class="badge text-bg-danger">Ditolak</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($data->foto != NULL)
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/foto/').$data->foto }}" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
-                                    @else
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-{{ $data->id }}"><i class="bx bx-upload"></i> Foto</button>
-                                    @endif
-                                    @if ($data->KTA != NULL)
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/kta/').$data->KTA }}" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
-                                    @else
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-{{ $data->id }}"><i class="bx bx-upload"></i> KTA</button>
-                                    @endif
-                                    @if ($data->asuransi_kesehatan != NULL)
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/asuransi-kesehatan/').$data->asuransi_kesehatan }}" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan </a>
-                                    @else
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-{{ $data->id }}"><i class="bx bx-upload"></i> Asuransi Kesehatan </button>
-                                    @endif
-                                    @if ($data->sertif_sfh != NULL)
-                                    <a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="{{ Storage::url('public/img/peserta/sertif-sfh/').$data->sertif_sfh }}" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>
-                                    @else
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-{{ $data->id }}"><i class="bx bx-upload"></i> Sertif SFH</button>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($data->status->name === 'Revisi')
-                                    <div style="color: red;">
-                                        <li>{{ $data->catatan }}</li>
-                                    </div>
-                                    @else
-                                    {{ $data->catatan }}
-                                    @endif
-                                </td>
+                                <td class="text-uppercase text-center">{{ $data->name }}</td>
+                                <td class="text-uppercase text-center">{{ count($regency) }}</td>
                                 <td class="text-center">
-                                    @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
-                                    <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
-                                    @endif
-                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}"> <i class="bx bx-show"></i> Detail</button>
-                                    @if ($data->status->name === 'Revisi')
-                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i class="bx bx-pencil"></i> Edit</button>
-                                    @endif
-                                    @if (auth()->user()->role_id != 1)
-                                    <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"> <i class="bx bx-trash"></i> Delete</button>
-                                    @endif
+                                    <a href="{{ route('admin-data-peserta.detailRegency',$data->id) }}" class="btn btn-success waves-effect waves-light btn-sm mr-2"> Lihat <i class="bx bx-right-arrow-alt"></i></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -278,6 +216,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 10px;">No</th>
+                                <th>Wilayah</th>
                                 <th>Nama Lengkap</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Kategori</th>
@@ -292,6 +231,7 @@
                             @foreach ($peserta as $i =>$data)
                             <tr>
                                 <td>{{ ++$i }}</td>
+                                <td class="text-uppercase">{{ $data->villages->name }}</td>
                                 <td class="text-uppercase">{{ $data->nama_lengkap }}</td>
                                 <td>
                                     @if ($data->jenis_kelamin == 1)

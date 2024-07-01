@@ -26,20 +26,23 @@ class PesertaController extends Controller
     public function index()
     {
         if (Auth::user()->role_id === 1) {
+            $regency = Regency::get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $peserta = Peserta::orderBy('updated_at', 'DESC')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
+            return view('peserta.index', compact('peserta', 'kategori', 'status', 'regency'));
         } elseif (Auth::user()->role_id === 2) {
             $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
+            return view('peserta.index', compact('peserta', 'kategori', 'status'));
         } elseif (Auth::user()->role_id === 3) {
-            $peserta = Peserta::where('regency_id', Auth::user()->regency_id)->get();
+            $peserta = Peserta::with('villages')->where('regency_id', Auth::user()->regency_id)->orderBy('villages_id')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
+            return view('peserta.index', compact('peserta', 'kategori', 'status'));
         }
-        return view('peserta.index', compact('peserta', 'kategori', 'status'));
     }
 
     public function store(Request $request)
@@ -201,5 +204,17 @@ class PesertaController extends Controller
         $data = Peserta::with('kategori', 'user')->get();
         $pdf = Pdf::loadView('peserta.pdf', compact('data'))->setPaper('a4', 'portrait');
         return $pdf->download('Peserta.pdf');
+    }
+
+    public function detailRegency($id)
+    {
+        $villages = Villages::where('regency_id', $id)->get();
+        return view('peserta.detail', compact('villages'));
+    }
+    
+    public function detailVillages($id)
+    {
+        $peserta = Peserta::where('villages_id', $id)->get();
+        return view('peserta.detailVillages', compact('peserta'));
     }
 }

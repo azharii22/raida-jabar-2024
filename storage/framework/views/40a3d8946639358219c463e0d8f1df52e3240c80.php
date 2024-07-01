@@ -100,11 +100,17 @@
                                 <?php elseif($data->role_id == 2): ?>
                                 <?php echo e($data->villages?->name); ?>, <?php echo e($data->regency?->name); ?>
 
-                            </td>
-                                
                                 <?php endif; ?>
+                            </td>
                             <td class="text-center">
-                                <button onclick="editModal(<?php echo e(json_encode($data->id)); ?>)" type="button" class="btn btn-warning btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-edit-<?php echo e($data->id); ?>" ><i class=" bx bx-pencil"></i> Edit</button>
+                                <?php if($data->role_id === 1): ?>
+                                <a href="<?php echo e(route('editDkd', $data->id)); ?>" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>    
+                                <?php elseif($data->role_id == 3): ?>
+                                <a href="<?php echo e(route('editDkc', $data->id)); ?>" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>
+                                <?php elseif($data->role_id == 2): ?>
+                                <a href="<?php echo e(route('editDkr', $data->id)); ?>" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>
+                                <?php endif; ?>
+                                
                                 <button type="button" class="btn btn-danger btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-delete-<?php echo e($data->id); ?>"><i class=" bx bx-trash"></i> Delete</button>
                             </td>
                         </tr>

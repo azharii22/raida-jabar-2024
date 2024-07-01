@@ -43,6 +43,10 @@ Route::put('/admin-settings-uploadFile{id}', [SettingController::class, 'uploadF
 Route::get('/admin-create-dkd', [UserController::class, 'createDkd'])->name('createDkd');
 Route::get('/admin-create-dkc', [UserController::class, 'createDkc'])->name('createDkc');
 Route::get('/admin-create-dkr', [UserController::class, 'createDkr'])->name('createDkr');
+Route::get('/admin-edit-dkd-{id}', [UserController::class, 'editDkd'])->name('editDkd');
+Route::get('/admin-edit-dkc-{id}', [UserController::class, 'editDkc'])->name('editDkc');
+Route::get('/admin-edit-dkr-{id}', [UserController::class, 'editDkr'])->name('editDkr');
+
 Route::get('selectRegency', [RegencyController::class, 'index'])->name('regency.index');
 Route::get('selectVillages-{id}', [RegencyController::class, 'villages'])->name('villages.index');
 Route::resource('/admin-user', UserController::class);
@@ -73,6 +77,8 @@ Route::get('unsur-kontingen-exportadminExcel', [UnsurKontingenController::class,
 Route::get('unsur-kontingen-exportadminPDF', [UnsurKontingenController::class, 'exportAdminPDF'])->name('unsur-kontingen.admin-pdf');
 
 Route::resource('/admin-data-peserta', PesertaController::class);
+Route::get('/admin-data-peserta-regency-{id}', [PesertaController::class, 'detailRegency'])->name('admin-data-peserta.detailRegency');
+Route::get('/admin-data-peserta-villages-{id}', [PesertaController::class, 'detailVillages'])->name('admin-data-peserta.detailVillages');
 Route::put('/upload-foto{id}', [PesertaController::class, 'uploadFoto'])->name('peserta.foto');
 Route::put('/upload-kta{id}', [PesertaController::class, 'uploadKta'])->name('peserta.kta');
 Route::put('/upload-asuransi{id}', [PesertaController::class, 'uploadAsuransi'])->name('peserta.asuransi');

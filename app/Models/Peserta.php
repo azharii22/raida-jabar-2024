@@ -53,4 +53,14 @@ class Peserta extends Model
     {
         return $this->belongsTo(Status::class, 'status_id', 'id');
     }
+
+    public function regency()
+    {
+        return $this->belongsTo(Regency::class, 'regency_id','id');
+    }
+
+    public function villages()
+    {
+        return $this->belongsTo(Villages::class, 'villages_id','id');
+    }
 }
