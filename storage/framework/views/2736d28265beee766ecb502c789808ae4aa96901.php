@@ -1,6 +1,6 @@
 
 
-<?php $__env->startSection('title'); ?> <?php echo app('translator')->get('translation.Form_Advanced'); ?> <?php $__env->stopSection(); ?>
+<?php $__env->startSection('title', 'User'); ?>
 
 <?php $__env->startSection('css'); ?>
     <link href="<?php echo e(URL::asset('/assets/libs/select2/select2.min.css')); ?>" rel="stylesheet" type="text/css" />

@@ -22,12 +22,6 @@
             <div class="card-body">
 
                 <h4 class="card-title mb-5">Peserta</h4>
-
-                <div class="card-title mb-5">
-                    <a href="<?php echo e(route('peserta.excel')); ?>" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                    <a href="<?php echo e(route('peserta.pdf')); ?>" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
-                </div>
-
                 <?php if(count($errors) > 0): ?>
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                     Error! <br />
@@ -57,7 +51,7 @@
                             <tr>
                                 <td><?php echo e(++$i); ?></td>
                                 <td class="text-uppercase text-center"><?php echo e($data->name); ?></td>
-                                <td class="text-uppercase text-center"><?php echo e(count($regency)); ?></td>
+                                <td class="text-uppercase text-center"><?php echo e(count($peserta->where('regency_id', $data->id))); ?> Peserta</td>
                                 <td class="text-center">
                                     <a href="<?php echo e(route('admin-data-peserta.detailRegency',$data->id)); ?>" class="btn btn-success waves-effect waves-light btn-sm mr-2"> Lihat <i class="bx bx-right-arrow-alt"></i></a>
                                 </td>

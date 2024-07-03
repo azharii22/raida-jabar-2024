@@ -21,6 +21,11 @@
             <div class="card-body">
 
                 <h4 class="card-title mb-5">Peserta</h4>
+                
+                <div class="card-title mb-5">
+                    <a href="{{ route('admin-data-peserta.index') }}" type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-undo"></i> Back To Peserta</a>
+                </div>
+
                 @if (count($errors) > 0)
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                     Error! <br />
@@ -50,7 +55,7 @@
                             <tr>
                                 <td>{{ ++$i }}</td>
                                 <td class="text-uppercase text-center">{{ $data->name }}</td>
-                                <td class="text-uppercase text-center">{{ count($villages) }}</td>
+                                <td class="text-uppercase text-center">{{ count($peserta->where('villages_id', $data->id)) }} Peserta</td>
                                 <td class="text-center">
                                     <a href="{{ route('admin-data-peserta.detailVillages',$data->id) }}" class="btn btn-success waves-effect waves-light btn-sm mr-2"> Lihat <i class="bx bx-right-arrow-alt"></i></a>
                                 </td>

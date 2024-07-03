@@ -209,7 +209,8 @@ class PesertaController extends Controller
     public function detailRegency($id)
     {
         $villages = Villages::where('regency_id', $id)->get();
-        return view('peserta.detail', compact('villages'));
+        $peserta = Peserta::get();
+        return view('peserta.detail', compact('villages', 'peserta'));
     }
     
     public function detailVillages($id)

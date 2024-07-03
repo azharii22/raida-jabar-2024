@@ -21,6 +21,12 @@
             <div class="card-body">
 
                 <h4 class="card-title mb-5">Peserta</h4>
+                
+                <div class="card-title mb-5">
+                    <a href="<?php echo e(route('peserta.excel')); ?>" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="<?php echo e(route('peserta.pdf')); ?>" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                </div>
+
                 <?php if(count($errors) > 0): ?>
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                     Error! <br />
@@ -44,6 +50,7 @@
                                 <th>Status</th>
                                 <th>Berkas Peserta</th>
                                 <th>Catatan</th>
+                                <th style="width: 10px;">Action</th>
                             </tr>
                         </thead>
 
@@ -102,6 +109,16 @@
                                     <?php else: ?>
                                     <?php echo e($data->catatan); ?>
 
+                                    <?php endif; ?>
+                                </td>
+                                <td class="text-center">
+                                    <?php if(auth()->user()->role_id == 1 && $data->status->name != 'Diterima'): ?>
+                                    <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-<?php echo e($data->id); ?>"><i class=" bx bx-check-circle"></i> Verifikasi</button>
+                                    <?php endif; ?>
+                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-<?php echo e($data->id); ?>"> <i class="bx bx-show"></i> Detail</button>
+                                    <?php if(auth()->user()->role_id == 1): ?>
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-<?php echo e($data->id); ?>"> <i class="bx bx-pencil"></i> Edit</button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-<?php echo e($data->id); ?>"> <i class="bx bx-trash"></i> Delete</button>
                                     <?php endif; ?>
                                 </td>
                             </tr>

@@ -21,6 +21,12 @@
             <div class="card-body">
 
                 <h4 class="card-title mb-5">Peserta</h4>
+                
+                <div class="card-title mb-5">
+                    <a href="{{ route('peserta.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="{{ route('peserta.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                </div>
+
                 @if (count($errors) > 0)
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                     Error! <br />
@@ -44,6 +50,7 @@
                                 <th>Status</th>
                                 <th>Berkas Peserta</th>
                                 <th>Catatan</th>
+                                <th style="width: 10px;">Action</th>
                             </tr>
                         </thead>
 
@@ -101,6 +108,16 @@
                                     </div>
                                     @else
                                     {{$data->catatan}}
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                    <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
+                                    @endif
+                                    <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}"> <i class="bx bx-show"></i> Detail</button>
+                                    @if (auth()->user()->role_id == 1)
+                                    <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i class="bx bx-pencil"></i> Edit</button>
+                                    <button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}"> <i class="bx bx-trash"></i> Delete</button>
                                     @endif
                                 </td>
                             </tr>
