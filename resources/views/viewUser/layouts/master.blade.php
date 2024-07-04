@@ -11,8 +11,6 @@
     {{-- <!-- Favicon --> --}}
     <link href="{{ config('settings.main.3_app_logo') }}" rel="icon">
 
-    <link rel="shortcut icon" href="{{ URL::asset('assets/images/logo-raida.png')}}">
-
     @include('viewUser.layouts.head-css')
     @yield('css')
 </head>
