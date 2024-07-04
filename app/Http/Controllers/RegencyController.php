@@ -15,13 +15,13 @@ class RegencyController extends Controller
 
     public function index()
     {
-        $data = Regency::where('name', 'ILIKE', '%'.request('q').'%')->paginate(27);
+        $data = Regency::where('name', 'LIKE', '%'.request('q').'%')->paginate(27);
         return response()->json($data);
     }
 
     public function villages($id)
     {
-        $data = Villages::where('regency_id', $id)->where('name', 'ILIKE', '%'.request('q').'%')->paginate(10);
+        $data = Villages::where('regency_id', $id)->where('name', 'LIKE', '%'.request('q').'%')->paginate(10);
         return response()->json($data);
     }
 
