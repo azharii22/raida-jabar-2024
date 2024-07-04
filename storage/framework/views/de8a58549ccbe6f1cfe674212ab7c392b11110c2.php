@@ -226,7 +226,7 @@
                             <?php $__currentLoopData = $peserta; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i =>$data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr>
                                 <td><?php echo e(++$i); ?></td>
-                                <td class="text-uppercase"><?php echo e($data->villages->name); ?></td>
+                                <td class="text-uppercase"><?php echo e($data->villages?->name); ?></td>
                                 <td class="text-uppercase"><?php echo e($data->nama_lengkap); ?></td>
                                 <td>
                                     <?php if($data->jenis_kelamin == 1): ?>

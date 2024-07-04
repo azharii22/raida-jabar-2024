@@ -25,19 +25,19 @@ class PesertaController extends Controller
 
     public function index()
     {
-        if (Auth::user()->role_id === 1) {
-            $regency = Regency::get();
+        if (Auth::user()->role_id == 1) {
+            $regency = Regency::orderBy('name')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $peserta = Peserta::orderBy('updated_at', 'DESC')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status', 'regency'));
-        } elseif (Auth::user()->role_id === 2) {
-            $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->get();
+        } elseif (Auth::user()->role_id == 2) {
+            $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->orderBy('nama_lengkap')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status'));
-        } elseif (Auth::user()->role_id === 3) {
+        } elseif (Auth::user()->role_id == 3) {
             $peserta = Peserta::with('villages')->where('regency_id', Auth::user()->regency_id)->orderBy('villages_id')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
