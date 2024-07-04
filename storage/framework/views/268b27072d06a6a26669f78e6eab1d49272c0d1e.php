@@ -11,6 +11,8 @@
     
     <link href="<?php echo e(config('settings.main.3_app_logo')); ?>" rel="icon">
 
+    <link rel="shortcut icon" href="<?php echo e(URL::asset('assets/images/logo-raida.png')); ?>">
+
     <?php echo $__env->make('viewUser.layouts.head-css', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
     <?php echo $__env->yieldContent('css'); ?>
 </head>
