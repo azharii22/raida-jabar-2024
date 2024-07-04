@@ -8,7 +8,7 @@
     <meta content="Raida" name="description" />
     <meta content="{{config('settings.main.1_app_name')}}" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{ URL::asset('assets/images/favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ URL::asset('assets/images/logo-raida.png') }}">
     @include('layouts.head-css')
 </head>
 
