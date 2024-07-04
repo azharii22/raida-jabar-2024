@@ -37,6 +37,13 @@ Auth::routes();
 
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 Route::get('/', [ViewUserController::class, 'index'])->name('viewUser');
+Route::get('/tentang', [ViewUserController::class, 'tentang'])->name('viewUser.tentang');
+Route::get('/media-unduh', [ViewUserController::class, 'mediaUnduh'])->name('viewUser.media-unduh');
+Route::get('/artikel', [ViewUserController::class, 'artikel'])->name('viewUser.artikel');
+Route::get('/kegiatan', [ViewUserController::class, 'kegiatan'])->name('viewUser.kegiatan');
+Route::get('/jadwal-kegiatan', [ViewUserController::class, 'jadwalKegiatan'])->name('viewUser.jadwalKegiatan');
+Route::get('/dokumentasi', [ViewUserController::class, 'dokumentasi'])->name('viewUser.dokumentasi');
+
 Route::resource('/admin-settings', SettingController::class);
 Route::put('/admin-settings-uploadFile{id}', [SettingController::class, 'uploadFile'])->name('admin-setting.file');
 

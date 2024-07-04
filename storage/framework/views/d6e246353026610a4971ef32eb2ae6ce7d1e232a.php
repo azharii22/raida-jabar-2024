@@ -10,11 +10,13 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a href="index.html" class="nav-item nav-link active">Beranda</a>
-                <a href="about.html" class="nav-item nav-link">Berita</a>
-                <a href="service.html" class="nav-item nav-link">Media Unduh</a>
-                <a href="project.html" class="nav-item nav-link">Artikel</a>
-                <a href="contact.html" class="nav-item nav-link">Dokumentasi</a>
+                <a href="index.html" class="nav-item nav-link <?php echo e(request()->routeIs('viewUser') ? 'active' : ''); ?>">Beranda</a>
+                <a href="<?php echo e(route('viewUser.tentang')); ?>" class="nav-item nav-link <?php echo e(request()->routeIs('viewUser.tentang') ? 'active' : ''); ?>">Tentang</a>
+                <a href="service.html" class="nav-item nav-link <?php echo e(request()->routeIs('viewUser') ? 'active' : ''); ?>">Media Unduh</a>
+                <a href="project.html" class="nav-item nav-link <?php echo e(request()->routeIs('viewUser') ? 'active' : ''); ?>">Artikel</a>
+                <a href="about.html" class="nav-item nav-link <?php echo e(request()->routeIs('viewUser') ? 'active' : ''); ?>">Kegiatan</a>
+                <a href="about.html" class="nav-item nav-link <?php echo e(request()->routeIs('viewUser') ? 'active' : ''); ?>">Jadwal Kegiatan</a>
+                <a href="contact.html" class="nav-item nav-link <?php echo e(request()->routeIs('viewUser') ? 'active' : ''); ?>">Dokumentasi</a>
             </div>
             <a href="/login" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">Login</a>
         </div>

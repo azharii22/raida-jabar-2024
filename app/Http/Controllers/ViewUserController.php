@@ -2,78 +2,50 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
+use App\Models\Artikel;
+use App\Models\DokumenPenting;
+use App\Models\DokumentasiKegiatan;
+use App\Models\JadwalKegiatan;
+use App\Models\Peserta;
+use App\Models\UnsurKontingen;
 class ViewUserController extends Controller
 {
     public function index()
     {
-        return view('viewUser.index');
+        $artikel    = Artikel::paginate(10);
+        $peserta    = Peserta::all();
+        $kontingen  = UnsurKontingen::all();
+        return view('viewUser.index', compact(['artikel', 'peserta', 'kontingen']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function tentang()
     {
-        //
+        return view('viewUser.tentang');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function mediaUnduh()
     {
-        //
+        $media = DokumenPenting::orderBy('updated_at', 'DESC')->get();
+        return view('viewUser.media_unduh', compact('media'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function artikel()
     {
-        //
+        $artikel = Artikel::orderBy('updated_at', 'DESC')->get();
+        return view('viewUser.artikel', compact('artikel'));
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function kegiatan()
     {
-        //
+        return view('viewUser.kegiatan');
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function jadwalKegiatan()
     {
-        //
+        $jadwalKegiatan = JadwalKegiatan::orderBy('updated_at', 'DESC')->get();
+        return view('viewUser.jadwal-kegiatan', compact('jadwalKegiatan'));
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function dokumentasi()
     {
-        //
+        $dokumentasi = DokumentasiKegiatan::orderBy('updated_at', 'DESC')->get();
+        return view('viewUser.dokumentasi', compact('dokumentasi'));
     }
 }

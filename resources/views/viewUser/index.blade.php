@@ -2,6 +2,10 @@
 
 @section('title', 'Home')
 
+@section('navbar')
+<img class="img-fluid" src="{{ URL::asset('assets/viewUser/img/raida/Header.png') }}" alt="">
+@endsection
+
 @section('content')
     {{-- <!-- About Start --> --}}
     <div class="container-xxl height-countdown bg-countdown">
@@ -13,7 +17,7 @@
                         <div class="text-center">
                             <p style="font-weight: bold" class="text-uppercase">Peserta</p>
                             <hr class="new" />
-                            <p style="color: black; font-weight: bold">12345 Peserta</p>
+                            <p style="color: black; font-weight: bold">{{ count($peserta) }} Peserta</p>
                         </div>
                         <hr>
                     </div>
@@ -35,7 +39,7 @@
                         <div class="text-center">
                             <p style="font-weight: bold" class="text-uppercase">Kontingen</p>
                             <hr class="new" />
-                            <p style="color: black; font-weight: bold">12345 Peserta</p>
+                            <p style="color: black; font-weight: bold">{{ count($kontingen) }} Peserta</p>
                         </div>
                         <hr>
                     </div>
@@ -80,21 +84,20 @@
 
     {{-- <!-- Testimonial Start --> --}}
     <div class="container-xxl py-5 my-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container bg-header py-5 px-lg-5" style="border-radius: 30px">
+        <div class="container py-5 px-lg-5" style="border-radius: 30px">
             <h2 style="text-align: center" class="p-5">ARTIKEL RAIDA</h2>
             <div class="owl-carousel owl-theme testimonial-carousel">
-                <div class="testimonial-item bg-transparent border rounded text-white p-4">
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle"
-                            src="{{ URL::asset('assets/viewUser/img/testimonial-1.jpg') }}"
-                            style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h6 class="text-white mb-1">Client Name</h6>
-                            <small>Profession</small>
+                @foreach ($artikel as $data)
+                    <div class="testimonial-item bg-transparent border rounded text-white p-4">
+                        <div class="container-img">
+                            <img src="{{ Storage::url('img/artikel/' . $data->foto) }}"
+                                style="height: 250px; width: 100%;" />
+                            <div class="bottom-centerd mt-5">
+                                <p class="text-capitalize " style="color: black">{{ $data->judul }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
@@ -117,34 +120,6 @@
 @endsection
 
 @section('script')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(".owl-carousel").owlCarousel({
-                loop: true,
-                margin: 10,
-                nav: true,
-                autoplay: true,
-                autoplayTimeout: 3000,
-                autoplayHoverPause: true,
-                center: true,
-                navText: [
-                    "<i class='fa fa-angle-left'></i>",
-                    "<i class='fa fa-angle-right'></i>"
-                ],
-                responsive: {
-                    0: {
-                        items: 1
-                    },
-                    600: {
-                        items: 1
-                    },
-                    1000: {
-                        items: 3
-                    }
-                }
-            });
-        });
-    </script>
     <script>
         // Set the date we're counting down to
         var countDownDate = new Date("Sep 16, 2024 00:00:00").getTime();
@@ -188,4 +163,12 @@
             border: 3px solid #fff;
             border-radius: 5px;
         }
+
+        .container-img {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+
     </style>
+@endsection

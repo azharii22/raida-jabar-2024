@@ -4,6 +4,7 @@
     --secondary: #4777F5;
     --light: #F7FAFF;
     --dark: #1D1D27;
+    --header: #0B557F;
 }
 
 
@@ -275,7 +276,7 @@ h6,
 }
 
 .service-item:hover .service-icon {
-    color: var(--primary);
+    color: var(--header);
     background: url(../img/icon-shape-white.png);
 }
 
