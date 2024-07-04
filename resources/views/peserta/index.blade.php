@@ -225,7 +225,7 @@
                             @foreach ($peserta as $i =>$data)
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td class="text-uppercase">{{ $data->villages->name }}</td>
+                                <td class="text-uppercase">{{ $data->villages?->name }}</td>
                                 <td class="text-uppercase">{{ $data->nama_lengkap }}</td>
                                 <td>
                                     @if ($data->jenis_kelamin == 1)
