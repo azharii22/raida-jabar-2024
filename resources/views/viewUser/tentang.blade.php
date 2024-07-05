@@ -14,14 +14,14 @@
                     <h5 class="fw-bold text-primary text-uppercase">Tentang Raimuna Jabar 2024</h5>
                 </div>
                 <p class="mb-4" style="text-align: justify">
-                    Peran Saka adalah kegiatan bagi pramuka Penegak dan Pandega yang merupakan
-                    gabungan dari kegiatan 14 Satuan Karya yakni Saka Adhiyasta Pemilu, Saka Bahari, Saka
-                    Bakti Husada, Saka Bhayangkara, Saka Dirgantara, Saka Kalpataru, Saka Kencana, Saka
-                    Pariwisata, Saka Taruna Bumi, Saka BPOM, Saka Wanabakti, Saka Widya Budaya Bakti,
-                    Saka Wirakartika, Saka Amal Bhakti dan 5 Satuan Komunitas Pramuka yakni, Sako Pasundan, 
-                    Sako Sekawan Persada Nusantara (SPN), Sako Ma'arif NU, Sako Sekolah Islam Terpatu (SIT), Sako Syarikat Islam Angkatan Pandu (SIAP).
-                    Peran Saka Daerah Jawa Barat Tahun 2023 dirancang, dikemas dalam bentuk kegiatan perkemahan 
-                    dengan berbagai aktivitas yang bersifat aktif, kreatif, produktif, edukatif, inovatif dan rekreatif.
+                Raimuna adalah pertemuan Pramuka Penegak dan Pandega, 
+                berasal dari bahasa Ambai di Papua yang berarti "sekumpulan orang dengan 
+                tujuan tertentu" dan "kekuatan bernilai baik untuk kesuskesan."
+                Raimuna dirancang untuk pengembangan diri, peningkatan kualitas, dan kemajuan generasi muda.
+                
+                Raimuna Daerah Jawa Barat XIV Tahun 2024 akan berlangsung di Bumi Perkemahan 
+                Pramuka Letjen TNI (Purn) Dr. (HC) Mashudi, Kiarapayung, Sumedang, 
+                dari 16 hingga 21 September 2024.
                 </p>
                 {{-- <!-- <div class="row g-0 mb-3">
                     <div class="col-sm-6 wow zoomIn" data-wow-delay="0.2s">
