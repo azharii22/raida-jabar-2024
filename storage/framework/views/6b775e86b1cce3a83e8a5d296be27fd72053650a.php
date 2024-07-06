@@ -46,7 +46,10 @@
              <div class="row">
                  <div class="col-md-12y text-center text-md-start mb-3 mb-md-0">
                      &copy; <a class="border-bottom" href="#"><?php echo e(config('settings.main.1_app_name')); ?></a>, All
-                     Right Reserved.
+                     Right Reserved. 
+                     <script>
+                        document.write(new Date().getFullYear())
+                    </script>
                      
                      
                  </div>

@@ -12,12 +12,7 @@
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu">@lang('translation.Dashboards')</li>
                 <li><a href="/admin" class="waves-effect"> <i class="bx bx-home-circle"></i> <span key="t-dashboards">@lang('translation.Dashboards')</span> </a> </li>
-                <li class="menu-title" key="t-menu">@lang('translation.Menu')</li>
-                <li><a href="{{ route('admin-artikel.index') }}" class="waves-effect"> <i class="bx bx-archive"></i> <span key="t-dashboards">Artikel</span> </a> </li>
-                <li><a href="{{ route('admin-dokumentasi-kegiatan.index') }}" key="t-tui-dokumentasi"><i class="bx bx-photo-album"></i><span key="t-dokumentasi">Dokumentasi Kegiatan</span></a></li>
-                <li><a href="{{ route('admin-kegiatan.index') }}" key="t-tui-kegiatan"><i class="bx bx-walk"></i><span key="t-kegiatan">Kegiatan</span></a></li>
-                <li><a href="{{ route('admin-jadwal-kegiatan.index') }}" key="t-tui-jadwalKegiatan"><i class="bx bx-calendar"></i><span key="t-jadwalKegiatan">Jadwal Kegiatan</span></a></li>
-                <li><a href="{{ route('admin-dokumen-penting.index') }}" key="t-tui-dokumenPenting"><i class="bx bx-file"></i><span key="t-dokumenPenting">Dokumen Penting</span></a></li>
+                <li class="menu-title" key="t-menu">Master Data</li>
                 <li><a href="{{ route('admin-kategori.index') }}" key="t-tui-kategori"><i class="bx bx-file"></i><span key="t-kategori">Kategori</span></a></li>
                 <li><a href="{{ route('admin-region.index') }}" key="t-tui-region"><i class="mdi mdi-flag"></i><span key="t-region">Region</span></a></li>
                 <li>
@@ -32,6 +27,22 @@
                         <li><a href="{{ route('admin-data-pembayaran.index') }}" key="t-pembayaran">Data Pembayaran</a></li>
                     </ul>
                 </li>
+                <li class="menu-title" key="t-pages">View User</li>
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <i class="bx bx-analyse"></i>
+                        <span key="t-contacts">Setting View User</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('admin-tentang.index') }}" key="t-user-grid">Tentang</a></li>
+                        <li><a href="{{ route('admin-dokumen-penting.index') }}" key="t-tui-dokumenPenting"><span key="t-dokumenPenting">Dokumen Penting</span></a></li>
+                        <li><a href="{{ route('admin-artikel.index') }}" class="waves-effect">  <span key="t-dashboards">Artikel</span> </a> </li>
+                        <li><a href="{{ route('admin-kegiatan.index') }}" key="t-tui-kegiatan"><span key="t-kegiatan">Kegiatan</span></a></li>
+                        <li><a href="{{ route('admin-jadwal-kegiatan.index') }}" key="t-tui-jadwalKegiatan"><span key="t-jadwalKegiatan">Jadwal Kegiatan</span></a></li>
+                        <li><a href="{{ route('admin-dokumentasi-kegiatan.index') }}" key="t-tui-dokumentasi"><span key="t-dokumentasi">Dokumentasi Kegiatan</span></a></li>
+                    </ul>
+                </li>
+
                 <li class="menu-title" key="t-pages">@lang('translation.Pages')</li>
                 <li> <a href="{{ route('admin-user.index') }}" class="waves-effect"> <i class="bx bx-user-circle"></i> <span key="t-dashboards">User Management</span> </a> </li>
                 <li> <a href="{{ route('admin-settings.index') }}" class="waves-effect"> <i class="bx bx-cog"></i> <span key="t-dashboards">Settings</span> </a> </li>

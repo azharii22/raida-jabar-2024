@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
-    <meta content="Raida" name="description" />
+    <meta content="Raimuna Daerah Jawa Barat XIV Tahun 2024" name="description" />
     <meta content="<?php echo e(config('settings.main.1_app_name')); ?>" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?php echo e(URL::asset('assets/images/logo-raida.png')); ?>">

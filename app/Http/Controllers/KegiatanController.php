@@ -20,6 +20,11 @@ class KegiatanController extends Controller
         return view('kegiatan.index', compact('kegiatan'));
     }
 
+    public function create()
+    {
+        return view('kegiatan.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -33,12 +38,18 @@ class KegiatanController extends Controller
             'user_id'   => Auth::user()->id
         ]));
         Alert::success('Success!', 'Data Created Successfully');
-        return back();
+        return redirect()->route('admin-kegiatan.index');
     }
 
     public function show(Kegiatan $kegiatan)
     {
         return $kegiatan;
+    }
+
+    public function edit($id)
+    {
+        $kegiatan = Kegiatan::find($id);
+        return view('kegiatan.edit', compact('kegiatan'));
     }
 
     public function update(Request $request, $id)
@@ -55,7 +66,7 @@ class KegiatanController extends Controller
             'user_id' => Auth::user()->id
         ]));
         Alert::success('Success!', 'Data Updated Successfully');
-        return back();
+        return redirect()->route('admin-kegiatan.index');
     }
 
     public function destroy($id)

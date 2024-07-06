@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Setting;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -38,6 +39,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('currency', function ($expression) {
             return "Rp. <?php echo number_format($expression,0,',','.'); ?>";
         });
+
+        Paginator::defaultView('vendor.your-pagination-view-name');
+
+        Paginator::defaultSimpleView('vendor.your-pagination-view-name');
 
         // Schema::defaultStringLength(191);
         // Setting::chargeConfig();

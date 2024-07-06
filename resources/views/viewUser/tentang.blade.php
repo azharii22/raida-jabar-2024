@@ -13,15 +13,17 @@
                 <div class="section-title position-relative pb-3 mb-5">
                     <h5 class="fw-bold text-primary text-uppercase">Tentang Raimuna Jabar 2024</h5>
                 </div>
+
                 <p class="mb-4" style="text-align: justify">
-                Raimuna adalah pertemuan Pramuka Penegak dan Pandega, 
+                {{-- Raimuna adalah pertemuan Pramuka Penegak dan Pandega, 
                 berasal dari bahasa Ambai di Papua yang berarti "sekumpulan orang dengan 
                 tujuan tertentu" dan "kekuatan bernilai baik untuk kesuskesan."
                 Raimuna dirancang untuk pengembangan diri, peningkatan kualitas, dan kemajuan generasi muda.
                 
                 Raimuna Daerah Jawa Barat XIV Tahun 2024 akan berlangsung di Bumi Perkemahan 
                 Pramuka Letjen TNI (Purn) Dr. (HC) Mashudi, Kiarapayung, Sumedang, 
-                dari 16 hingga 21 September 2024.
+                dari 16 hingga 21 September 2024. --}}
+                {!! $tentang->name !!}
                 </p>
                 {{-- <!-- <div class="row g-0 mb-3">
                     <div class="col-sm-6 wow zoomIn" data-wow-delay="0.2s">
@@ -46,7 +48,8 @@
             </div>
             <div class="col-lg-5" style="min-height: 100%;">
                 <div class="position-relative h-100">
-                    <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s" src="{{URL::asset('assets/viewUser/img/raida/Header.png')}}">
+                    {{-- <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s" src="{{URL::asset('assets/viewUser/img/raida/Header.png')}}"> --}}
+                    <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s" src="{{ Storage::url('viewUser/img/tentang/'.$tentang->foto) }}">
                 </div>
             </div>
 
