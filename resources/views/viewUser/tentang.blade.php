@@ -21,8 +21,13 @@
                 </div>
                 <div class="col-lg-5" style="min-height: 100%;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s"
-                            src="{{ Storage::url('viewUser/img/tentang/' . $tentang->foto) ? Storage::url('viewUser/img/tentang/' . $tentang->foto) : asset('/assets/viewUser/img/raida/Header.png') }}">
+                        @if ($tentang == null)
+                            Silahkan Isi Dahulu di Admin
+                        @else
+                            <img class="position-absolute w-100 h-100 rounded wow zoomIn" data-wow-delay="0.9s"
+                                src="{{ Storage::url('viewUser/img/tentang/' . $tentang->foto) ? Storage::url('viewUser/img/tentang/' . $tentang->foto) : asset('/assets/viewUser/img/raida/Header.png') }}">
+                        @endif
+
                     </div>
                 </div>
             </div>
