@@ -21,7 +21,7 @@ class PembayaranExport implements FromCollection, WithHeadings, WithColumnWidths
 {
     public function collection()
     {
-        $pembayaran = Pembayaran::with('user')->orderBy('user_id', 'ASC')->get();
+        $pembayaran = Pembayaran::with('user')->where('user_id', auth()->user()->id)->orderBy('user_id', 'ASC')->get();
         foreach ($pembayaran as $data) {
             $datas[] = array(
                 'nama' => $data->user->nama,
@@ -44,7 +44,7 @@ class PembayaranExport implements FromCollection, WithHeadings, WithColumnWidths
     public function drawings()
     {
 
-        $pembayaran = Pembayaran::with('user')->orderBy('user_id', 'ASC')->get();
+        $pembayaran = Pembayaran::with('user')->where('user_id', auth()->user()->id)->orderBy('user_id', 'ASC')->get();
         $drawings = [];
         foreach ($pembayaran as $key => $data) {
             $drawing = new Drawing();
