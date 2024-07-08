@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <title>@yield('title') | {{ config('settings.main.1_app_name') }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="{{ config('settings.main.1_app_name') }}" name="keywords">
+    <meta content="{{ config('settings.main.1_app_name') }}" name="author">
     <meta content="{{ config('settings.main.2_app_description') }}" name="description">
 
     {{-- <!-- Favicon --> --}}
