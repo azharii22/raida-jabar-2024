@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kategori;
+use App\Models\Peserta;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -38,7 +40,58 @@ class HomeController extends Controller
 
     public function root()
     {
-        return view('index');
+        $bindamping     = Kategori::where('name', 'LIKE', "%Bindamping%")->first();
+        $peserta        = Kategori::where('name', 'LIKE', "%Peserta%")->first();
+        $pinkoncab      = Kategori::where('name', 'LIKE', "%Pinkoncab%")->first();
+        $pinkonran      = Kategori::where('name', 'LIKE', "%Pinkonran%")->first();
+        $staffKontingen = Kategori::where('name', 'LIKE', "%Staff Kontingen%")->first();
+        $tenagaMedis    = Kategori::where('name', 'LIKE', "%Tenaga Medis%")->first();
+        if (auth()->user()->role_id == 1) {
+            $userBindamping     = Peserta::where('kategori_id', $bindamping->id)->count();
+            $userPeserta        = Peserta::where('kategori_id', $peserta->id)->count();
+            $userPinkoncab      = Peserta::where('kategori_id', $pinkoncab->id)->count();
+            $userPinkonran      = Peserta::where('kategori_id', $pinkonran->id)->count();
+            $userStaffKontingen = Peserta::where('kategori_id', $staffKontingen->id)->count();
+            $userTenagaMedis    = Peserta::where('kategori_id', $tenagaMedis->id)->count();
+            return view('index', compact([
+                'userBindamping',
+                'userPeserta',
+                'userPinkoncab',
+                'userPinkonran',
+                'userStaffKontingen',
+                'userTenagaMedis',
+            ]));
+        } elseif (auth()->user()->role_id == 2) {
+            $userBindamping     = Peserta::where('kategori_id', $bindamping->id)->where('villages_id', Auth::user()->villages_id)->count();
+            $userPeserta        = Peserta::where('kategori_id', $peserta->id)->where('villages_id', Auth::user()->villages_id)->count();
+            $userPinkoncab      = Peserta::where('kategori_id', $pinkoncab->id)->where('villages_id', Auth::user()->villages_id)->count();
+            $userPinkonran      = Peserta::where('kategori_id', $pinkonran->id)->where('villages_id', Auth::user()->villages_id)->count();
+            $userStaffKontingen = Peserta::where('kategori_id', $staffKontingen->id)->where('villages_id', Auth::user()->villages_id)->count();
+            $userTenagaMedis    = Peserta::where('kategori_id', $tenagaMedis->id)->where('villages_id', Auth::user()->villages_id)->count();
+            return view('index', compact([
+                'userBindamping',
+                'userPeserta',
+                'userPinkoncab',
+                'userPinkonran',
+                'userStaffKontingen',
+                'userTenagaMedis',
+            ]));
+        } elseif (auth()->user()->role_id == 3) {
+            $userBindamping     = Peserta::where('kategori_id', $bindamping->id)->where('regency_id', Auth::user()->regency_id)->count();
+            $userPeserta        = Peserta::where('kategori_id', $peserta->id)->where('regency_id', Auth::user()->regency_id)->count();
+            $userPinkoncab      = Peserta::where('kategori_id', $pinkoncab->id)->where('regency_id', Auth::user()->regency_id)->count();
+            $userPinkonran      = Peserta::where('kategori_id', $pinkonran->id)->where('regency_id', Auth::user()->regency_id)->count();
+            $userStaffKontingen = Peserta::where('kategori_id', $staffKontingen->id)->where('regency_id', Auth::user()->regency_id)->count();
+            $userTenagaMedis    = Peserta::where('kategori_id', $tenagaMedis->id)->where('regency_id', Auth::user()->regency_id)->count();
+            return view('index', compact([
+                'userBindamping',
+                'userPeserta',
+                'userPinkoncab',
+                'userPinkonran',
+                'userStaffKontingen',
+                'userTenagaMedis',
+            ]));
+        }
     }
 
     /*Language Translation*/
