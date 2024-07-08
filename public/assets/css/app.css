@@ -4056,7 +4056,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before {
   border-radius: 50%;
 }
 .auth-full-bg .bg-overlay {
-  background: url("../images/bg-auth-overlay.png");
+  background: url("../viewUser/img/raida/Header.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;

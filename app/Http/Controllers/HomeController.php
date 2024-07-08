@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class HomeController extends Controller
 {
@@ -52,42 +54,41 @@ class HomeController extends Controller
         }
     }
 
-    public function updateProfile(Request $request, $id)
+    public function updateProfile(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email'],
-            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'name'      => ['required', 'string', 'max:255'],
+            'fullname'  => ['required', 'string', 'max:255'],
+            'email'     => ['required', 'string', 'email'],
+            'avatar'    => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
         ]);
 
-        $user = User::find($id);
+        $user = User::where('id', auth()->user()->id)->first();
         $user->name = $request->get('name');
+        $user->fullname = $request->get('fullname');
         $user->email = $request->get('email');
 
         if ($request->file('avatar')) {
-            $avatar = $request->file('avatar');
-            $avatarName = time() . '.' . $avatar->getClientOriginalExtension();
-            $avatarPath = public_path('/images/');
-            $avatar->move($avatarPath, $avatarName);
-            $user->avatar = '/images/' . $avatarName;
-        }
+            $image = $request->file('avatar');
+            $image->storeAs('public/img/user', $image->hashName());
+            Storage::delete('public/img/user/' . $user->avatar);
 
-        $user->update();
-        if ($user) {
-            Session::flash('message', 'User Details Updated successfully!');
-            Session::flash('alert-class', 'alert-success');
-            return response()->json([
-                'isSuccess' => true,
-                'Message' => "User Details Updated successfully!"
-            ], 200); // Status code here
+            $user->update(array_merge($request->all(), [
+                'avatar' => $image->hashName()
+            ]));
         } else {
-            Session::flash('message', 'Something went wrong!');
-            Session::flash('alert-class', 'alert-danger');
-            return response()->json([
-                'isSuccess' => true,
-                'Message' => "Something went wrong!"
-            ], 200); // Status code here
-        }
+            $user->update($request->all());
+        };
+        return back();
+
+        // $user->update();
+        // if ($user) {
+        //     Alert::sucess('Success!', 'User Profile Updated successfully!');
+        //     return back();
+        // } else {
+        //     Alert::error('Failed!', 'Something went wrong!');
+        //     return back();
+        // }
     }
 
     public function updatePassword(Request $request, $id)
