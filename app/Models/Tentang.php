@@ -10,6 +10,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tentang extends Model
 {
     use HasFactory, Uuid, SoftDeletes;
+    protected $table = 'tentangs';
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    protected $casts = [
+        'id' => 'string',
+    ];
     protected $fillable = [
         'name',
         'user_id',
