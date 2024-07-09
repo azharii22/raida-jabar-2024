@@ -111,7 +111,7 @@
                 <img src="assets/viewUser/img/raida/berdampak serentak.png" style="width: 100%" />
             </div>
             <div class="text-center">
-                <a href="" class="btn btn-lg text-white"
+                <a href="{{ route('admin-data-unsur-kontingen.index') }}" class="btn btn-lg text-white"
                     style="border-radius: 50px; background-color: #E38725">Pendaftaran Kontingen</a>
             </div>
         </div>

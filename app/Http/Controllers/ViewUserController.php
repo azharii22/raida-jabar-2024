@@ -7,6 +7,7 @@ use App\Models\DokumenPenting;
 use App\Models\DokumentasiKegiatan;
 use App\Models\ImageUpload;
 use App\Models\JadwalKegiatan;
+use App\Models\Kategori;
 use App\Models\Kegiatan;
 use App\Models\Peserta;
 use App\Models\ReviewRating;
@@ -18,9 +19,11 @@ class ViewUserController extends Controller
 {
     public function index()
     {
-        $artikel    = Artikel::paginate(10);
-        $peserta    = Peserta::all();
-        $kontingen  = UnsurKontingen::all();
+        $artikel            = Artikel::orderBy('updated_at', 'DESC')->paginate(10);
+        $notKontingen       = Kategori::where('name', 'LIKE', 'Peserta')->first();
+        $peserta            = Peserta::where('kategori_id', $notKontingen->id)->get();
+        $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+        $kontingen          = Peserta::whereIn('kategori_id', $kategoriNotPeserta)->get();
         return view('viewUser.index', compact(['artikel', 'peserta', 'kontingen']));
     }
 
