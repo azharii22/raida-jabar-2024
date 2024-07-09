@@ -61,7 +61,7 @@
                                     </div>
 
                                     <div class="mt-4">
-                                        <form class="form-horizontal" method="POST" action="<?php echo e(route('login')); ?>">
+                                        <form class="form-horizontal" method="POST" action="<?php echo e(route('auth.authenticate')); ?>">
                                             <?php echo csrf_field(); ?>
                                             <div class="mb-3">
                                                 <label for="username" class="form-label">Email</label>

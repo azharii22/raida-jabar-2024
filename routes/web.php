@@ -8,6 +8,7 @@ use App\Http\Controllers\ImageUploadController;
 use App\Http\Controllers\JadwalKegiatanController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\RegencyController;
@@ -34,7 +35,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('phpinfo', function () {
     return phpinfo();
 });
-Auth::routes();
+// Auth::routes();
+Route::get('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.authenticate');
+
+// Register
+Route::get('/register', [LoginController::class, 'register'])->name('auth.register');
+Route::post('/register', [LoginController::class, 'store'])->name('auth.store');
+
+// Logout
+Route::post('/logout', [LoginController::class, 'logout'])->name('auth.logout');
 
 Route::get('/admin', [App\Http\Controllers\HomeController::class, 'root'])->name('root');
 
