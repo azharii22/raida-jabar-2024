@@ -8,7 +8,7 @@
     <meta content="<?php echo e(config('settings.main.1_app_name')); ?>" name="author" />
     <meta content="<?php echo e(config('settings.main.2_app_description')); ?>" style="border-radius: 20px" name="description" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="<?php echo e(Storage::url('public/setting' . '/' . config('settings.main.3_app_logo'))); ?>">
+    <link rel="icon" href="<?php echo e(Storage::url('public/setting' . '/' . config('settings.main.3_app_logo'))); ?>">
     <?php echo $__env->make('layouts.head-css', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 </head>
 

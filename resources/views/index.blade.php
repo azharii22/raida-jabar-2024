@@ -1,41 +1,35 @@
 @extends('layouts.master')
 
-@section('title') @lang('translation.Dashboards') @endsection
+@section('title')
+    @lang('translation.Dashboards')
+@endsection
 
 @section('content')
-
-@component('components.breadcrumb')
-@slot('li_1') Dashboards @endslot
-@slot('title') Dashboard @endslot
-@endcomponent
-
-<div class="row">
-    <div class="col-xl-4">
-        <div class="card overflow-hidden">
-            <div class="bg-primary bg-soft">
-                <div class="row">
-                    <div class="col-7">
-                        <div class="text-primary p-3">
-                            <h5 class="text-primary">Welcome Back !</h5>
-                            <p>{{ config('settings.main.1_app_name') }}</p>
+    <div class="row">
+        <div class="col" style="min-width: max-content">
+            <div class="card overflow-hidden">
+                <div class="bg-header bg-soft">
+                    <div class="row">
+                        <div class="col-5">
+                            
                         </div>
-                    </div>
-                    <div class="col-5 align-self-end">
-                        <img src="{{ URL::asset('assets/images/profile-img.png') }}" alt="" class="img-fluid">
+                        <div class="col-5 align-self-end">
+                            <img src="{{ URL::asset('assets/viewUser/img/raida/Raida Putih.png') }}" alt="" class="m-5" style="width: 100%; height: 20rem;">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="card-body pt-0">
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="avatar-md profile-user-wid mb-4">
-                            <img src="{{ isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}" alt="" class="img-thumbnail rounded-circle">
+                <div class="card-body pt-0">
+                    <div class="row">
+                        <div class="col-sm-4 text-center">
+                            <div class="avatar-md profile-user-wid mb-3">
+                                <img src="{{ isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}"
+                                    alt="" class="img-thumbnail rounded-circle">
+                            </div>
+                            <h5 class="font-size-15 text-truncate">Hi, {{ auth()->user()->fullname }}. <br /> Welcome back To {{ config('settings.main.1_app_name') }}</h5>
+                            {{-- <p class="text-muted mb-0 text-truncate">UI/UX Designer</p> --}}
                         </div>
-                        <h5 class="font-size-15 text-truncate">{{ Str::ucfirst(Auth::user()->name) }}</h5>
-                        {{-- <p class="text-muted mb-0 text-truncate">UI/UX Designer</p> --}}
-                    </div>
 
-                    {{-- <div class="col-sm-8">
+                        {{-- <div class="col-sm-8">
                         <div class="pt-4">
 
                             <div class="row">
@@ -53,139 +47,149 @@
                             </div>
                         </div>
                     </div> --}}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xl-8">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card mini-stats-wid">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="flex-grow-1">
-                                <p class="text-muted fw-medium">Bindamping</p>
-                                <h4 class="mb-0">{{ $userBindamping }}</h4>
-                            </div>
-
-                            <div class="flex-shrink-0 align-self-center">
-                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
-                                    <span class="avatar-title">
-                                        <i class="bx bx-copy-alt font-size-24"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mini-stats-wid">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="flex-grow-1">
-                                <p class="text-muted fw-medium">Peserta</p>
-                                <h4 class="mb-0">{{ $userPeserta }}</h4>
-                            </div>
-
-                            <div class="flex-shrink-0 align-self-center ">
-                                <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                    <span class="avatar-title rounded-circle bg-primary">
-                                        <i class="bx bx-archive-in font-size-24"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mini-stats-wid">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="flex-grow-1">
-                                <p class="text-muted fw-medium">Pinkoncab</p>
-                                <h4 class="mb-0">{{ $userPinkoncab }}</h4>
-                            </div>
-
-                            <div class="flex-shrink-0 align-self-center">
-                                <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                    <span class="avatar-title rounded-circle bg-primary">
-                                        <i class="bx bx-purchase-tag-alt font-size-24"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mini-stats-wid">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="flex-grow-1">
-                                <p class="text-muted fw-medium">Pinkonran</p>
-                                <h4 class="mb-0">{{ $userPinkonran }}</h4>
-                            </div>
-
-                            <div class="flex-shrink-0 align-self-center">
-                                <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
-                                    <span class="avatar-title">
-                                        <i class="bx bx-copy-alt font-size-24"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mini-stats-wid">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="flex-grow-1">
-                                <p class="text-muted fw-medium">Staff Kontingen</p>
-                                <h4 class="mb-0">{{ $userStaffKontingen }}</h4>
-                            </div>
-
-                            <div class="flex-shrink-0 align-self-center ">
-                                <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                    <span class="avatar-title rounded-circle bg-primary">
-                                        <i class="bx bx-archive-in font-size-24"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card mini-stats-wid">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="flex-grow-1">
-                                <p class="text-muted fw-medium">Tenaga Medis</p>
-                                <h4 class="mb-0">{{ $userTenagaMedis }}</h4>
-                            </div>
-
-                            <div class="flex-shrink-0 align-self-center">
-                                <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                    <span class="avatar-title rounded-circle bg-primary">
-                                        <i class="bx bx-purchase-tag-alt font-size-24"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- end row -->
-    </div>
-</div>
-<!-- end row -->
+        <div class="col-xl-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted fw-medium">Bindamping</p>
+                                    <h4 class="mb-0">{{ $userBindamping }}</h4>
+                                </div>
 
-{{-- <div class="row">
+                                <div class="flex-shrink-0 align-self-center">
+                                    <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                        <span class="avatar-title">
+                                            <i class="bx bx-copy-alt font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted fw-medium">Peserta</p>
+                                    <h4 class="mb-0">{{ $userPeserta }}</h4>
+                                </div>
+
+                                <div class="flex-shrink-0 align-self-center ">
+                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
+                                        <span class="avatar-title rounded-circle bg-primary">
+                                            <i class="bx bx-archive-in font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted fw-medium">Pinkoncab</p>
+                                    <h4 class="mb-0">{{ $userPinkoncab }}</h4>
+                                </div>
+
+                                <div class="flex-shrink-0 align-self-center">
+                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
+                                        <span class="avatar-title rounded-circle bg-primary">
+                                            <i class="bx bx-purchase-tag-alt font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted fw-medium">Pinkonran</p>
+                                    <h4 class="mb-0">{{ $userPinkonran }}</h4>
+                                </div>
+
+                                <div class="flex-shrink-0 align-self-center">
+                                    <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                        <span class="avatar-title">
+                                            <i class="bx bx-copy-alt font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted fw-medium">Staff Kontingen</p>
+                                    <h4 class="mb-0">{{ $userStaffKontingen }}</h4>
+                                </div>
+
+                                <div class="flex-shrink-0 align-self-center ">
+                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
+                                        <span class="avatar-title rounded-circle bg-primary">
+                                            <i class="bx bx-archive-in font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted fw-medium">Tenaga Medis</p>
+                                    <h4 class="mb-0">{{ $userTenagaMedis }}</h4>
+                                </div>
+
+                                <div class="flex-shrink-0 align-self-center">
+                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
+                                        <span class="avatar-title rounded-circle bg-primary">
+                                            <i class="bx bx-purchase-tag-alt font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end row -->
+        </div>
+        <div class="col">
+            <div class="card" style="height: 95%">
+                <div class="card-body">
+                    <div class="text-center mt-5">
+                        <h1 class="text-muted fw-medium mb-3">Grand Total Peserta</>
+                        <h2 class="mb-0">{{ $grandTotalPeserta }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+
+    {{-- <div class="row">
     <div class="col-xl-4">
         <div class="card">
             <div class="card-body">
@@ -378,13 +382,12 @@
         </div>
     </div>
 </div> --}}
-<!-- end row -->
-
+    <!-- end row -->
 @endsection
 @section('script')
-<!-- apexcharts -->
-<script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+    <!-- apexcharts -->
+    <script src="{{ URL::asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 
-<!-- dashboard init -->
-<script src="{{ URL::asset('assets/js/pages/dashboard.init.js') }}"></script>
+    <!-- dashboard init -->
+    <script src="{{ URL::asset('assets/js/pages/dashboard.init.js') }}"></script>
 @endsection

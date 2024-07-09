@@ -53,6 +53,7 @@ class HomeController extends Controller
             $userPinkonran      = Peserta::where('kategori_id', $pinkonran->id)->count();
             $userStaffKontingen = Peserta::where('kategori_id', $staffKontingen->id)->count();
             $userTenagaMedis    = Peserta::where('kategori_id', $tenagaMedis->id)->count();
+            $grandTotalPeserta  = Peserta::count();
             return view('index', compact([
                 'userBindamping',
                 'userPeserta',
@@ -60,6 +61,7 @@ class HomeController extends Controller
                 'userPinkonran',
                 'userStaffKontingen',
                 'userTenagaMedis',
+                'grandTotalPeserta',
             ]));
         } elseif (auth()->user()->role_id == 2) {
             $userBindamping     = Peserta::where('kategori_id', $bindamping->id)->where('villages_id', Auth::user()->villages_id)->count();
@@ -68,6 +70,7 @@ class HomeController extends Controller
             $userPinkonran      = Peserta::where('kategori_id', $pinkonran->id)->where('villages_id', Auth::user()->villages_id)->count();
             $userStaffKontingen = Peserta::where('kategori_id', $staffKontingen->id)->where('villages_id', Auth::user()->villages_id)->count();
             $userTenagaMedis    = Peserta::where('kategori_id', $tenagaMedis->id)->where('villages_id', Auth::user()->villages_id)->count();
+            $grandTotalPeserta  = Peserta::where('villages_id', Auth::user()->villages_id)->count();
             return view('index', compact([
                 'userBindamping',
                 'userPeserta',
@@ -75,6 +78,7 @@ class HomeController extends Controller
                 'userPinkonran',
                 'userStaffKontingen',
                 'userTenagaMedis',
+                'grandTotalPeserta',
             ]));
         } elseif (auth()->user()->role_id == 3) {
             $userBindamping     = Peserta::where('kategori_id', $bindamping->id)->where('regency_id', Auth::user()->regency_id)->count();
@@ -83,6 +87,7 @@ class HomeController extends Controller
             $userPinkonran      = Peserta::where('kategori_id', $pinkonran->id)->where('regency_id', Auth::user()->regency_id)->count();
             $userStaffKontingen = Peserta::where('kategori_id', $staffKontingen->id)->where('regency_id', Auth::user()->regency_id)->count();
             $userTenagaMedis    = Peserta::where('kategori_id', $tenagaMedis->id)->where('regency_id', Auth::user()->regency_id)->count();
+            $grandTotalPeserta  = Peserta::where('regency_id', Auth::user()->regency_id)->count();
             return view('index', compact([
                 'userBindamping',
                 'userPeserta',
@@ -90,6 +95,7 @@ class HomeController extends Controller
                 'userPinkonran',
                 'userStaffKontingen',
                 'userTenagaMedis',
+                'grandTotalPeserta',
             ]));
         }
     }
