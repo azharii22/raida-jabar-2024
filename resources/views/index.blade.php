@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col" style="min-width: max-content">
             <div class="card overflow-hidden">
-                <div class="bg-header bg-soft">
+                <div class="bg-soft" style="background-color: #0B557F !important;">
                     <div class="row">
                         <div class="col-5">
                             
