@@ -73,6 +73,7 @@
                         </div>
                     </div>
                 </div>
+                <?php if(auth()->user()->role_id != 2): ?>
                 <div class="col-md-4">
                     <div class="card mini-stats-wid" style="margin-bottom: 12px">
                         <div class="card-body">
@@ -93,6 +94,7 @@
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
                 <div class="col-md-4">
                     <div class="card mini-stats-wid" style="margin-bottom: 12px">
                         <div class="card-body">
@@ -113,6 +115,7 @@
                         </div>
                     </div>
                 </div>
+                <?php if(auth()->user()->role_id != 2): ?>
                 <div class="col-md-4">
                     <div class="card mini-stats-wid" style="margin-bottom: 12px">
                         <div class="card-body">
@@ -153,6 +156,7 @@
                         </div>
                     </div>
                 </div>
+                <?php endif; ?>
             </div>
             <!-- end row -->
         </div>

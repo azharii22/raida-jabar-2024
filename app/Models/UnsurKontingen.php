@@ -35,6 +35,8 @@ class UnsurKontingen extends Model
         'asuransi_kesehatan',
         'sertif_sfh',
         'catatan',
+        'regency_id',
+        'villages_id',
     ];
 
     public function user()

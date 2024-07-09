@@ -46,14 +46,14 @@
                             class="nav-item nav-link <?php echo e(request()->routeIs('viewUser.media-unduh') ? 'active' : ''); ?>">Media
                             Unduh</a>
                         <a href="<?php echo e(route('viewUser.artikel')); ?>"
-                            class="nav-item nav-link <?php echo e(request()->routeIs('viewUser.artikel') ? 'active' : ''); ?>">Artikel</a>
+                            class="nav-item nav-link <?php echo e(request()->routeIs('viewUser.artikel') || request()->routeIs('viewUser.show-artikel') ? 'active' : ''); ?>">Artikel</a>
                         <a href="<?php echo e(route('viewUser.kegiatan')); ?>"
                             class="nav-item nav-link <?php echo e(request()->routeIs('viewUser.kegiatan') ? 'active' : ''); ?>">Kegiatan</a>
                         <a href="<?php echo e(route('viewUser.jadwalKegiatan')); ?>"
                             class="nav-item nav-link <?php echo e(request()->routeIs('viewUser.jadwalKegiatan') ? 'active' : ''); ?>">Jadwal
                             Kegiatan</a>
                         <a href="<?php echo e(route('viewUser.dokumentasi')); ?>"
-                            class="nav-item nav-link <?php echo e(request()->routeIs('viewUser.dokumentasi') ? 'active' : ''); ?>">Dokumentasi</a>
+                            class="nav-item nav-link <?php echo e(request()->routeIs('viewUser.dokumentasi') || request()->routeIs('viewUserPhoto') ? 'active' : ''); ?>">Dokumentasi</a>
                     </div>
                     <a href="/login" class="btn btn-secondary text-light rounded-pill py-2 px-4 ms-3">Login</a>
                 </div>

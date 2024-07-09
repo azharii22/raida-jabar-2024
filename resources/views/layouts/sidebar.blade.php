@@ -36,7 +36,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('admin-tentang.index') }}" key="t-user-grid">Tentang</a></li>
                         <li><a href="{{ route('admin-dokumen-penting.index') }}" key="t-tui-dokumenPenting"><span key="t-dokumenPenting">Dokumen Penting</span></a></li>
-                        <li><a href="{{ route('admin-artikel.index') }}" class="waves-effect">  <span key="t-dashboards">Artikel</span> </a> </li>
+                        <li><a href="{{ route('admin-artikel.index') }}" class="waves-effect collapse">  <span key="t-dashboards">Artikel</span> </a> </li>
                         <li><a href="{{ route('admin-kegiatan.index') }}" key="t-tui-kegiatan"><span key="t-kegiatan">Kegiatan</span></a></li>
                         <li><a href="{{ route('admin-jadwal-kegiatan.index') }}" key="t-tui-jadwalKegiatan"><span key="t-jadwalKegiatan">Jadwal Kegiatan</span></a></li>
                         <li><a href="{{ route('admin-dokumentasi-kegiatan.index') }}" key="t-tui-dokumentasi"><span key="t-dokumentasi">Dokumentasi Kegiatan</span></a></li>

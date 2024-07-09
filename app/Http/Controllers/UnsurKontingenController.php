@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\UnsurKontingenAdminExport;
 use App\Exports\UnsurKontingenExport;
 use App\Models\Kategori;
+use App\Models\Peserta;
 use App\Models\Status;
 use App\Models\UnsurKontingen;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -22,12 +23,14 @@ class UnsurKontingenController extends Controller
 
     public function index()
     {
-        if (Auth::user()->role_id == 1) {
-            $unsurKontingen = UnsurKontingen::orderBy('updated_at', 'DESC')->get();
-        } else {
-            $unsurKontingen = UnsurKontingen::where('user_id', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
+        if (auth()->user()->role_id == 2) {
+            $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+            $unsurKontingen = Peserta::where('user_id', Auth::user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
+        } elseif(auth()->user()->role_id == 3) {
+            $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+            $unsurKontingen = Peserta::where('regency_id', Auth::user()->regency_id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('regency_id')->get();
         }
-        $kategori = Kategori::orderBy('updated_at', 'DESC')->get();
+        $kategori = Kategori::orderBy('updated_at', 'DESC')->where('name', '!=', 'Peserta')->get();
         $status = Status::orderBy('name', 'DESC')->get();
         return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
     }
@@ -57,7 +60,7 @@ class UnsurKontingenController extends Controller
         ]);
 
         $status = Status::where('name', 'Terkirim')->first();
-        UnsurKontingen::create(array_merge($request->all(), [
+        Peserta::create(array_merge($request->all(), [
             'status_id' => $status->id,
             'user_id'   => Auth::user()->id,
         ]));
@@ -72,7 +75,7 @@ class UnsurKontingenController extends Controller
 
     public function update(Request $request, $id)
     {
-        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $unsurKontingen = Peserta::findOrFail($id);
         $unsurKontingen->update(array_merge($request->all(), [
             'user_id' => Auth::user()->id,
         ]));
@@ -82,7 +85,7 @@ class UnsurKontingenController extends Controller
 
     public function destroy($id)
     {
-        $unsurKontingen = UnsurKontingen::find($id);
+        $unsurKontingen = Peserta::find($id);
         $unsurKontingen->delete();
         Alert::success('Success!', 'Data Deleted Successfully');
         return back();
@@ -90,7 +93,7 @@ class UnsurKontingenController extends Controller
 
     public function uploadFoto(Request $request, $id)
     {
-        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $unsurKontingen = Peserta::findOrFail($id);
         $request->validate([
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
@@ -111,7 +114,7 @@ class UnsurKontingenController extends Controller
 
     public function uploadKta(Request $request, $id)
     {
-        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $unsurKontingen = Peserta::findOrFail($id);
         $request->validate([
             'KTA' => 'required|image|mimes:jpeg,png,jpg,gif ,svg|max:2048',
         ], [
@@ -132,7 +135,7 @@ class UnsurKontingenController extends Controller
 
     public function uploadAsuransi(Request $request, $id)
     {
-        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $unsurKontingen = Peserta::findOrFail($id);
         $request->validate([
             'asuransi_kesehatan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
@@ -153,7 +156,7 @@ class UnsurKontingenController extends Controller
 
     public function uploadSertif(Request $request, $id)
     {
-        $unsurKontingen = UnsurKontingen::findOrFail($id);
+        $unsurKontingen = Peserta::findOrFail($id);
         $request->validate([
             'sertif_sfh' => 'required|image|mimes:jpeg,png,jpg,gif ,svg|max:2048',
         ], [
@@ -174,7 +177,7 @@ class UnsurKontingenController extends Controller
 
     public function verifikasi(Request $request, $id)
     {
-        $peserta = UnsurKontingen::FindOrFail($id);
+        $peserta = Peserta::FindOrFail($id);
         $peserta->update($request->all());
         Alert::success('Success!', 'Data Verification Successfully');
         return back();
@@ -193,7 +196,7 @@ class UnsurKontingenController extends Controller
 
     public function exportPDF($id)
     {
-        $data = UnsurKontingen::with('kategori', 'user')
+        $data = Peserta::with('kategori', 'user')
         ->where('user_id', $id)
             ->where('nama', 'not like', '%super admin%')
             ->where('nama', 'not like', '%admin%')
@@ -204,7 +207,7 @@ class UnsurKontingenController extends Controller
 
     public function exportadminPDF()
     {
-        $data = UnsurKontingen::with('kategori', 'user')->orderBy('nama_lengkap')->get();
+        $data = Peserta::with('kategori', 'user')->orderBy('nama_lengkap')->get();
         $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a4', 'portrait');
         return $pdf->download('Unsur-Kontingen.pdf');
     }

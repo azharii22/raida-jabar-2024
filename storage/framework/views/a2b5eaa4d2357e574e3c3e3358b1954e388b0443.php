@@ -63,6 +63,11 @@
                                 value="<?php echo e(auth()->user()->email); ?>">
                         </div>
                         <div class="mb-3">
+                            <label for="formrow-email-input" class="form-label">Level User</label>
+                            <input name="role" type="text" disabled class="form-control" id="formrow-email-input"
+                                value="<?php echo e(auth()->user()->role->name); ?>">
+                        </div>
+                        <div class="mb-3">
                             <label for="formrow-foto-input" class="form-label">Change Avatar</label>
                             <input name="foto" type="file" class="form-control" id="formrow-foto-input">
                         </div>

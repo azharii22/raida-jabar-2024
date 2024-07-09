@@ -8,6 +8,7 @@ use App\Models\Kategori;
 use App\Models\Peserta;
 use App\Models\Regency;
 use App\Models\Status;
+use App\Models\UnsurKontingen;
 use App\Models\User;
 use App\Models\Villages;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -29,16 +30,19 @@ class PesertaController extends Controller
             $regency = Regency::orderBy('name')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $peserta = Peserta::orderBy('updated_at', 'DESC')->get();
+            $unsurKontingen = UnsurKontingen::get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
-            return view('peserta.index', compact('peserta', 'kategori', 'status', 'regency'));
+            return view('peserta.index', compact('peserta', 'kategori', 'status', 'regency', 'unsurKontingen'));
         } elseif (Auth::user()->role_id == 2) {
-            $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->orderBy('nama_lengkap')->get();
+            $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
+            $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status'));
         } elseif (Auth::user()->role_id == 3) {
-            $peserta = Peserta::with('villages')->where('regency_id', Auth::user()->regency_id)->orderBy('villages_id')->get();
+            $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
+            $peserta = Peserta::with('villages')->where('regency_id', Auth::user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status'));
@@ -209,13 +213,15 @@ class PesertaController extends Controller
     public function detailRegency($id)
     {
         $villages = Villages::where('regency_id', $id)->get();
+        $unsurKontingen = UnsurKontingen::get();
         $peserta = Peserta::get();
-        return view('peserta.detail', compact('villages', 'peserta'));
+        return view('peserta.detail', compact('villages', 'peserta', 'unsurKontingen'));
     }
     
     public function detailVillages($id)
     {
         $peserta = Peserta::where('villages_id', $id)->get();
-        return view('peserta.detailVillages', compact('peserta'));
+        $unsurKontingen = UnsurKontingen::where('villages_id', $id)->get();
+        return view('peserta.detailVillages', compact('peserta','unsurKontingen'));
     }
 }
