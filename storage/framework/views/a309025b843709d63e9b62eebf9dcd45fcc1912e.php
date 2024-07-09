@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
-                        <div class="col-sm-2 text-center">
+                        <div class="col-sm-4 text-center">
                             <div class="avatar-md profile-user-wid mb-3">
                                 <img src="<?php echo e(isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg')); ?>"
                                     alt="" class="img-thumbnail rounded-circle">
