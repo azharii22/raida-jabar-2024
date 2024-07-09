@@ -20,7 +20,7 @@
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
-                        <div class="col-sm-4 text-center">
+                        <div class="col-sm-2 text-center">
                             <div class="avatar-md profile-user-wid mb-3">
                                 <img src="{{ isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}"
                                     alt="" class="img-thumbnail rounded-circle">
@@ -65,7 +65,7 @@
                                 <div class="flex-shrink-0 align-self-center">
                                     <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                                         <span class="avatar-title">
-                                            <i class="bx bx-copy-alt font-size-24"></i>
+                                            <i class="bx bx-user font-size-24"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -85,7 +85,7 @@
                                 <div class="flex-shrink-0 align-self-center ">
                                     <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-archive-in font-size-24"></i>
+                                            <i class="bx bx-user font-size-24"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -105,7 +105,7 @@
                                 <div class="flex-shrink-0 align-self-center">
                                     <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-purchase-tag-alt font-size-24"></i>
+                                            <i class="bx bx-user font-size-24"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -125,7 +125,7 @@
                                 <div class="flex-shrink-0 align-self-center">
                                     <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                                         <span class="avatar-title">
-                                            <i class="bx bx-copy-alt font-size-24"></i>
+                                            <i class="bx bx-user font-size-24"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -145,7 +145,7 @@
                                 <div class="flex-shrink-0 align-self-center ">
                                     <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-archive-in font-size-24"></i>
+                                            <i class="bx bx-user font-size-24"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -165,7 +165,7 @@
                                 <div class="flex-shrink-0 align-self-center">
                                     <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
                                         <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-purchase-tag-alt font-size-24"></i>
+                                            <i class="bx bx-user font-size-24"></i>
                                         </span>
                                     </div>
                                 </div>
