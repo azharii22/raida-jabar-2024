@@ -9,10 +9,7 @@
         <div class="col" style="min-width: max-content">
             <div class="card overflow-hidden">
                 <div class="bg-soft" style="background-color: #0B557F !important;">
-                    <div class="row">
-                        <div class="col-5">
-                            
-                        </div>
+                    <div class="row" style="height: 20px">
                         <div class="col-5 align-self-end">
                             <img src="<?php echo e(URL::asset('assets/viewUser/img/raida/Raida Putih.png')); ?>" alt="" class="m-5" style="width: 100%; height: 20rem;">
                         </div>
