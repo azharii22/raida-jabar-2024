@@ -19,7 +19,7 @@ class ImageUploadController extends Controller
     public function create($id)
     {
         $dokumentasi = DokumentasiKegiatan::find($id);
-        return view('dokumentasiKegiatan.addphotos', compact('dokumentasi'));
+        return view('dokumentasiKegiatan.addPhotos', compact('dokumentasi'));
     }
 
     public function store(Request $request, $id)
