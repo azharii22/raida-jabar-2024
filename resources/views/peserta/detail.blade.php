@@ -60,12 +60,11 @@
                                 @foreach ($villages as $i => $data)
                                     <?php
                                     $countPeserta = count($peserta->where('villages_id', $data->id));
-                                    $countUnsurKontingen = count($unsurKontingen->where('villages_id', $data->id));
                                     ?>
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td class="text-uppercase text-center">{{ $data->name }}</td>
-                                        <td class="text-uppercase text-center">{{ $countPeserta + $countUnsurKontingen }}
+                                        <td class="text-uppercase text-center">{{ $countPeserta }}
                                             Peserta</td>
                                         <td class="text-center">
                                             <a href="{{ route('admin-data-peserta.detailVillages', $data->id) }}"

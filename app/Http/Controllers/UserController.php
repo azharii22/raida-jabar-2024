@@ -62,7 +62,7 @@ class UserController extends Controller
                     ->numbers()
                     ->symbols()
             ],
-            'avatar'    => 'nullable|mimes:png,jpg,jpeg|max:2048'
+            'avatar'    => 'nullable|mimes:png,jpg,jpeg|max:10240'
         ], [
             'name.required'         => 'Nama harus diisi',
             'name.max'              => 'Nama maksimal 255 karakter',
@@ -77,7 +77,7 @@ class UserController extends Controller
             'password.numbers'      => 'Password setidaknya harus terdiri dari satu angka',
             'password.symbols'      => 'Password setidaknya harus terdiri dari satu simbol',
             'avatar.mimes'          => 'Format gambar harus png, jpg, atau jpeg',
-            'avatar.max'            => 'Ukuran gambar maksimal 2 MB'
+            'avatar.max'            => 'Ukuran gambar maksimal 10 MB'
         ]);
         if (request()->has('avatar')) {
             $avatar = request()->file('avatar');
@@ -133,7 +133,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name'      => 'required|max:255',
             'email'     => ['required', 'email', Rule::unique('users')->ignore($id)],
-            'avatar'    => 'nullable|mimes:png,jpg,jpeg|max:2048',
+            'avatar'    => 'nullable|mimes:png,jpg,jpeg|max:10240',
         ]);
         if (request()->has('avatar')) {
             $avatar = request()->file('avatar');

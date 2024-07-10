@@ -109,7 +109,7 @@ class HomeController extends Controller
             'name'      => ['required', 'string', 'max:255'],
             'fullname'  => ['required', 'string', 'max:255'],
             'email'     => ['required', 'string', 'email'],
-            'avatar'    => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2048'],
+            'avatar'    => ['nullable', 'image', 'mimes:jpg,jpeg,png', 'max:10240'],
         ]);
 
         $user = User::where('id', auth()->user()->id)->first();

@@ -50,13 +50,13 @@ class PembayaranController extends Controller
         $request->validate([
             'jumlah_terdaftar' => 'required',
             'nominal' => 'required',
-            'file' => 'required|mimes:png,jpg,jpeg|max:2048',
+            'file' => 'required|mimes:png,jpg,jpeg|max:10240',
         ], [
             'jumlah_terdaftar.required' => 'Jumlah Terdaftar harus diisi',
             'nominal.required' => 'Nominal harus diisi',
             'file.required' => 'File harus diisi',
             'file.mimes' => 'Format gambar harus png, jpg, atau jpeg',
-            'file.max' => 'File tidak boleh lebih dari 2 MB',
+            'file.max' => 'File tidak boleh lebih dari 10 MB',
 
         ]);
         $status = Status::where('name', 'Terkirim')->first();
@@ -82,12 +82,12 @@ class PembayaranController extends Controller
         $request->validate([
             'jumlah_terdaftar'  => 'required',
             'nominal'           => 'required',
-            'file'              => 'mimes:png,jpg,jpeg|max:2048',
+            'file'              => 'mimes:png,jpg,jpeg|max:10240',
         ], [
             'jumlah_terdaftar.required' => 'Jumlah Terdaftar harus diisi',
             'nominal.required' => 'Nominal harus diisi',
             'file.mimes' => 'Format gambar harus png, jpg, atau jpeg',
-            'file.max' => 'File tidak boleh lebih dari 2 MB',
+            'file.max' => 'File tidak boleh lebih dari 10 MB',
         ]);
         $pembayaran = Pembayaran::find($id);
         //check if image is uploaded

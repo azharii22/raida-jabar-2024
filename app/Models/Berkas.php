@@ -23,6 +23,7 @@ class Berkas extends Model
         'file',
         'filename',
         'catatan',
+        'name',
     ];
     public function status()
     {

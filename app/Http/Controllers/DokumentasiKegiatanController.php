@@ -45,13 +45,13 @@ class DokumentasiKegiatanController extends Controller
     {
         $request->validate([
             'judul' => 'required|max:255',
-            'cover' => 'required|mimes:png,jpg,jpeg|max:2048',
+            'cover' => 'required|mimes:png,jpg,jpeg|max:10240',
         ], [
             'judul.required'    => 'Judul Dokumentasi Kegiatan harus diisi!',
             'judul.max'         => 'Judul Dokumentasi Kegiatan maksimal 255 karakter!',
             'cover.required'    => 'Cover Dokumentasi Kegiatan harus diisi!',
             'cover.mimes'       => 'Cover Dokumentasi Kegiatan harus berupa file png, jpg, jpeg!',
-            'cover.max'         => 'Cover Dokumentasi Kegiatan maksimal 2 MB!',
+            'cover.max'         => 'Cover Dokumentasi Kegiatan maksimal 10 MB!',
         ]);
 
         if ($request->hasFile('cover')) {

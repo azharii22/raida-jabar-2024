@@ -146,12 +146,12 @@ class SettingController extends Controller
     public function uploadFile(Request $request, $id)
     {
         $request->validate([
-            'value'  => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
+            'value'  => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:10240',
         ], [
             'value.required' => 'File harus diisi!',
             'value.image'    => 'File harus Berupa Foto',
             'value.mimes'    => 'File harus berupa jpg, jpeg, png, svg, gif',
-            'value.max'      => 'File tidak boleh lebih dari 2 MB',
+            'value.max'      => 'File tidak boleh lebih dari 10 MB',
         ]);
         $setting = setting::findOrFail($id);    
         $file   = $request->file('value');

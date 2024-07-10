@@ -31,7 +31,7 @@ class ArtikelController extends Controller
         $request->validate([
             'judul'         => 'required|max:255',
             'deskripsi'     => 'required|max:255',
-            'foto'          => 'required|mimes:png,jpg,jpeg|max:2048',
+            'foto'          => 'required|mimes:png,jpg,jpeg|max:10240',
             'isi_artikel'   => 'required',
         ], [
             'judul.required'        => 'Judul Wajib Diisi!',
@@ -40,7 +40,7 @@ class ArtikelController extends Controller
             'deskripsi.max'         => 'Deskripsi Maximal 255 karakter!',
             'foto.required'         => 'Foto Wajib Diisi!',
             'foto.mimes'            => 'Format gambar harus png, jpg, atau jpeg',
-            'foto.max'              => 'Ukuran gambar maksimal 2 MB',
+            'foto.max'              => 'Ukuran gambar maksimal 10 MB',
             'isi_artikel.required'  => 'Isi Artikel Wajib Diisi!',
         ]);
         $image = $request->file('foto');
@@ -71,7 +71,7 @@ class ArtikelController extends Controller
         $request->validate([
             'judul'         => 'required|max:255',
             'deskripsi'     => 'required|max:255',
-            'foto'          => 'nullable|mimes:png,jpg,jpeg|max:2048',
+            'foto'          => 'nullable|mimes:png,jpg,jpeg|max:10240',
             'isi_artikel'   => 'required',
         ], [
             'judul.required'        => 'Judul Wajib Diisi!',
@@ -79,7 +79,7 @@ class ArtikelController extends Controller
             'deskripsi.required'    => 'Deskripsi Wajib Diisi!',
             'deskripsi.max'         => 'Deskripsi Maximal 255 karakter!',
             'foto.mimes'            => 'Format gambar harus png, jpg, atau jpeg',
-            'foto.max'              => 'Ukuran gambar maksimal 2 MB',
+            'foto.max'              => 'Ukuran gambar maksimal 10 MB',
             'isi_artikel.required'  => 'Isi Artikel Wajib Diisi!',
         ]);
         $artikel = Artikel::with('user')->where('slug', $slug)->firstOrFail();

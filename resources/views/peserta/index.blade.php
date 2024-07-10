@@ -53,9 +53,8 @@
                                 <td class="text-uppercase text-center">{{ $data->name }}</td>
                                 <?php 
                                     $countPeserta = count($peserta->where('regency_id', $data->id));
-                                    $countUnsurKontingen = count($unsurKontingen->where('regency_id', $data->id));
                                 ?>
-                                <td class="text-uppercase text-center">{{ $countUnsurKontingen + $countPeserta }} Peserta</td>
+                                <td class="text-uppercase text-center">{{ $countPeserta }} Peserta</td>
                                 <td class="text-center">
                                     <a href="{{ route('admin-data-peserta.detailRegency',$data->id) }}" class="btn btn-success waves-effect waves-light btn-sm mr-2"> Lihat <i class="bx bx-right-arrow-alt"></i></a>
                                 </td>

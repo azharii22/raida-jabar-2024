@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Berkas;
 use App\Models\Status;
 use App\Models\User;
+use FontLib\Table\Type\name;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -32,17 +33,18 @@ class BerkasController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file'  => 'required|mimes:pdf|max:2048',
+            'file'  => 'required|mimes:pdf|max:10240',
         ], [
             'file.required' => 'File harus diisi!',
             'file.mimes'    => 'File harus berupa pdf',
-            'file.max'      => 'File tidak boleh lebih dari 2 MB',
+            'file.max'      => 'File tidak boleh lebih dari 10 MB',
         ]);
         $file   = $request->file('file');
         $filename = time() . '-' . $file->getClientOriginalName();
         $file->storeAs('public/berkas/', $filename);
         $status = Status::where('name', 'Terkirim')->first();
         Berkas::create(array_merge($request->all(), [
+            'name'  => 'Surat Tugas',
             'filename'  => $filename,
             'file'      => $file->getClientOriginalName(),
             'user_id'   => Auth::user()->id,
@@ -61,10 +63,10 @@ class BerkasController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'file'  => 'mimes:pdf|max:2048',
+            'file'  => 'mimes:pdf|max:10240',
         ], [
             'file.mimes' => 'File harus berupa pdf',
-            'file.max'   => 'File tidak boleh lebih dari 2 MB',
+            'file.max'   => 'File tidak boleh lebih dari 10 MB',
         ]);
         $berkas = Berkas::findOrFail($id);
         $status = Status::where('name', 'Terkirim')->first();

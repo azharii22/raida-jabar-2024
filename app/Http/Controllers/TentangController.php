@@ -22,11 +22,11 @@ class TentangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'foto'  => 'nullable|mimes:png,jpg,jpeg|max:2048',
+            'foto'  => 'nullable|mimes:png,jpg,jpeg|max:10240',
             'name'  => 'required',
         ], [
             'foto.mimes'    => 'Format gambar harus png, jpg, atau jpeg',
-            'foto.max'      => 'Ukuran gambar maksimal 2 MB',
+            'foto.max'      => 'Ukuran gambar maksimal 10 MB',
             'name.required' => 'Isi Tentang Wajib Diisi!',
         ]);
         if ($request->file('foto')) {

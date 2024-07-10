@@ -95,12 +95,12 @@ class UnsurKontingenController extends Controller
     {
         $unsurKontingen = Peserta::findOrFail($id);
         $request->validate([
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
         ], [
             'foto.required' => 'Foto Tidak Boleh Kosong!',
             'foto.image'    => 'Foto Harus Berupa Gambar!',
             'foto.image'    => 'Foto Harus Format jpeg, png, jpg, gif, dan svg',
-            'foto.max'      => 'Ukuran Foto Maximal 2 Mb!',
+            'foto.max'      => 'Ukuran Foto Maximal 10 MB!',
         ]);
         $foto = $request->file('foto');
         $nama_foto = time() . '-' . $foto->getClientOriginalName();
@@ -116,12 +116,12 @@ class UnsurKontingenController extends Controller
     {
         $unsurKontingen = Peserta::findOrFail($id);
         $request->validate([
-            'KTA' => 'required|image|mimes:jpeg,png,jpg,gif ,svg|max:2048',
+            'KTA' => 'required|image|mimes:jpeg,png,jpg,gif ,svg|max:10240',
         ], [
             'KTA.required' => 'KTA Tidak Boleh Kosong!',
             'KTA.image'    => 'KTA Harus Berupa Gambar!',
             'KTA.mimes'    => 'KTA Harus Format jpeg, png, jpg, gif, dan svg',
-            'KTA.max'      => 'Ukuran KTA Maximal 2 Mb!',
+            'KTA.max'      => 'Ukuran KTA Maximal 10 MB!',
         ]);
         $kta = $request->file('KTA');
         $nama_kta = time() . '-' . $kta->getClientOriginalName();
@@ -137,12 +137,12 @@ class UnsurKontingenController extends Controller
     {
         $unsurKontingen = Peserta::findOrFail($id);
         $request->validate([
-            'asuransi_kesehatan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'asuransi_kesehatan' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
         ], [
             'asuransi_kesehatan.required' => 'Asuransi Kesehatan Tidak Boleh Kosong!',
             'asuransi_kesehatan.image'    => 'Asuransi Kesehatan Harus Berupa Gambar!',
             'asuransi_kesehatan.mimes'    => 'Asuransi Kesehatan Harus Format jpeg, png , jpg, gif, dan svg',
-            'asuransi_kesehatan.max'      => 'Ukuran Asuransi Kesehatan Maximal 2 Mb!',
+            'asuransi_kesehatan.max'      => 'Ukuran Asuransi Kesehatan Maximal 10 MB!',
         ]);
         $asuransi = $request->file('asuransi_kesehatan');
         $nama_asuransi = time() . '-' . $asuransi->getClientOriginalName();
@@ -158,12 +158,12 @@ class UnsurKontingenController extends Controller
     {
         $unsurKontingen = Peserta::findOrFail($id);
         $request->validate([
-            'sertif_sfh' => 'required|image|mimes:jpeg,png,jpg,gif ,svg|max:2048',
+            'sertif_sfh' => 'required|image|mimes:jpeg,png,jpg,gif ,svg|max:10240',
         ], [
             'sertif_sfh.required' => 'Sertif SFH Tidak Boleh Kosong!',
             'sertif_sfh.image'    => 'Sertif SFH Harus Berupa Gambar!',
             'sertif_sfh.mimes'    => 'Sertif SFH Harus Format jpeg, png, jpg, gif, dan svg',
-            'sertif_sfh.max'      => 'Ukuran Sertif SFH Maximal 2 Mb!',
+            'sertif_sfh.max'      => 'Ukuran Sertif SFH Maximal 10 MB!',
         ]);
         $sertif = $request->file('sertif_sfh');
         $nama_sertif = time() . '-' . $sertif->getClientOriginalName();

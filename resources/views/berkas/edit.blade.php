@@ -3,6 +3,10 @@
     @method('PUT')
     <div class="modal-body">
         <div class="mb-3">
+            <label for="validationCustom02" class="form-label">Name</label>
+            <input name="name" type="text" class="form-control" id="validationCustom02" required value="{{ $data->name ? $data->name : "Surat Tugas" }}" disabled>
+        </div>
+        <div class="mb-3">
             <label for="validationCustom02" class="form-label">File</label>
             <input name="file" type="file" class="form-control" id="validationCustom02" required accept=".pdf">
         </div>

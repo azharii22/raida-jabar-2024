@@ -25,12 +25,12 @@ class JadwalKegiatanController extends Controller
     {
         $request->validate([
             'tanggal_giat'  => 'required',
-            'file'          => 'required|mimes:pdf|max:2048',
+            'file'          => 'required|mimes:pdf|max:10240',
         ], [
             'tanggal_giat.required' => 'Tanggal kegiatan harus diisi!',
             'file.required'         => 'File harus diisi!',
             'file.mimes'            => 'File harus berupa pdf',
-            'file.max'              => 'File tidak boleh lebih dari 2 MB',
+            'file.max'              => 'File tidak boleh lebih dari 10 MB',
         ]);
         if ($request->hasFile('file')) {
             $file   = $request->file('file');
@@ -56,10 +56,10 @@ class JadwalKegiatanController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'file'          => 'mimes:pdf|max:2048',
+            'file'          => 'mimes:pdf|max:10240',
         ], [
             'file.mimes'            => 'File harus berupa pdf',
-            'file.max'              => 'File tidak boleh lebih dari 2 MB',
+            'file.max'              => 'File tidak boleh lebih dari 10 MB',
         ]);
         $jadwalKegiatan = JadwalKegiatan::findOrFail($id);
         if ($request->hasFile('file')) {

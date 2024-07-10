@@ -25,12 +25,12 @@ class DokumenPentingController extends Controller
     {
         $request->validate([
             'name'  => 'required',
-            'file'  => 'required|mimes:pdf|max:2048',
+            'file'  => 'required|mimes:pdf|max:10240',
         ], [
             'name.required' => 'Nama Dokumen harus diisi!',
             'file.required' => 'File harus diisi!',
             'file.mimes'    => 'File harus berupa pdf',
-            'file.max'      => 'File tidak boleh lebih dari 2 MB',
+            'file.max'      => 'File tidak boleh lebih dari 10 MB',
         ]);
         if ($request->hasFile('file')) {
             $file   = $request->file('file');
@@ -56,10 +56,10 @@ class DokumenPentingController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'file'  => 'mimes:pdf|max:2048',
+            'file'  => 'mimes:pdf|max:10240',
         ], [
             'file.mimes' => 'File harus berupa pdf',
-            'file.max'   => 'File tidak boleh lebih dari 2 MB',
+            'file.max'   => 'File tidak boleh lebih dari 10 MB',
         ]);
         $dokumenPenting = DokumenPenting::findOrFail($id);
         if ($request->hasFile('file')) {
