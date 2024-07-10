@@ -118,7 +118,7 @@ class DokumentasiKegiatanController extends Controller
         $dokumentasiKegiatan = DokumentasiKegiatan::findOrFail($id);
         if ($request->hasFile('cover')) {
             $cover   = $request->file('cover');
-            Storage::delete('public/img/dokumentasi/cover', $dokumentasiKegiatan->cover());
+            Storage::delete('public/img/dokumentasi/cover', $dokumentasiKegiatan->cover);
             $cover->storeAs('public/img/dokumentasi/cover', $cover->getClientOriginalName());
             $dokumentasiKegiatan->update(array_merge($request->all(), [
                 'user_id' => Auth::user()->id,
