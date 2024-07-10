@@ -6,6 +6,7 @@ use App\Models\DokumentasiKegiatan;
 use App\Models\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class DokumentasiKegiatanController extends Controller
@@ -61,8 +62,12 @@ class DokumentasiKegiatanController extends Controller
                 'user_id' => Auth::user()->id,
                 'cover'      => $cover->getClientOriginalName()
             ]));
-            Alert::success('Success', 'Data Created Successfully');
+        } else {
+            DokumentasiKegiatan::create(array_merge($request->all(), [
+                'user_id' => Auth::user()->id,
+            ]));
         }
+        Alert::success('Success', 'Data Created Successfully');
         return redirect()->back();
     }
 
@@ -84,9 +89,10 @@ class DokumentasiKegiatanController extends Controller
      * @param  \App\Models\DokumentasiKegiatan  $dokumentasiKegiatan
      * @return \Illuminate\Http\Response
      */
-    public function edit(DokumentasiKegiatan $dokumentasiKegiatan)
+    public function edit($id)
     {
-        //
+        $dokumentasiKegiatan = DokumentasiKegiatan::findOrFail($id);
+        return view('dokumentasiKegiatan.edit', compact('dokumentasiKegiatan'));
     }
 
     /**
@@ -96,9 +102,35 @@ class DokumentasiKegiatanController extends Controller
      * @param  \App\Models\DokumentasiKegiatan  $dokumentasiKegiatan
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, DokumentasiKegiatan $dokumentasiKegiatan)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'judul' => 'required|max:255',
+            'cover' => 'mimes:png,jpg,jpeg|max:10240',
+        ], [
+            'judul.required'    => 'Judul Dokumentasi Kegiatan harus diisi!',
+            'judul.max'         => 'Judul Dokumentasi Kegiatan maksimal 255 karakter!',
+            'cover.required'    => 'Cover Dokumentasi Kegiatan harus diisi!',
+            'cover.mimes'       => 'Cover Dokumentasi Kegiatan harus berupa file png, jpg, jpeg!',
+            'cover.max'         => 'Cover Dokumentasi Kegiatan maksimal 10 MB!',
+        ]);
+
+        $dokumentasiKegiatan = DokumentasiKegiatan::findOrFail($id);
+        if ($request->hasFile('cover')) {
+            $cover   = $request->file('cover');
+            Storage::delete('public/img/dokumentasi/cover', $dokumentasiKegiatan->cover());
+            $cover->storeAs('public/img/dokumentasi/cover', $cover->getClientOriginalName());
+            $dokumentasiKegiatan->update(array_merge($request->all(), [
+                'user_id' => Auth::user()->id,
+                'cover'      => $cover->getClientOriginalName()
+            ]));
+        } else {
+            $dokumentasiKegiatan->update(array_merge($request->all(), [
+                'user_id' => Auth::user()->id,
+            ]));
+        }
+        Alert::success('Success', 'Data Updated Successfully');
+        return redirect()->back();
     }
 
     /**
@@ -107,8 +139,12 @@ class DokumentasiKegiatanController extends Controller
      * @param  \App\Models\DokumentasiKegiatan  $dokumentasiKegiatan
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DokumentasiKegiatan $dokumentasiKegiatan)
+    public function destroy($id)
     {
-        //
+        $dokumentasiKegiatan = DokumentasiKegiatan::findOrFail($id);
+        Storage::delete('public/img/dokumentasi/cover' . $dokumentasiKegiatan->cover);
+        $dokumentasiKegiatan->delete();
+        Alert::success('Success!', 'Data Deleted Successfully');
+        return back();
     }
 }

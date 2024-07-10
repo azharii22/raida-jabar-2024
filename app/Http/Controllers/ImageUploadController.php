@@ -6,6 +6,7 @@ use App\Models\DokumentasiKegiatan;
 use App\Models\ImageUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ImageUploadController extends Controller
 {
@@ -29,7 +30,7 @@ class ImageUploadController extends Controller
         $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
         $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
         $file_name = $filename . '-' . time() . '.' . $extension;
-        $image->move(public_path('uploads/gallery'), $file_name);
+        $image->move(public_path('uploads/gallery/'), $file_name);
 
         $imageUpload = new ImageUpload();
         $imageUpload->dokumentasi_id = $dokumentasi->id;
@@ -46,7 +47,7 @@ class ImageUploadController extends Controller
         foreach ($images as $image) {
             $tableImages[] = $image['filename'];
         }
-        $storeFolder = public_path('uploads/gallery');
+        $storeFolder = public_path('uploads/gallery/');
         $file_path = public_path('uploads/gallery/');
         $files = scandir($storeFolder);
         foreach ($files as $file) {
@@ -62,6 +63,28 @@ class ImageUploadController extends Controller
         return response()->json($data);
     }
 
+    public function update(Request $request, $id)
+    {
+        $images = ImageUpload::findOrFail($id);
+        $image = $request->file('file');
+        $fileInfo = $image->getClientOriginalName();
+        $filename = pathinfo($fileInfo, PATHINFO_FILENAME);
+        $extension = pathinfo($fileInfo, PATHINFO_EXTENSION);
+        $file_name = $filename . '-' . time() . '.' . $extension;
+        $path = public_path('uploads/gallery/') . $images->filename;
+        $image->move(public_path('uploads/gallery/') , $file_name);
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $images->update(array_merge($request->all(), [
+            'user_id'           => Auth::user()->id,
+            'original_filename' => $fileInfo,
+            'filename'          => $file_name,
+        ]));
+        Alert::success('Success!', 'Data Updated SuccessFully');
+        return back();
+    }
+
     public function destroy(Request $request)
     {
         $filename =  $request->get('filename');
@@ -71,5 +94,17 @@ class ImageUploadController extends Controller
             unlink($path);
         }
         return response()->json(['success' => $filename]);
+    }
+    
+    public function destroyPhotos($id)
+    {
+        $images = ImageUpload::findOrFail($id);
+        $path = public_path('uploads/gallery/') . $images->filename;
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $images->delete();
+        Alert::success('Success!', 'Data Deleted Successfully');
+        return back();
     }
 }

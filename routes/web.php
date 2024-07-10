@@ -80,7 +80,9 @@ Route::resource('/admin-user', UserController::class);
 Route::resource('/admin-dokumentasi-kegiatan', DokumentasiKegiatanController::class);
 Route::get('/add-Photos{id}', [ImageUploadController::class, 'create'])->name('addPhotos');
 Route::post('/add-Photos{id}', [ImageUploadController::class, 'store'])->name('addPhotosStore');
+Route::put('/update-Photos{id}', [ImageUploadController::class, 'update'])->name('addPhotosUpdate');
 Route::post('photos', [ImageUploadController::class, 'destroy'])->name('destroyPhotos');
+Route::delete('photos-{id}', [ImageUploadController::class, 'destroyPhotos'])->name('destroyPhotosShow');
 
 Route::resource('/admin-kegiatan', KegiatanController::class);
 Route::resource('/admin-jadwal-kegiatan', JadwalKegiatanController::class);
