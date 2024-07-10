@@ -37,13 +37,13 @@ class PesertaController extends Controller
         } elseif (Auth::user()->role_id == 2) {
             $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
             $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
-            $kategori = Kategori::orderBy('name', 'DESC')->get();
+            $kategori = Kategori::where('name', 'LIKE', 'Peserta')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status'));
         } elseif (Auth::user()->role_id == 3) {
             $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
             $peserta = Peserta::with('villages')->where('regency_id', Auth::user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
-            $kategori = Kategori::orderBy('name', 'DESC')->get();
+            $kategori = Kategori::where('name', 'LIKE', 'Peserta')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status'));
         }

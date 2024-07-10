@@ -9,7 +9,7 @@
     <meta content="{{ config('settings.main.2_app_description') }}" name="description">
 
     {{-- <!-- Favicon --> --}}
-    <link href="{{ config('settings.main.3_app_logo') }}" rel="icon">
+    <link href="{{ Storage::url('public/setting' . '/' . config('settings.main.3_app_logo')) }}" rel="icon">
 
     @include('viewUser.layouts.head-css')
     @yield('css')
