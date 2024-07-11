@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title mb-5">Unsur Kontingen Wilayah Cabang {{ $pesertaVillages->regency->name }} </h4>
+                    <h4 class="card-title mb-5">Unsur Kontingen Wilayah Cabang {{ $pesertaVillages->regency?->name }} </h4>
 
                     <div class="card-title mb-5">
                         <a href="{{ route('admin-data-unsur-kontingen.index') }}" type="button"
