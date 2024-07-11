@@ -99,8 +99,8 @@ Route::put('/upload-kta-unsur-kontingen{id}', [UnsurKontingenController::class, 
 Route::put('/upload-asuransi-unsur-kontingen{id}', [UnsurKontingenController::class, 'uploadAsuransi'])->name('unsur-kontingen.asuransi');
 Route::put('/upload-suket-unsur-kontingen{id}', [UnsurKontingenController::class, 'uploadSertif'])->name('unsur-kontingen.sertif');
 Route::put('/unsur-kontingen-verifikasi{id}', [UnsurKontingenController::class, 'verifikasi'])->name('unsur-kontingen.verifikasi');
-Route::get('unsur-kontingen-exportPDF{id}', [UnsurKontingenController::class, 'exportPDF'])->name('unsur-kontingen.pdf');
-Route::get('unsur-kontingen-exportExcel{id}', [UnsurKontingenController::class, 'exportExcel'])->name('unsur-kontingen.excel');
+Route::get('unsur-kontingen-exportPDF', [UnsurKontingenController::class, 'exportPDF'])->name('unsur-kontingen.pdf');
+Route::get('unsur-kontingen-exportExcel', [UnsurKontingenController::class, 'exportExcel'])->name('unsur-kontingen.excel');
 Route::get('unsur-kontingen-exportadminExcel', [UnsurKontingenController::class, 'exportAdminExcel'])->name('unsur-kontingen.admin-excel');
 Route::get('unsur-kontingen-exportadminPDF', [UnsurKontingenController::class, 'exportAdminPDF'])->name('unsur-kontingen.admin-pdf');
 

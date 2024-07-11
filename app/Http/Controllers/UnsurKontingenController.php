@@ -183,9 +183,9 @@ class UnsurKontingenController extends Controller
         return back();
     }
 
-    public function exportExcel($id)
+    public function exportExcel()
     {
-        return Excel::download(new UnsurKontingenExport($id), 'Unsur-Kontingen.xlsx');
+        return Excel::download(new UnsurKontingenExport(), 'Unsur-Kontingen.xlsx');
     }
 
 
@@ -194,10 +194,10 @@ class UnsurKontingenController extends Controller
         return Excel::download(new UnsurKontingenAdminExport(), 'Unsur-Kontingen.xlsx');
     }
 
-    public function exportPDF($id)
+    public function exportPDF()
     {
         $data = Peserta::with('kategori', 'user')
-        ->where('user_id', $id)
+            ->where('user_id', auth()->user()->ide)
             ->where('nama', 'not like', '%super admin%')
             ->where('nama', 'not like', '%admin%')
             ->get();

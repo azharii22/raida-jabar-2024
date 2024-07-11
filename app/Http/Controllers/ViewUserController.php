@@ -94,7 +94,7 @@ class ViewUserController extends Controller
     
     public function download($id)
     {
-        $photo = ImageUpload::first();
+        $photo = ImageUpload::findOrFail($id);
         $download = public_path('uploads/gallery/') . $photo->filename;
         return response()->download($download);
     }
