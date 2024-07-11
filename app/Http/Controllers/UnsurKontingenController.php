@@ -6,8 +6,10 @@ use App\Exports\UnsurKontingenAdminExport;
 use App\Exports\UnsurKontingenExport;
 use App\Models\Kategori;
 use App\Models\Peserta;
+use App\Models\Regency;
 use App\Models\Status;
 use App\Models\UnsurKontingen;
+use App\Models\Villages;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,16 +25,22 @@ class UnsurKontingenController extends Controller
 
     public function index()
     {
-        if (auth()->user()->role_id == 2) {
+        $kategori = Kategori::orderBy('updated_at', 'DESC')->where('name', '!=', 'Peserta')->get();
+        $status = Status::orderBy('name', 'DESC')->get();
+        if (auth()->user()->role_id == 1) {
+            $regency = Regency::orderBy('name')->get();
+            $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+            $unsurKontingen = Peserta::where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
+            return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status', 'regency'));
+        } elseif (auth()->user()->role_id == 2) {
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $unsurKontingen = Peserta::where('user_id', Auth::user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
+            return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
         } elseif(auth()->user()->role_id == 3) {
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $unsurKontingen = Peserta::where('regency_id', Auth::user()->regency_id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('regency_id')->get();
+            return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
         }
-        $kategori = Kategori::orderBy('updated_at', 'DESC')->where('name', '!=', 'Peserta')->get();
-        $status = Status::orderBy('name', 'DESC')->get();
-        return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
     }
 
     public function store(Request $request)
@@ -210,5 +218,14 @@ class UnsurKontingenController extends Controller
         $data = Peserta::with('kategori', 'user')->orderBy('nama_lengkap')->get();
         $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a4', 'portrait');
         return $pdf->download('Unsur-Kontingen.pdf');
+    }
+    public function detailRegency($id)
+    {
+        $kategori = Kategori::orderBy('updated_at', 'DESC')->where('name', '!=', 'Peserta')->get();
+        $status = Status::orderBy('name', 'DESC')->get();
+        $villages = Villages::where('regency_id', $id)->get();
+        $pesertaVillages = Villages::where('regency_id', $id)->first();
+        $unsurKontingen = Peserta::where('villages_id', NULL)->get();
+        return view('unsurKontingen.detail', compact('villages', 'unsurKontingen', 'pesertaVillages', 'id', 'kategori', 'status'));
     }
 }

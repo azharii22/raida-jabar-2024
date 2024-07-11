@@ -23,7 +23,7 @@
                     <ul class="sub-menu" aria-expanded="false">
                         <li><a href="{{ route('admin-data-berkas-kontingen.index') }}" key="t-user-grid">Data Berkas Kontingen</a></li>
                         <li><a href="{{ route('admin-data-peserta.index') }}" key="t-user-list">Data Peserta</a></li>
-                        {{-- <li><a href="{{ route('admin-data-unsur-kontingen.index') }}" key="t-profile">Data Unsur Kontingen</a></li> --}}
+                        <li><a href="{{ route('admin-data-unsur-kontingen.index') }}" key="t-profile">Data Unsur Kontingen Cabang</a></li>
                         <li><a href="{{ route('admin-data-pembayaran.index') }}" key="t-pembayaran">Data Pembayaran</a></li>
                     </ul>
                 </li>

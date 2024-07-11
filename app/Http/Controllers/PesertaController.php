@@ -213,15 +213,17 @@ class PesertaController extends Controller
     public function detailRegency($id)
     {
         $villages = Villages::where('regency_id', $id)->get();
-        $unsurKontingen = UnsurKontingen::get();
-        $peserta = Peserta::get();
-        return view('peserta.detail', compact('villages', 'peserta', 'unsurKontingen'));
+        $pesertaVillages = Villages::where('regency_id', $id)->first();
+        $peserta = Peserta::where('villages_id', '!=', NULL)->get();
+        return view('peserta.detail', compact('villages', 'peserta', 'pesertaVillages', 'id'));
     }
     
     public function detailVillages($id)
     {
+        $pesertaVillages = Peserta::where('villages_id', $id)->first();
         $peserta = Peserta::where('villages_id', $id)->get();
-        $unsurKontingen = UnsurKontingen::where('villages_id', $id)->get();
-        return view('peserta.detailVillages', compact('peserta','unsurKontingen'));
+        $kategori = Kategori::where('name', 'LIKE', 'Peserta')->get();
+        $status = Status::orderBy('name', 'DESC')->get();
+        return view('peserta.detailVillages', compact('peserta', 'kategori', 'status', 'pesertaVillages'));
     }
 }

@@ -15,7 +15,7 @@
             Dashboard
         @endslot
         @slot('title')
-            Peserta
+            Unsur Kontingen Cabang
         @endslot
     @endcomponent
 
@@ -23,6 +23,14 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+
+                    <h4 class="card-title mb-5">Unsur Kontingen Wilayah Cabang {{ $pesertaVillages->regency->name }} </h4>
+
+                    <div class="card-title mb-5">
+                        <a href="{{ route('admin-data-unsur-kontingen.index') }}" type="button"
+                            class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-undo"></i> Back To
+                            Unsur Kontingen Cabang</a>
+                    </div>
 
                     @if (count($errors) > 0)
                         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
@@ -36,25 +44,14 @@
                         </div>
                     @endif
 
-                    <h4 class="card-title mb-5">Peserta Wilayah {{ $pesertaVillages->villages->name }}</h4>
-                    <div class="card-title mb-5">
-                        <a href="{{ route('peserta.excel') }}" type="button"
-                            class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
-                                class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                        <a href="{{ route('peserta.pdf') }}" type="button"
-                            class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
-                                class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
-                    </div>
-
                     <div class="table-responsive">
-                        <table id='datatable' class="table table-bordered dt-responsive nowrap w-100">
+                        <table id="datatable" class="table table-bordered dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
                                     <th style="width: 10px;">No</th>
-                                    <th style="width: 15px;">Wilayah Cabang</th>
                                     <th>Nama Lengkap</th>
-                                    <th style="width: 15px;">Jenis Kelamin</th>
-                                    <th style="width: 15px;">Kategori</th>
+                                    <th>Jenis Kelamin</th>
+                                    <th>Kategori</th>
                                     <th>Status</th>
                                     <th>Berkas Peserta</th>
                                     <th>Catatan</th>
@@ -64,10 +61,9 @@
 
 
                             <tbody>
-                                @foreach ($peserta as $i => $data)
+                                @foreach ($unsurKontingen as $i => $data)
                                     <tr>
                                         <td>{{ ++$i }}</td>
-                                        <td>{{ $data->regency->name }}</td>
                                         <td class="text-uppercase">{{ $data->nama_lengkap }}</td>
                                         <td>
                                             @if ($data->jenis_kelamin == 1)
@@ -114,8 +110,8 @@
                                             @if ($data->asuransi_kesehatan != null)
                                                 <a class="btn btn-success waves-effect waves-light btn-sm mr-2"
                                                     href="{{ Storage::url('public/img/peserta/asuransi-kesehatan/') . $data->asuransi_kesehatan }}"
-                                                    target="_blank"><i class="bx bx-check-circle"></i> Asuransi
-                                                    Kesehatan </a>
+                                                    target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan
+                                                </a>
                                             @else
                                                 <button type="button"
                                                     class="btn btn-warning waves-effect waves-light btn-sm mr-2"
@@ -126,8 +122,7 @@
                                             @if ($data->sertif_sfh != null)
                                                 <a class="btn btn-success waves-effect waves-light btn-sm mr-2"
                                                     href="{{ Storage::url('public/img/peserta/sertif-sfh/') . $data->sertif_sfh }}"
-                                                    target="_blank"><i class="bx bx-check-circle"></i> Sertif
-                                                    SFH</a>
+                                                    target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>
                                             @else
                                                 <button type="button"
                                                     class="btn btn-warning waves-effect waves-light btn-sm mr-2"
@@ -146,7 +141,7 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                            @if ($data->status->name != 'Diterima')
                                                 <button type="button"
                                                     class="btn btn-info btn-sm mr-2 waves-effect waves-light"
                                                     data-bs-toggle="modal"
@@ -157,18 +152,14 @@
                                                 class="btn btn-light waves-effect waves-light btn-sm mr-2"
                                                 data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}">
                                                 <i class="bx bx-show"></i> Detail</button>
-                                            @if (auth()->user()->role_id == 1)
-                                                <button type="button"
-                                                    class="btn btn-warning waves-effect waves-light btn-sm mr-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-edit-{{ $data->id }}"> <i
-                                                        class="bx bx-pencil"></i> Edit</button>
-                                                <button type="button"
-                                                    class="btn btn-danger waves-effect waves-light btn-sm mr-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-delete-{{ $data->id }}"> <i
-                                                        class="bx bx-trash"></i> Delete</button>
-                                            @endif
+                                            <button type="button"
+                                                class="btn btn-warning waves-effect waves-light btn-sm mr-2"
+                                                data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i
+                                                    class="bx bx-pencil"></i> Edit</button>
+                                            <button type="button"
+                                                class="btn btn-danger waves-effect waves-light btn-sm mr-2"
+                                                data-bs-toggle="modal" data-bs-target="#modal-delete-{{ $data->id }}">
+                                                <i class="bx bx-trash"></i> Delete</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -180,151 +171,7 @@
         </div> <!-- end col -->
     </div> <!-- end row -->
 
-
-    <!-- Start modal add -->
-    <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-add"
-        data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="myModalLabel">Form Add Data</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{{ route('admin-data-peserta.store') }}" method="POST" enctype="multipart/form-data"
-                    class="needs-validation" novalidate>
-                    @csrf
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="validationCustom02" class="form-label">Nama Lengkap <i
-                                            class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                    <input name="nama_lengkap" type="text" class="form-control"
-                                        id="validationCustom02" value="{{ old('nama_lengkap') }}"
-                                        placeholder="Nama Lengkap" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="validationCustom02" class="form-label">Tempat, Tanggal Lahir <i
-                                            class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                    <div class="input-group">
-                                        <input name="tempat_lahir" type="text" class="form-control"
-                                            id="validationCustom02" value="{{ old('tempat_lahir') }}"
-                                            placeholder="Tempat Lahir" required>
-                                        <input name="tanggal_lahir" type="date" class="form-control"
-                                            id="validationCustom02" value="{{ old('tanggal_lahir') }}" required>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="validationCustom02" class="form-label">Jenis Kelamin <i
-                                            class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                    <select class="form-select" name="jenis_kelamin">
-                                        <option disabled selected>--- Pilih Jenis Kelamin ---</option>
-                                        <option value="1" @selected(old('jenis_kelamin') == '1')>Laki - Laki</option>
-                                        <option value="2" @selected(old('jenis_kelamin') == '2')>Perempuan</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="validationCustom02" class="form-label">Ukuran Kaos <i
-                                            class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                    <select class="form-select" name="ukuran_kaos">
-                                        <option disabled selected>--- Pilih Ukuran Kaos ---</option>
-                                        <option value="S" @selected(old('ukuran_kaos') == 'S')>S</option>
-                                        <option value="M" @selected(old('ukuran_kaos') == 'M')>M</option>
-                                        <option value="L" @selected(old('ukuran_kaos') == 'L')>L</option>
-                                        <option value="XL" @selected(old('ukuran_kaos') == 'XL')>XL</option>
-                                        <option value="XXL" @selected(old('ukuran_kaos') == 'XXL')>XXL</option>
-                                        <option value="XXXL" @selected(old('ukuran_kaos') == 'XXXL')>XXXL</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="no_hp" class="form-label">No HP / WA <i
-                                            class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                    <input name="no_hp" type="number" id="no_hp" value="{{ old('no_hp') }}"
-                                        placeholder="No HP/ WA" class="form-control">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="kategori_id" class="form-label">Kategori <i
-                                            class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                    <select class="form-select" name="kategori_id" id="kategori_id">
-                                        <option disabled selected>--- Pilih Kategori ---</option>
-                                        @foreach ($kategori as $item)
-                                            <option value="{{ $item->id }}" @selected(old('kategori_id') == $item->id)>
-                                                {{ $item->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="agama" class="form-label">Agama <i class="mdi mdi-exclamation-thick"
-                                            style="color: red;"></i></label>
-                                    <select class="form-select" name="agama" id="agama">
-                                        <option disabled selected>--- Pilih Agama ---</option>
-                                        <option value="Islam" @selected(old('agama') == 'Islam')>Islam</option>
-                                        <option value="Kristen" @selected(old('agama') == 'Kristen')>Kristen</option>
-                                        <option value="Katolik" @selected(old('agama') == 'Katolik')>Katolik</option>
-                                        <option value="Hindu" @selected(old('agama') == 'Hindu')>Hindu</option>
-                                        <option value="Buddha" @selected(old('agama') == 'Buddha')>Buddha</option>
-                                        <option value="Konghucu" @selected(old('agama') == 'Konghucu')>Konghucu</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="golongan_darah" class="form-label">Golongan Darah <i
-                                            class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                    <select class="form-select" name="golongan_darah">
-                                        <option disabled selected>--- Pilih Golongan Darah ---</option>
-                                        <option value="A" @selected(old('golongan_darah') == 'A')>A</option>
-                                        <option value="B" @selected(old('golongan_darah') == 'B')>B</option>
-                                        <option value="O" @selected(old('golongan_darah') == 'O')>O</option>
-                                        <option value="AB" @selected(old('golongan_darah') == 'AB')>AB</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="mb-3">
-                                    <label for="riwayat_penyakit" class="form-label">Riwayat Penyakit</label>
-                                    <input name="riwayat_penyakit" type="text" id="riwayat_penyakit"
-                                        value="{{ old('riwayat_penyakit') }}" placeholder="Riwayat Penyakit"
-                                        class="form-control">
-                                    <input name="regency_id" value="{{ Auth::user()->regency_id }}" hidden>
-                                    <input name="villages_id" value="{{ Auth::user()->villages_id }}" hidden>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary waves-effect"
-                            data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary waves-effect waves-light">Save changes</button>
-                    </div>
-                </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div>
-    <!-- End modal add -->
-
-    <!-- Start modal Delete-->
-    @foreach ($peserta as $data)
+    @foreach ($unsurKontingen as $data)
         <!-- Start modal Edit -->
         <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
             id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -761,6 +608,7 @@
         </div>
         <!-- End Verifikasi Modal -->
     @endforeach
+
 
 @endsection
 

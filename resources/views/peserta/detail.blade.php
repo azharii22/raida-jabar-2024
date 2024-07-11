@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title mb-5">Peserta</h4>
+                    <h4 class="card-title mb-5">Peserta Wilayah {{ $pesertaVillages->regency->name }} dengan jumlah peserta : {{ count($peserta->where('regency_id', $id)) }}</h4>
 
                     <div class="card-title mb-5">
                         <a href="{{ route('admin-data-peserta.index') }}" type="button"

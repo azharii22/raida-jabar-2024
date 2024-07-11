@@ -89,8 +89,8 @@
             <div class="card-body">
                 <h4 class="card-title mb-5">Data Pembayaran</h4>
                 <div class="card-title mb-5">
-                    <a href="{{ route('unsur-kontingen.admin-excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                    <a href="{{ route('unsur-kontingen.admin-pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                    <a href="{{ route('export-pembayaran') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    {{-- <a href="{{ route('unsur-kontingen.admin-pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a> --}}
                 </div>
                 @if (count($errors) > 0)
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">

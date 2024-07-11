@@ -15,7 +15,66 @@
 @slot('title') Unsur Kontingen @endslot
 @endcomponent
 
-@if (auth()->user()->role_id == 2)
+@if (auth()->user()->role_id == 1)
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <h4 class="card-title mb-5">Unsur Kontingen</h4>
+
+                <div class="card-title mb-5">
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
+                    <a href="{{ route('unsur-kontingen.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="{{ route('unsur-kontingen.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                </div>
+
+                @if (count($errors) > 0)
+                <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                    Error! <br />
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                @endif
+
+                <div class="table-responsive">
+                    <table id="datatable" class="table table-bordered table-striped dt-responsive nowrap w-100">
+                        <thead>
+                            <tr>
+                                <th style="width: 10px;">No</th>
+                                <th class="text-center">Kwarcab</th>
+                                <th class="text-center">Jumlah Pendaftar</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+
+
+                        <tbody>
+                            @foreach ($regency as $i =>$data)
+                            <tr>
+                                <td>{{ ++$i }}</td>
+                                <td class="text-uppercase text-center">{{ $data->name }}</td>
+                                <?php 
+                                    $countPesertaCabang = count($unsurKontingen->where('regency_id', $data->id)->where('villages_id', NULL));
+                                ?>
+                                <td class="text-uppercase text-center">{{ $countPesertaCabang }} Unsur Kontingen Cabang</td>
+                                <td class="text-center">
+                                    <a href="{{ route('admin-data-unsurKontingen.detail',$data->id) }}" class="btn btn-success waves-effect waves-light btn-sm mr-2"> Lihat <i class="bx bx-right-arrow-alt"></i></a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div>
+@elseif (auth()->user()->role_id == 2)
 <div class="row">
     <div class="col-12">
         <div class="card">

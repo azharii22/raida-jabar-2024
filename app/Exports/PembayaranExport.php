@@ -21,13 +21,13 @@ class PembayaranExport implements FromCollection, WithHeadings, WithColumnWidths
 {
     public function collection()
     {
-        $pembayaran = Pembayaran::with('user')->where('user_id', auth()->user()->id)->orderBy('user_id', 'ASC')->get();
+        $pembayaran = Pembayaran::with('user','status')->orderBy('user_id', 'ASC')->get();
         foreach ($pembayaran as $data) {
             $datas[] = array(
-                'nama' => $data->user->nama,
+                'nama' => $data->user->name,
                 'jumlah_terdaftar' => $data->jumlah_terdaftar . ' Orang',
                 'nominal' => $data->nominal,
-                'status' => $data->status,
+                'status' => $data->status->name,
                 'tanggal_upload' => $data->tanggal_upload,
             );
         }
@@ -44,13 +44,13 @@ class PembayaranExport implements FromCollection, WithHeadings, WithColumnWidths
     public function drawings()
     {
 
-        $pembayaran = Pembayaran::with('user')->where('user_id', auth()->user()->id)->orderBy('user_id', 'ASC')->get();
+        $pembayaran = Pembayaran::with('user')->orderBy('user_id', 'ASC')->get();
         $drawings = [];
         foreach ($pembayaran as $key => $data) {
             $drawing = new Drawing();
             $drawing->setName('Bukti Pembayaran');
             $drawing->setDescription('Bukti Pembayaran');
-            $drawing->setPath(public_path(Storage::url('public/img/pembayaran/') . $data->file_bukti_bayar));
+            $drawing->setPath(public_path(Storage::url('public/pembayaran/') . $data->file));
             $drawing->setHeight(100);
             $drawing->setWidth(100);
             $drawing->setOffsetX(5);

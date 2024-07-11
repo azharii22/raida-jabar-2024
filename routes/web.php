@@ -19,6 +19,7 @@ use App\Http\Controllers\UnsurKontingenController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ViewUserController;
 use App\Http\Controllers\VillagesController;
+use App\Models\UnsurKontingen;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -103,6 +104,7 @@ Route::get('unsur-kontingen-exportPDF', [UnsurKontingenController::class, 'expor
 Route::get('unsur-kontingen-exportExcel', [UnsurKontingenController::class, 'exportExcel'])->name('unsur-kontingen.excel');
 Route::get('unsur-kontingen-exportadminExcel', [UnsurKontingenController::class, 'exportAdminExcel'])->name('unsur-kontingen.admin-excel');
 Route::get('unsur-kontingen-exportadminPDF', [UnsurKontingenController::class, 'exportAdminPDF'])->name('unsur-kontingen.admin-pdf');
+Route::get('/admin-data-unsur-kontingen-regency-{id}', [UnsurKontingenController::class, 'detailRegency'])->name('admin-data-unsurKontingen.detail');
 
 Route::resource('/admin-data-peserta', PesertaController::class);
 Route::get('/admin-data-peserta-regency-{id}', [PesertaController::class, 'detailRegency'])->name('admin-data-peserta.detailRegency');
