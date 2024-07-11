@@ -85,7 +85,7 @@
                             <td class="text-center">{{ $data->pob }}, {{date('d-M-Y', strtotime($data->dob))}}</td>
                             <td class="text-center">
                                 <a href="{{$data->avatar }}" target="_blank">
-                                    <img class="rounded-circle header-profile-user" src="{{ isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}" />
+                                    <img class="rounded-circle header-profile-user" src="{{ $data->avatar ? $data->avatar : asset('/assets/images/users/avatar-1.jpg') }}" />
                                 </a>
                             </td>
                             <td class="text-center ">{{ $data->role->name }}</td>
@@ -100,7 +100,7 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if ($data->role_id === 1)
+                                @if ($data->role_id == 1)
                                 <a href="{{ route('editDkd', $data->id) }}" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>    
                                 @elseif ($data->role_id == 3)
                                 <a href="{{ route('editDkc', $data->id) }}" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>
