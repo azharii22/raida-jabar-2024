@@ -205,7 +205,7 @@ class UnsurKontingenController extends Controller
     public function exportPDF()
     {
         $data = Peserta::where('villages_id', NULL)->get();
-        $pdf = Pdf::loadView('unsurKontingen.pdf', compact('data'))->setPaper('a4', 'portrait');
+        $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a4', 'portrait');
         return $pdf->download('Unsur-Kontingen.pdf');
     }
 
