@@ -31,7 +31,7 @@
             <td>{{ $data->villages?->name ?  $data->villages?->name : $data->regency->name }}</td>
             <td>{{ $data->kategori?->name }}</td>
             <td>{{ $data->nama_lengkap }}</td>
-            <td>{{ $data->tempat_lahir }}, {{ date('D-F-Y', strtotime($data->tanggal_lahir)) }}</td>
+            <td>{{ $data->tempat_lahir }}, {{ date('d-F-Y', strtotime($data->tanggal_lahir)) }}</td>
             <td>@if ($data->jenis_kelamin == 1)<span>Laki - Laki</span>@else<span>Perempuan</span>@endif</td>
             <td>{{ $data->ukuran_kaos }}</td>
             <td>{{ $data->no_hp }}</td>

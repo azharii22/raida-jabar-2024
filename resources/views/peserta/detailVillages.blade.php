@@ -36,15 +36,13 @@
                         </div>
                     @endif
 
-                    <h4 class="card-title mb-5">Peserta Wilayah {{ $pesertaVillages->villages->name }}</h4>
                     <div class="card-title mb-5">
-                        <a href="{{ route('peserta.excel') }}" type="button"
-                            class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
-                                class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                        <a href="{{ route('peserta.pdf') }}" type="button"
-                            class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
-                                class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                        <a href="{{ route('admin-data-peserta.detailRegency', $regency->regency_id) }}" type="button"
+                            class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-undo"></i> Back To
+                            Peserta {{ $regency->regency->name }}</a>
                     </div>
+
+                    <h4 class="card-title mb-5">Peserta Wilayah {{ $pesertaVillages->villages->name }}</h4>
 
                     <div class="table-responsive">
                         <table id='datatable' class="table table-bordered dt-responsive nowrap w-100">
@@ -52,7 +50,7 @@
                                 <tr>
                                     <th style="width: 10px;">No</th>
                                     <th style="width: 15px;">Wilayah Cabang</th>
-                                    <th>Nama Lengkap</th>
+                                    <th style="width: 20px;">Nama Lengkap</th>
                                     <th style="width: 15px;">Jenis Kelamin</th>
                                     <th style="width: 15px;">Kategori</th>
                                     <th>Status</th>
@@ -78,13 +76,13 @@
                                         </td>
                                         <td>{{ $data->kategori?->name }}</td>
                                         <td>
-                                            @if ($data->status->name === 'Terkirim')
+                                            @if ($data->status->name == 'Terkirim')
                                                 <span class="badge text-bg-primary">Terkirim</span>
-                                            @elseif ($data->status->name === 'Diterima')
+                                            @elseif ($data->status->name == 'Diterima')
                                                 <span class="badge text-bg-success">Diterima</span>
-                                            @elseif ($data->status->name === 'Revisi')
+                                            @elseif ($data->status->name == 'Revisi')
                                                 <span class="badge text-bg-warning">Revisi</span>
-                                            @elseif ($data->status->name === 'Ditolak')
+                                            @elseif ($data->status->name == 'Ditolak')
                                                 <span class="badge text-bg-danger">Ditolak</span>
                                             @endif
                                         </td>
@@ -137,7 +135,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($data->status->name === 'Revisi')
+                                            @if ($data->status->name == 'Revisi')
                                                 <div style="color: red;">
                                                     <li>{{ $data->catatan }}</li>
                                                 </div>

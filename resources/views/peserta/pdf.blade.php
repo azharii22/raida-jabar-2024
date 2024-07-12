@@ -24,7 +24,7 @@
     </style>
     <div class="row">
         <div class="col-md-12">
-            @if (count($data))
+            @if (count($peserta))
             <div class="card-body">
                 <table style="width: 100%;">
                     <tr>
@@ -45,18 +45,30 @@
                     <thead class="thead-dark" align="center">
                         <tr>
                             <th style="width: 10px;">No</th>
-                            <th>Nama Lengkap</th>
-                            <th>Jenis Kelamin</th>
+                            <th>Wilayah Cabang</th>
+                            <th>Wilayah Ranting</th>
                             <th>Kategori</th>
+                            <th>Nama Lengkap</th>
+                            <th>Tempat, Tanggal Lahir</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Ukuran Kaos</th>
+                            <th>No HP</th>
+                            <th>Agama</th>
+                            <th>Golongan Darah</th>
+                            <th>Riwayat Penyakit</th>
                             <th>Status</th>
                             <th>Catatan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $i =>$dt)
+                        @foreach ($peserta as $i =>$dt)
                         <tr>
                             <td>{{ ++$i }}</td>
-                            <td class="text-uppercase">{{ $dt->nama_lengkap }}</td>
+                            <td class="text-capitalize">{{ $dt->regency->name }}</td>
+                            <td class="text-capitalize">{{ $dt->villages?->name }}</td>
+                            <td class="text-capitalize">{{ $dt->kategori?->name }}</td>
+                            <td class="text-capitalize">{{ $dt->nama_lengkap }}</td>
+                            <td class="text-capitalize">{{ $dt->tempat_lahir }}, {{ date('d-F-Y', strtotime($dt->tanggal_lahir)) }}</td>
                             <td>
                                 @if ($dt->jenis_kelamin == 1)
                                 <span>Laki - Laki</span>
@@ -64,7 +76,11 @@
                                 <span>Perempuan</span>
                                 @endif
                             </td>
-                            <td>{{ $dt->kategori?->name }}</td>
+                            <td>{{ $dt->ukuran_kaos }}</td>
+                            <td>{{ $dt->no_hp }}</td>
+                            <td>{{ $dt->agama }}</td>
+                            <td>{{ $dt->golongan_darah }}</td>
+                            <td>{{ $dt->riwayat_penyakit }}</td>
                             <td>{{ $dt->status?->name }}</td>
                             <td> {{ $dt->catatan }} </td>
                         </tr>

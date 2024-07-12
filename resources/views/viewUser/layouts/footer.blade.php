@@ -30,8 +30,6 @@
                                 class="fab fa-instagram"></i></a>
                         <a class="btn btn-outline-light btn-social" href=""><i
                                 class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><img
-                                src="assets/viewUser/img/tiktok.svg"></img></a>
                     </div>
                 </div>
                  {{-- <div class="row g-2">

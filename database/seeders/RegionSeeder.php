@@ -68,7 +68,7 @@ class RegionSeeder extends Seeder
         $kabpurwakarta      = Regency::where('name', 'KABUPATEN PURWAKARTA')->first();
         $kabkarawang        = Regency::where('name', 'KABUPATEN KARAWANG')->first();
         $kabbekasi          = Regency::where('name', 'KABUPATEN BEKASI')->first();
-        $kabbandungbarat    = Regency::where('name', 'KABUPATEN BANDUNG')->first();
+        $kabbandungbarat    = Regency::where('name', 'KABUPATEN BANDUNG BARAT')->first();
         $kabpangandaran     = Regency::where('name', 'KABUPATEN PANGANDARAN')->first();
         $kotabogor          = Regency::where('name', 'KOTA BOGOR')->first();
         $kotasukabumi       = Regency::where('name', 'KOTA SUKABUMI')->first();

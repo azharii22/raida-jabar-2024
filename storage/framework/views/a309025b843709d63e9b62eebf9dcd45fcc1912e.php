@@ -164,7 +164,7 @@
             <div class="card" style="height: 95%">
                 <div class="card-body">
                     <div class="text-center mt-5">
-                        <h1 class="text-muted fw-medium mb-3">Grand Total Peserta</>
+                        <h1 class="text-muted fw-medium mb-3">Total Partisipan</>
                         <h2 class="mb-0"><?php echo e($grandTotalPeserta); ?></h2>
                     </div>
                 </div>

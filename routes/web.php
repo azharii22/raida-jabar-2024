@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('phpinfo', function () {
     return phpinfo();
 });
@@ -124,7 +125,7 @@ Route::put('/pembayaran-verifikasi{id}', [App\Http\Controllers\PembayaranControl
 Route::get('pembayaran-exportPDF{id}', [PembayaranController::class, 'exportPDF'])->name('pembayaran.pdf');
 Route::get('pembayaran-exportExcel{id}', [PembayaranController::class, 'exportExcel'])->name('pembayaran.excel');
 Route::get('pembayaran-exportadminExcel', [PembayaranController::class, 'exportAdminExcel'])->name('pembayaran.admin-excel');
-Route::get('pembayaran-exportadminPDF', [PembayaranController::class, 'exportAdminPDF'])->name('pembayaran.admin-pdf');
+Route::get('pembayaran-export-PDF', [PembayaranController::class, 'exportPDF'])->name('pembayaran.pdf');
 
 
 

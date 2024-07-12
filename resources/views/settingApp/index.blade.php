@@ -57,7 +57,7 @@
                                 @endif
                             </td>
                             <td>
-                                @if ($data->key === 'main.3_app_logo')
+                                @if ($data->key == 'main.3_app_logo')
                                 <img src="{{ Storage::url('public/setting'.'/'.$data->value) }}" width="150px" height="150px" style="border-radius: 20px">
                                 @else
                                 {{ $data->value }}

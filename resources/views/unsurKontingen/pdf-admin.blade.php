@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Export PDF Peserta &mdash; {{ config('settings.main.1_app_name') }}</title>
+    <title>Export PDF Unsur Kontingen &mdash; {{ config('settings.main.1_app_name') }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384=Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcjlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
@@ -30,7 +30,7 @@
                     <tr>
                         <td align="center">
                             <span>
-                                LAPORAN DATA PESERTA
+                                LAPORAN DATA UNSUR KONTINGEN
                                 <br>{{ config('settings.main.1_app_name') }}
                             </span>
                         </td>
@@ -38,42 +38,58 @@
                 </table>
                 <hr class="line-title">
                 <p align="center">
-                    Laporan Data Peserta
+                    Laporan Data Unsur Kontingen
                 </p>
                 </hr>
                 <table class="table table-bordered">
                     <thead class="thead-dark" align="center">
                         <tr>
                             <th style="width: 10px;">No</th>
-                            <th>Nama Lengkap</th>
-                            <th>Jenis Kelamin</th>
+                            <th>Wilayah Cabang</th>
+                            <th>Wilayah Ranting</th>
                             <th>Kategori</th>
+                            <th>Nama Lengkap</th>
+                            <th>Tempat, Tanggal Lahir</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Ukuran Kaos</th>
+                            <th>No HP</th>
+                            <th>Agama</th>
+                            <th>Golongan Darah</th>
+                            <th>Riwayat Penyakit</th>
                             <th>Status</th>
                             <th>Catatan</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach ($data as $i =>$dt)
-                    <tr>
-                        <td>{{ ++$i }}</td>
-                        <td class="text-uppercase">{{ $dt->nama_lengkap }}</td>
-                        <td>
-                            @if ($dt->jenis_kelamin == 1)
-                            <span>Laki - Laki</span>
-                            @else
-                            <span>Perempuan</span>
-                            @endif
-                        </td>
-                        <td>{{ $dt->kategori?->name }}</td>
-                        <td>{{ $dt->status?->name }}</td>
-                        <td> {{ $dt->catatan }} </td>
-                    </tr>
-                    @endforeach
+                        @foreach ($data as $i =>$dt)
+                        <tr>
+                            <td>{{ ++$i }}</td>
+                            <td class="text-capitalize">{{ $dt->regency->name }}</td>
+                            <td class="text-capitalize">{{ $dt->villages?->name }}</td>
+                            <td class="text-capitalize">{{ $dt->kategori?->name }}</td>
+                            <td class="text-capitalize">{{ $dt->nama_lengkap }}</td>
+                            <td class="text-capitalize">{{ $dt->tempat_lahir }}, {{ date('d-F-Y', strtotime($dt->tanggal_lahir)) }}</td>
+                            <td>
+                                @if ($dt->jenis_kelamin == 1)
+                                <span>Laki - Laki</span>
+                                @else
+                                <span>Perempuan</span>
+                                @endif
+                            </td>
+                            <td>{{ $dt->ukuran_kaos }}</td>
+                            <td>{{ $dt->no_hp }}</td>
+                            <td>{{ $dt->agama }}</td>
+                            <td>{{ $dt->golongan_darah }}</td>
+                            <td>{{ $dt->riwayat_penyakit }}</td>
+                            <td>{{ $dt->status?->name }}</td>
+                            <td> {{ $dt->catatan }} </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
             @else
-            <b>Laporan Data Peserta Belum tersedia</b>
+            <b>Laporan Data Unsur Kontingen Belum tersedia</b>
             @endif
         </div>
     </div>

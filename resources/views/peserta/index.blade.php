@@ -33,6 +33,15 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 @endif
+                
+                <div class="card-title mb-5">
+                    <a href="{{ route('peserta.excel') }}" type="button"
+                        class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                            class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                    <a href="{{ route('peserta.pdf') }}" type="button"
+                        class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                            class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                </div>
 
                 <div class="table-responsive">
                     <table id="datatable" class="table table-bordered table-striped dt-responsive nowrap w-100">
@@ -124,13 +133,13 @@
                                 </td>
                                 <td>{{ $data->kategori?->name }}</td>
                                 <td>
-                                    @if ($data->status->name === 'Terkirim')
+                                    @if ($data->status->name == 'Terkirim')
                                     <span class="badge text-bg-primary">Terkirim</span>
-                                    @elseif ($data->status->name === 'Diterima')
+                                    @elseif ($data->status->name == 'Diterima')
                                     <span class="badge text-bg-success">Diterima</span>
-                                    @elseif ($data->status->name === 'Revisi')
+                                    @elseif ($data->status->name == 'Revisi')
                                     <span class="badge text-bg-warning">Revisi</span>
-                                    @elseif ($data->status->name === 'Ditolak')
+                                    @elseif ($data->status->name == 'Ditolak')
                                     <span class="badge text-bg-danger">Ditolak</span>
                                     @endif
                                 </td>
@@ -157,7 +166,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($data->status->name === 'Revisi')
+                                    @if ($data->status->name == 'Revisi')
                                     <div style="color: red;">
                                         <li>{{ $data->catatan }}</li>
                                     </div>
@@ -240,13 +249,13 @@
                                 </td>
                                 <td>{{ $data->kategori?->name }}</td>
                                 <td>
-                                    @if ($data->status->name === 'Terkirim')
+                                    @if ($data->status->name == 'Terkirim')
                                     <span class="badge text-bg-primary">Terkirim</span>
-                                    @elseif ($data->status->name === 'Diterima')
+                                    @elseif ($data->status->name == 'Diterima')
                                     <span class="badge text-bg-success">Diterima</span>
-                                    @elseif ($data->status->name === 'Revisi')
+                                    @elseif ($data->status->name == 'Revisi')
                                     <span class="badge text-bg-warning">Revisi</span>
-                                    @elseif ($data->status->name === 'Ditolak')
+                                    @elseif ($data->status->name == 'Ditolak')
                                     <span class="badge text-bg-danger">Ditolak</span>
                                     @endif
                                 </td>
@@ -273,7 +282,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($data->status->name === 'Revisi')
+                                    @if ($data->status->name == 'Revisi')
                                     <div style="color: red;">
                                         <li>{{ $data->catatan }}</li>
                                     </div>

@@ -12,6 +12,7 @@ use App\Models\UnsurKontingen;
 use App\Models\User;
 use App\Models\Villages;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -199,15 +200,34 @@ class PesertaController extends Controller
 
     public function exportExcel()
     {
-        return Excel::download(new PesertaExport(), 'Peserta.xlsx');
+        $date = Carbon::now()->format('d-m-Y');
+        if (Auth::user()->role_id == 1) {
+            return Excel::download(new PesertaExport(), 'Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.xlsx');
+        } elseif (Auth::user()->role_id == 2) {
+            return Excel::download(new PesertaExport(), 'Peserta ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->villages->name . ' ' . $date . '.xlsx');
+        } elseif (Auth::user()->role_id == 3) {
+            return Excel::download(new PesertaExport(), 'Peserta ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->regency->name . ' ' . $date . '.xlsx');
+        }
     }
 
 
     public function exportPDF()
     {
-        $data = Peserta::with('kategori', 'user')->get();
-        $pdf = Pdf::loadView('peserta.pdf', compact('data'))->setPaper('a4', 'portrait');
-        return $pdf->download('Peserta.pdf');
+        $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
+        $date = Carbon::now()->format('d-m-Y');
+        if (Auth::user()->role_id == 1) {
+            $peserta = Peserta::orderBy('nama_lengkap', 'DESC')->where('villages_id', '!=', NULL)->get();
+            $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
+            return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+        } elseif (Auth::user()->role_id == 2) {
+            $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
+            $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
+            return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+        } elseif (Auth::user()->role_id == 3) {
+            $peserta = Peserta::with('villages')->where('regency_id', Auth::user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
+            $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
+            return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+        }
     }
 
     public function detailRegency($id)
@@ -217,13 +237,14 @@ class PesertaController extends Controller
         $peserta = Peserta::where('villages_id', '!=', NULL)->get();
         return view('peserta.detail', compact('villages', 'peserta', 'pesertaVillages', 'id'));
     }
-    
+
     public function detailVillages($id)
     {
+        $regency = Villages::where('id', $id)->first();
         $pesertaVillages = Peserta::where('villages_id', $id)->first();
         $peserta = Peserta::where('villages_id', $id)->get();
         $kategori = Kategori::where('name', 'LIKE', 'Peserta')->get();
         $status = Status::orderBy('name', 'DESC')->get();
-        return view('peserta.detailVillages', compact('peserta', 'kategori', 'status', 'pesertaVillages'));
+        return view('peserta.detailVillages', compact('peserta', 'kategori', 'status', 'pesertaVillages', 'regency'));
     }
 }

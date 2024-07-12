@@ -90,7 +90,7 @@
                             </td>
                             <td class="text-center ">{{ $data->role->name }}</td>
                             <td class="text-center ">
-                                @if ($data->role_id === 1)
+                                @if ($data->role_id == 1)
                                     -
                                 @elseif ($data->role_id == 3)
                                 {{ $data->regency?->name }}

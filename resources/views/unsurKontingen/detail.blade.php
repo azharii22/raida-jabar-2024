@@ -74,13 +74,13 @@
                                         </td>
                                         <td>{{ $data->kategori?->name }}</td>
                                         <td>
-                                            @if ($data->status->name === 'Terkirim')
+                                            @if ($data->status->name == 'Terkirim')
                                                 <span class="badge text-bg-primary">Terkirim</span>
-                                            @elseif ($data->status->name === 'Diterima')
+                                            @elseif ($data->status->name == 'Diterima')
                                                 <span class="badge text-bg-success">Diterima</span>
-                                            @elseif ($data->status->name === 'Revisi')
+                                            @elseif ($data->status->name == 'Revisi')
                                                 <span class="badge text-bg-warning">Revisi</span>
-                                            @elseif ($data->status->name === 'Ditolak')
+                                            @elseif ($data->status->name == 'Ditolak')
                                                 <span class="badge text-bg-danger">Ditolak</span>
                                             @endif
                                         </td>
@@ -132,7 +132,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if ($data->status->name === 'Revisi')
+                                            @if ($data->status->name == 'Revisi')
                                                 <div style="color: red;">
                                                     <li>{{ $data->catatan }}</li>
                                                 </div>

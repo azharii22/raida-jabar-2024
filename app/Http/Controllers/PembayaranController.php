@@ -8,6 +8,7 @@ use App\Models\Pembayaran;
 use App\Models\Role;
 use App\Models\Status;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -127,6 +128,16 @@ class PembayaranController extends Controller
 
     public function export()
     {
-        return Excel::download(new PembayaranExport, 'Pembayaran.xlsx');
+        $date = Carbon::now()->format('d-m-Y');
+        return Excel::download(new PembayaranExport, 'Pembayaran ' . config('settings.main.1_app_name') . ' ' . $date . '.xlsx');
+    }
+
+    public function exportPDF()
+    {
+        $date = Carbon::now()->format('d-m-Y');
+        $pembayaran = Pembayaran::with('user', 'status')->orderBy('user_id')->get();
+        // return view('pembayaran.pdf', compact('pembayaran'));
+        $pdf = Pdf::loadView('pembayaran.pdf', compact('pembayaran'))->setPaper('a3', 'portrait');
+        return $pdf->download('pembayaran ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
     }
 }

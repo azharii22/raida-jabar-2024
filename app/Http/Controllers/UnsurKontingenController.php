@@ -11,6 +11,7 @@ use App\Models\Status;
 use App\Models\UnsurKontingen;
 use App\Models\Villages;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -36,7 +37,7 @@ class UnsurKontingenController extends Controller
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $unsurKontingen = Peserta::where('user_id', Auth::user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
             return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
-        } elseif(auth()->user()->role_id == 3) {
+        } elseif (auth()->user()->role_id == 3) {
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $unsurKontingen = Peserta::where('regency_id', Auth::user()->regency_id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('regency_id')->get();
             return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
@@ -112,7 +113,7 @@ class UnsurKontingenController extends Controller
         ]);
         $foto = $request->file('foto');
         $nama_foto = time() . '-' . $foto->getClientOriginalName();
-        $foto->storeAs('public/img/unsur-kontingen/foto', $nama_foto);
+        $foto->storeAs('public/img/peserta/foto', $nama_foto);
         $unsurKontingen->update(array_merge($request->all(), [
             'foto' => $nama_foto,
         ]));
@@ -133,7 +134,7 @@ class UnsurKontingenController extends Controller
         ]);
         $kta = $request->file('KTA');
         $nama_kta = time() . '-' . $kta->getClientOriginalName();
-        $kta->storeAs('public/img/unsur-kontingen/kta', $nama_kta);
+        $kta->storeAs('public/img/peserta/kta', $nama_kta);
         $unsurKontingen->update(array_merge($request->all(), [
             'KTA' => $nama_kta,
         ]));
@@ -154,7 +155,7 @@ class UnsurKontingenController extends Controller
         ]);
         $asuransi = $request->file('asuransi_kesehatan');
         $nama_asuransi = time() . '-' . $asuransi->getClientOriginalName();
-        $asuransi->storeAs('public/img/unsur-kontingen/asuransi-kesehatan', $nama_asuransi);
+        $asuransi->storeAs('public/img/peserta/asuransi-kesehatan', $nama_asuransi);
         $unsurKontingen->update(array_merge($request->all(), [
             'asuransi_kesehatan' => $nama_asuransi,
         ]));
@@ -175,7 +176,7 @@ class UnsurKontingenController extends Controller
         ]);
         $sertif = $request->file('sertif_sfh');
         $nama_sertif = time() . '-' . $sertif->getClientOriginalName();
-        $sertif->storeAs('public/img/unsur-kontingen/sertif-sfh', $nama_sertif);
+        $sertif->storeAs('public/img/peserta/sertif-sfh', $nama_sertif);
         $unsurKontingen->update(array_merge($request->all(), [
             'sertif_sfh' => $nama_sertif,
         ]));
@@ -193,28 +194,36 @@ class UnsurKontingenController extends Controller
 
     public function exportExcel()
     {
-        return Excel::download(new UnsurKontingenExport(), 'Unsur-Kontingen.xlsx');
+        $date = Carbon::now()->format('d-m-Y');
+        if (Auth::user()->role_id == 1) {
+            return Excel::download(new UnsurKontingenExport(), 'Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.xlsx');
+        } elseif (Auth::user()->role_id == 2) {
+            return Excel::download(new UnsurKontingenExport(), 'Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->villages->name . ' ' . $date . '.xlsx');
+        } elseif (Auth::user()->role_id == 3) {
+            return Excel::download(new UnsurKontingenExport(), 'Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->regency->name . ' ' . $date . '.xlsx');
+        }
     }
 
-
-    public function exportAdminExcel()
-    {
-        return Excel::download(new UnsurKontingenAdminExport(), 'Unsur-Kontingen.xlsx');
-    }
 
     public function exportPDF()
     {
-        $data = Peserta::where('villages_id', NULL)->get();
-        $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a4', 'portrait');
-        return $pdf->download('Unsur-Kontingen.pdf');
+        $date = Carbon::now()->format('d-m-Y');
+        $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+        if (auth()->user()->role_id == 1) {
+            $data = Peserta::where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
+            $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+            return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+        } elseif (auth()->user()->role_id == 2) {
+            $data = Peserta::where('user_id', Auth::user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
+            $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+            return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->villages->name . ' ' . $date . '.pdf');
+        } elseif (auth()->user()->role_id == 3) {
+            $data = Peserta::where('regency_id', Auth::user()->regency_id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('regency_id')->get();
+            $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+            return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->regency->name . ' ' . $date . '.pdf');
+        }
     }
 
-    public function exportadminPDF()
-    {
-        $data = Peserta::with('kategori', 'user')->orderBy('nama_lengkap')->get();
-        $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a4', 'portrait');
-        return $pdf->download('Unsur-Kontingen.pdf');
-    }
     public function detailRegency($id)
     {
         $kategori = Kategori::orderBy('updated_at', 'DESC')->where('name', '!=', 'Peserta')->get();

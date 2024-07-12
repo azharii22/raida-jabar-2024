@@ -90,7 +90,7 @@
                 <h4 class="card-title mb-5">Data Pembayaran</h4>
                 <div class="card-title mb-5">
                     <a href="{{ route('export-pembayaran') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                    {{-- <a href="{{ route('unsur-kontingen.admin-pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a> --}}
+                    <a href="{{ route('pembayaran.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                 </div>
                 @if (count($errors) > 0)
                 <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
@@ -127,13 +127,13 @@
                             <td style="width: 10px;"> {{ $data->jumlah_terdaftar }} </td>
                             <td style="width: 10px;"> @currency($data->nominal) </td>
                             <td style="width: 10px;">
-                                @if ($data->status->name === 'Terkirim')
+                                @if ($data->status->name == 'Terkirim')
                                 <span class="badge text-bg-primary">Terkirim</span>
-                                @elseif ($data->status->name === 'Diterima')
+                                @elseif ($data->status->name == 'Diterima')
                                 <span class="badge text-bg-success">Diterima</span>
-                                @elseif ($data->status->name === 'Revisi')
+                                @elseif ($data->status->name == 'Revisi')
                                 <span class="badge text-bg-warning">Revisi</span>
-                                @elseif ($data->status->name === 'Ditolak')
+                                @elseif ($data->status->name == 'Ditolak')
                                 <span class="badge text-bg-danger">Ditolak</span>
                                 @endif
                             </td>
@@ -270,13 +270,13 @@
                                 <td style="width: 10px;">{{ $data->jumlah_terdaftar }}</td>
                                 <td style="width: 10px;">@currency($data->nominal)</td>
                                 <td style="width: 10px;">
-                                    @if ($data->status->name === 'Terkirim')
+                                    @if ($data->status->name == 'Terkirim')
                                     <span class="badge text-bg-primary">Terkirim</span>
-                                    @elseif ($data->status->name === 'Diterima')
+                                    @elseif ($data->status->name == 'Diterima')
                                     <span class="badge text-bg-success">Diterima</span>
-                                    @elseif ($data->status->name === 'Revisi')
+                                    @elseif ($data->status->name == 'Revisi')
                                     <span class="badge text-bg-warning">Revisi</span>
-                                    @elseif ($data->status->name === 'Ditolak')
+                                    @elseif ($data->status->name == 'Ditolak')
                                     <span class="badge text-bg-danger">Ditolak</span>
                                     @endif
                                 </td>

@@ -24,7 +24,7 @@
                 <h4 class="card-title mb-5">Unsur Kontingen</h4>
 
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Unsur Kontingen</button>
                     <a href="{{ route('unsur-kontingen.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
                     <a href="{{ route('unsur-kontingen.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                 </div>
@@ -59,9 +59,9 @@
                                 <td>{{ ++$i }}</td>
                                 <td class="text-uppercase text-center">{{ $data->name }}</td>
                                 <?php 
-                                    $countPesertaCabang = count($unsurKontingen->where('regency_id', $data->id)->where('villages_id', NULL));
+                                    $UnsurKontingenCabang = count($unsurKontingen->where('regency_id', $data->id)->where('villages_id', NULL));
                                 ?>
-                                <td class="text-uppercase text-center">{{ $countPesertaCabang }} Unsur Kontingen Cabang</td>
+                                <td class="text-uppercase text-center">{{ $UnsurKontingenCabang }} Unsur Kontingen Cabang</td>
                                 <td class="text-center">
                                     <a href="{{ route('admin-data-unsurKontingen.detail',$data->id) }}" class="btn btn-success waves-effect waves-light btn-sm mr-2"> Lihat <i class="bx bx-right-arrow-alt"></i></a>
                                 </td>
@@ -83,7 +83,7 @@
                 <h4 class="card-title mb-5">Unsur Kontingen</h4>
 
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Unsur Kontingen</button>
                     <a href="{{ route('unsur-kontingen.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
                     <a href="{{ route('unsur-kontingen.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                 </div>
@@ -109,7 +109,7 @@
                                 <th>Jenis Kelamin</th>
                                 <th>Kategori</th>
                                 <th>Status</th>
-                                <th>Berkas Peserta</th>
+                                <th>Berkas Unsur Kontingen</th>
                                 <th>Catatan</th>
                                 <th style="width: 10px;">Action</th>
                             </tr>
@@ -130,13 +130,13 @@
                                 </td>
                                 <td>{{ $data->kategori?->name }}</td>
                                 <td>
-                                    @if ($data->status->name === 'Terkirim')
+                                    @if ($data->status->name == 'Terkirim')
                                     <span class="badge text-bg-primary">Terkirim</span>
-                                    @elseif ($data->status->name === 'Diterima')
+                                    @elseif ($data->status->name == 'Diterima')
                                     <span class="badge text-bg-success">Diterima</span>
-                                    @elseif ($data->status->name === 'Revisi')
+                                    @elseif ($data->status->name == 'Revisi')
                                     <span class="badge text-bg-warning">Revisi</span>
-                                    @elseif ($data->status->name === 'Ditolak')
+                                    @elseif ($data->status->name == 'Ditolak')
                                     <span class="badge text-bg-danger">Ditolak</span>
                                     @endif
                                 </td>
@@ -163,7 +163,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($data->status->name === 'Revisi')
+                                    @if ($data->status->name == 'Revisi')
                                     <div style="color: red;">
                                         <li>{{ $data->catatan }}</li>
                                     </div>
@@ -199,9 +199,9 @@
                 <h4 class="card-title mb-5">Unsur Kontingen</h4>
 
                 <div class="card-title mb-5">
-                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
+                    <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Unsur Kontingen</button>
                     <a href="{{ route('unsur-kontingen.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                    <a href="{{ route('peserta.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                    <a href="{{ route('unsur-kontingen.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                 </div>
 
                 @if (count($errors) > 0)
@@ -226,7 +226,7 @@
                                 <th>Jenis Kelamin</th>
                                 <th>Kategori</th>
                                 <th>Status</th>
-                                <th>Berkas Peserta</th>
+                                <th>Berkas Unsur Kontingen</th>
                                 <th>Catatan</th>
                                 <th style="width: 10px;">Action</th>
                             </tr>
@@ -249,13 +249,13 @@
                                 </td>
                                 <td>{{ $data->kategori?->name }}</td>
                                 <td>
-                                    @if ($data->status->name === 'Terkirim')
+                                    @if ($data->status->name == 'Terkirim')
                                     <span class="badge text-bg-primary">Terkirim</span>
-                                    @elseif ($data->status->name === 'Diterima')
+                                    @elseif ($data->status->name == 'Diterima')
                                     <span class="badge text-bg-success">Diterima</span>
-                                    @elseif ($data->status->name === 'Revisi')
+                                    @elseif ($data->status->name == 'Revisi')
                                     <span class="badge text-bg-warning">Revisi</span>
-                                    @elseif ($data->status->name === 'Ditolak')
+                                    @elseif ($data->status->name == 'Ditolak')
                                     <span class="badge text-bg-danger">Ditolak</span>
                                     @endif
                                 </td>
@@ -282,7 +282,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($data->status->name === 'Revisi')
+                                    @if ($data->status->name == 'Revisi')
                                     <div style="color: red;">
                                         <li>{{ $data->catatan }}</li>
                                     </div>
@@ -320,7 +320,7 @@
                 <h5 class="modal-title" id="myModalLabel">Form Add Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin-data-peserta.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form action="{{ route('admin-data-unsur-kontingen.store') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 @csrf
                 <div class="modal-body">
                     <div class="row">
@@ -443,7 +443,7 @@
                 <h5 class="modal-title" id="myModalLabel">Form Edit Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin-data-peserta.update', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form action="{{ route('admin-data-unsur-kontingen.update', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
@@ -562,10 +562,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Delete Peserta</h5>
+                <h5 class="modal-title" id="myModalLabel">Delete Unsur Kontingen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('admin-data-peserta.destroy', $data->id) }}" method="POST">
+            <form action="{{ route('admin-data-unsur-kontingen.destroy', $data->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
                 <div class="modal-body">
@@ -590,7 +590,7 @@
                 <h5 class="modal-title" id="myModalLabel">Upload Foto</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('peserta.foto', $data->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('unsur-kontingen.foto', $data->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
@@ -614,7 +614,7 @@
                 <h5 class="modal-title" id="myModalLabel">Upload KTA</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('peserta.kta', $data->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('unsur-kontingen.kta', $data->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
@@ -638,7 +638,7 @@
                 <h5 class="modal-title" id="myModalLabel">Upload Asuransi Kesehatan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('peserta.asuransi', $data->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('unsur-kontingen.asuransi', $data->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
@@ -662,7 +662,7 @@
                 <h5 class="modal-title" id="myModalLabel">Upload Sertifikat SFH</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('peserta.sertif', $data->id) }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('unsur-kontingen.sertif', $data->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
@@ -683,7 +683,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Detail Peserta</h5>
+                <h5 class="modal-title" id="myModalLabel">Detail Unsur Kontingen</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -786,7 +786,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Verifikasi Data</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('peserta.verifikasi', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <form action="{{ route('unsur-kontingen.verifikasi', $data->id) }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
                 @csrf
                 @method('PUT')
                 <div class="modal-body">
