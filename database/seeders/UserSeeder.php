@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
         $roleDkd = Role::where('name', 'DKD')->first();
         $roleDkr = Role::where('name', 'DKR')->first();
         $roleDkc = Role::where('name', 'DKC')->first();
-        $roleU = Role::where('name', 'User')->first();
+        $roleSA = Role::where('name', 'Super Admin')->first();
         
         $data   = [
             [
@@ -41,7 +41,7 @@ class UserSeeder extends Seeder
                 'dob'               => '2000-10-10',
                 'email'             => 'admin@mail.com',
                 'password'          => bcrypt('12345678'),
-                'role_id'           => $roleDkd->id,
+                'role_id'           => $roleSA->id,
                 'email_verified_at' => '2022-01-02 17:04:58',
                 'avatar'            => 'images/avatar-1.jpg',
                 'created_at'        => now(),
@@ -81,19 +81,6 @@ class UserSeeder extends Seeder
                 'email'             => 'dkc@mail.com',
                 'password'          => bcrypt('12345678'),
                 'role_id'           => $roleDkc->id,
-                'email_verified_at' => '2022-01-02 17:04:58',
-                'avatar'            => 'images/avatar-1.jpg',
-                'created_at'        => now(),
-                'updated_at'        => now(),
-            ],
-            [
-                'name'              => 'User',
-                'fullname'          => 'User',
-                'pob'               => 'Djakarta',
-                'dob'               => '2000-10-10',
-                'email'             => 'user@mail.com',
-                'password'          => bcrypt('12345678'),
-                'role_id'           => $roleU->id,
                 'email_verified_at' => '2022-01-02 17:04:58',
                 'avatar'            => 'images/avatar-1.jpg',
                 'created_at'        => now(),
