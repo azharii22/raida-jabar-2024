@@ -7,7 +7,7 @@
         <div id="sidebar-menu">
             <!-- Left Menu Start -->
 
-            @if (auth()->user()->role_id == 1)
+            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4)
             <!-- Menu DKD / Admin Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
                 <li class="menu-title" key="t-menu">@lang('translation.Dashboards')</li>
@@ -24,7 +24,9 @@
                         <li><a href="{{ route('admin-data-berkas-kontingen.index') }}" key="t-user-grid">Data Berkas Kontingen</a></li>
                         <li><a href="{{ route('admin-data-peserta.index') }}" key="t-user-list">Data Peserta</a></li>
                         <li><a href="{{ route('admin-data-unsur-kontingen.index') }}" key="t-profile">Data Unsur Kontingen Cabang</a></li>
+                        @if (auth()->user()->role_id == 4)
                         <li><a href="{{ route('admin-data-pembayaran.index') }}" key="t-pembayaran">Data Pembayaran</a></li>
+                        @endif
                     </ul>
                 </li>
                 <li class="menu-title" key="t-pages">View User</li>

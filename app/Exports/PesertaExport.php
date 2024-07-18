@@ -23,17 +23,17 @@ class PesertaExport implements
     public function collection()
     {
         $kategori = Kategori::where('name', 'LIKE', 'Peserta')->first();
-        if (Auth::user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $peserta = Peserta::get();
-        } elseif (Auth::user()->role_id == 2) {
+        } elseif (auth()->user()->role_id == 2) {
             $peserta = Peserta::where(
                 'villages_id',
-                Auth::user()->villages_id
+                auth()->user()->villages_id
             )->orderBy('nama_lengkap')->where('kategori_id', $kategori->id)->get();
-        } elseif (Auth::user()->role_id == 3) {
+        } elseif (auth()->user()->role_id == 3) {
             $peserta = Peserta::with('villages')->where(
                 'regency_id',
-                Auth::user()->regency_id
+                auth()->user()->regency_id
             )->orderBy('villages_id')->where('kategori_id', $kategori->id)->get();
         }
         foreach ($peserta as $data) {

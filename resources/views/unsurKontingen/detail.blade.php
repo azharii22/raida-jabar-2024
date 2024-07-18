@@ -298,8 +298,8 @@
                                         <input name="riwayat_penyakit" type="text" id="riwayat_penyakit"
                                             value="{{ $data->riwayat_penyakit }}" placeholder="Riwayat Penyakit"
                                             class="form-control">
-                                        <input name="regency_id" value="{{ Auth::user()->regency_id }}" hidden>
-                                        <input name="villages_id" value="{{ Auth::user()->villages_id }}" hidden>
+                                        <input name="regency_id" value="{{ auth()->user()->regency_id }}" hidden>
+                                        <input name="villages_id" value="{{ auth()->user()->villages_id }}" hidden>
                                     </div>
                                 </div>
                             </div>

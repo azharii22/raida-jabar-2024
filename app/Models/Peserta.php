@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Peserta extends Model
 {
-    use HasFactory, SoftDeletes, Uuid;
+    use HasFactory;
+    use SoftDeletes;
+    use Uuid;
     protected $table = 'pesertas';
     protected $primaryKey = 'id';
     public $incrementing = false;
@@ -36,19 +38,19 @@ class Peserta extends Model
         'sertif_sfh',
         'catatan',
         'regency_id',
-        'villages_id'
+        'villages_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
-    
+
     public function kategori()
     {
-        return $this->belongsTo(Kategori::class, 'kategori_id', 'id');
+        return $this->belongsTo(Kategori::class);
     }
-    
+
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id', 'id');
@@ -56,11 +58,11 @@ class Peserta extends Model
 
     public function regency()
     {
-        return $this->belongsTo(Regency::class, 'regency_id','id');
+        return $this->belongsTo(Regency::class, 'regency_id', 'id');
     }
 
     public function villages()
     {
-        return $this->belongsTo(Villages::class, 'villages_id','id');
+        return $this->belongsTo(Villages::class, 'villages_id', 'id');
     }
 }

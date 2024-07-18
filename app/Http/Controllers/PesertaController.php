@@ -27,7 +27,7 @@ class PesertaController extends Controller
 
     public function index()
     {
-        if (Auth::user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $regency = Regency::orderBy('name')->get();
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $peserta = Peserta::orderBy('updated_at', 'DESC')->get();
@@ -35,15 +35,15 @@ class PesertaController extends Controller
             $kategori = Kategori::orderBy('name', 'DESC')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status', 'regency', 'unsurKontingen'));
-        } elseif (Auth::user()->role_id == 2) {
+        } elseif (auth()->user()->role_id == 2) {
             $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
-            $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
+            $peserta = Peserta::where('villages_id', auth()->user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
             $kategori = Kategori::where('name', 'LIKE', 'Peserta')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status'));
-        } elseif (Auth::user()->role_id == 3) {
+        } elseif (auth()->user()->role_id == 3) {
             $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
-            $peserta = Peserta::with('villages')->where('regency_id', Auth::user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
+            $peserta = Peserta::with('villages')->where('regency_id', auth()->user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
             $kategori = Kategori::where('name', 'LIKE', 'Peserta')->get();
             $status = Status::orderBy('name', 'DESC')->get();
             return view('peserta.index', compact('peserta', 'kategori', 'status'));
@@ -77,7 +77,7 @@ class PesertaController extends Controller
         $status = Status::where('name', 'Terkirim')->first();
         Peserta::create(array_merge($request->all(), [
             'status_id' => $status->id,
-            'user_id'   => Auth::user()->id,
+            'user_id'   => auth()->user()->id,
         ]));
         Alert::success('Success!', 'Data Created Successfully');
         return back();
@@ -92,7 +92,7 @@ class PesertaController extends Controller
     {
         $peserta = Peserta::findOrFail($id);
         $peserta->update(array_merge($request->all(), [
-            'user_id' => Auth::user()->id,
+            'user_id' => auth()->user()->id,
         ]));
         Alert::success('Success!', 'Data Updated Successfully');
         return back();
@@ -201,11 +201,11 @@ class PesertaController extends Controller
     public function exportExcel()
     {
         $date = Carbon::now()->format('d-m-Y');
-        if (Auth::user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             return Excel::download(new PesertaExport(), 'Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.xlsx');
-        } elseif (Auth::user()->role_id == 2) {
+        } elseif (auth()->user()->role_id == 2) {
             return Excel::download(new PesertaExport(), 'Peserta ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->villages->name . ' ' . $date . '.xlsx');
-        } elseif (Auth::user()->role_id == 3) {
+        } elseif (auth()->user()->role_id == 3) {
             return Excel::download(new PesertaExport(), 'Peserta ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->regency->name . ' ' . $date . '.xlsx');
         }
     }
@@ -215,16 +215,16 @@ class PesertaController extends Controller
     {
         $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
         $date = Carbon::now()->format('d-m-Y');
-        if (Auth::user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $peserta = Peserta::orderBy('nama_lengkap', 'DESC')->where('villages_id', '!=', NULL)->get();
             $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
             return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
-        } elseif (Auth::user()->role_id == 2) {
-            $peserta = Peserta::where('villages_id', Auth::user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
+        } elseif (auth()->user()->role_id == 2) {
+            $peserta = Peserta::where('villages_id', auth()->user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
             $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
             return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
-        } elseif (Auth::user()->role_id == 3) {
-            $peserta = Peserta::with('villages')->where('regency_id', Auth::user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
+        } elseif (auth()->user()->role_id == 3) {
+            $peserta = Peserta::with('villages')->where('regency_id', auth()->user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
             $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
             return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
         }

@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-sm-4 text-center">
                             <div class="avatar-md profile-user-wid mb-3">
-                                <img src="<?php echo e(isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg')); ?>"
+                                <img src="<?php echo e(isset(auth()->user()->avatar) ? asset(auth()->user()->avatar) : asset('/assets/images/users/avatar-1.jpg')); ?>"
                                     alt="" class="img-thumbnail rounded-circle">
                             </div>
                             <h5 class="font-size-15 text-truncate">Hi, <?php echo e(auth()->user()->fullname); ?>. <br /> Welcome back To <?php echo e(config('settings.main.1_app_name')); ?></h5>
@@ -33,13 +33,14 @@
         </div>
         <div class="col-xl-8">
             <div class="row">
+                <?php $__currentLoopData = $kategoriCount; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $kategoriHitung): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <div class="col-md-4">
                     <div class="card mini-stats-wid" style="margin-bottom: 12px">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Bindamping</p>
-                                    <h4 class="mb-0"><?php echo e($userBindamping); ?></h4>
+                                    <p class="text-muted fw-medium"><?php echo e($kategoriHitung->name); ?></p>
+                                    <h4 class="mb-0"><?php echo e($kategoriHitung->peserta_count); ?></h4>
                                 </div>
 
                                 <div class="flex-shrink-0 align-self-center">
@@ -53,113 +54,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Peserta</p>
-                                    <h4 class="mb-0"><?php echo e($userPeserta); ?></h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center ">
-                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php if(auth()->user()->role_id != 2): ?>
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Pinkoncab</p>
-                                    <h4 class="mb-0"><?php echo e($userPinkoncab); ?></h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center">
-                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php endif; ?>
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Pinkonran</p>
-                                    <h4 class="mb-0"><?php echo e($userPinkonran); ?></h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center">
-                                    <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
-                                        <span class="avatar-title">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php if(auth()->user()->role_id != 2): ?>
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Staff Kontingen</p>
-                                    <h4 class="mb-0"><?php echo e($userStaffKontingen); ?></h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center ">
-                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Tenaga Medis</p>
-                                    <h4 class="mb-0"><?php echo e($userTenagaMedis); ?></h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center">
-                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php endif; ?>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
             <!-- end row -->
         </div>
+
         <div class="col">
             <div class="card" style="height: 95%">
                 <div class="card-body">

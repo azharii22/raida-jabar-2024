@@ -15,7 +15,7 @@
 @slot('title') Unsur Kontingen @endslot
 @endcomponent
 
-@if (auth()->user()->role_id == 1)
+@if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4)
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -172,7 +172,7 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                    @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4 && $data->status->name != 'Diterima')
                                     <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
                                     @endif
                                     <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}"> <i class="bx bx-show"></i> Detail</button>
@@ -291,7 +291,7 @@
                                     @endif
                                 </td>
                                 <td class="text-center">
-                                    @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                    @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4 && $data->status->name != 'Diterima')
                                     <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
                                     @endif
                                     <button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}"> <i class="bx bx-show"></i> Detail</button>
@@ -418,8 +418,8 @@
                             <div class="mb-3">
                                 <label for="riwayat_penyakit" class="form-label">Riwayat Penyakit</label>
                                 <input name="riwayat_penyakit" type="text" id="riwayat_penyakit" value="{{ old('riwayat_penyakit') }}" placeholder="Riwayat Penyakit" class="form-control">
-                                <input name="regency_id" value="{{ Auth::user()->regency_id }}" hidden>
-                                <input name="villages_id" value="{{ Auth::user()->villages_id }}" hidden>
+                                <input name="regency_id" value="{{ auth()->user()->regency_id }}" hidden>
+                                <input name="villages_id" value="{{ auth()->user()->villages_id }}" hidden>
                             </div>
                         </div>
                     </div>
@@ -542,8 +542,8 @@
                             <div class="mb-3">
                                 <label for="riwayat_penyakit" class="form-label">Riwayat Penyakit</label>
                                 <input name="riwayat_penyakit" type="text" id="riwayat_penyakit" value="{{ $data->riwayat_penyakit }}" placeholder="Riwayat Penyakit" class="form-control">
-                                <input name="regency_id" value="{{ Auth::user()->regency_id }}" hidden>
-                                <input name="villages_id" value="{{ Auth::user()->villages_id }}" hidden>
+                                <input name="regency_id" value="{{ auth()->user()->regency_id }}" hidden>
+                                <input name="villages_id" value="{{ auth()->user()->villages_id }}" hidden>
                             </div>
                         </div>
                     </div>

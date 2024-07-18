@@ -144,7 +144,7 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4 && $data->status->name != 'Diterima')
                                                 <button type="button"
                                                     class="btn btn-info btn-sm mr-2 waves-effect waves-light"
                                                     data-bs-toggle="modal"
@@ -155,7 +155,7 @@
                                                 class="btn btn-light waves-effect waves-light btn-sm mr-2"
                                                 data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}">
                                                 <i class="bx bx-show"></i> Detail</button>
-                                            @if (auth()->user()->role_id == 1)
+                                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4)
                                                 <button type="button"
                                                     class="btn btn-warning waves-effect waves-light btn-sm mr-2"
                                                     data-bs-toggle="modal"
@@ -304,8 +304,8 @@
                                     <input name="riwayat_penyakit" type="text" id="riwayat_penyakit"
                                         value="{{ old('riwayat_penyakit') }}" placeholder="Riwayat Penyakit"
                                         class="form-control">
-                                    <input name="regency_id" value="{{ Auth::user()->regency_id }}" hidden>
-                                    <input name="villages_id" value="{{ Auth::user()->villages_id }}" hidden>
+                                    <input name="regency_id" value="{{ auth()->user()->regency_id }}" hidden>
+                                    <input name="villages_id" value="{{ auth()->user()->villages_id }}" hidden>
                                 </div>
                             </div>
                         </div>
@@ -449,8 +449,8 @@
                                         <input name="riwayat_penyakit" type="text" id="riwayat_penyakit"
                                             value="{{ $data->riwayat_penyakit }}" placeholder="Riwayat Penyakit"
                                             class="form-control">
-                                        <input name="regency_id" value="{{ Auth::user()->regency_id }}" hidden>
-                                        <input name="villages_id" value="{{ Auth::user()->villages_id }}" hidden>
+                                        <input name="regency_id" value="{{ auth()->user()->regency_id }}" hidden>
+                                        <input name="villages_id" value="{{ auth()->user()->villages_id }}" hidden>
                                     </div>
                                 </div>
                             </div>

@@ -15,7 +15,7 @@
 @slot('title') Pembayaran @endslot
 @endcomponent
 
-@if (auth()->user()->role_id == "1")
+@if (auth()->user()->role_id == "1" || auth()->user()->role_id == 4)
 
 <div class="row">
     <div class="col-md-4">
@@ -140,7 +140,7 @@
                             <td style="width: 10px;" class="text-center"><a class="btn btn-primary btn-sm mr-2" href="{{ Storage::url('public/pembayaran/').$data->file }}" target="_blank"><i class="bx bx-show"></i> Lihat</a></td>
                             <td style="width: 10px;">{{ date('d-F-Y H:i',strtotime($data->tanggal_upload)) }}</td>
                             <td class="text-center" style="width: 10px;">
-                                @if (auth()->user()->role_id == 1 && $data->status->name != 'Diterima')
+                                @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4 && $data->status->name != 'Diterima')
                                 <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-{{ $data->id }}"><i class=" bx bx-check-circle"></i> Verifikasi</button>
                                 @endif
                                 <button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $data->id }}"> <i class="bx bx-pencil"></i> Edit</button>

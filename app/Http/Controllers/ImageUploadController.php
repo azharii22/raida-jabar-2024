@@ -34,7 +34,7 @@ class ImageUploadController extends Controller
 
         $imageUpload = new ImageUpload();
         $imageUpload->dokumentasi_id = $dokumentasi->id;
-        $imageUpload->user_id = Auth::user()->id;
+        $imageUpload->user_id = auth()->user()->id;
         $imageUpload->original_filename = $fileInfo;
         $imageUpload->filename = $file_name;
         $imageUpload->save();
@@ -77,7 +77,7 @@ class ImageUploadController extends Controller
             unlink($path);
         }
         $images->update(array_merge($request->all(), [
-            'user_id'           => Auth::user()->id,
+            'user_id'           => auth()->user()->id,
             'original_filename' => $fileInfo,
             'filename'          => $file_name,
         ]));

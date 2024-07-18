@@ -35,7 +35,7 @@ class KegiatanController extends Controller
             'item_giat.required' => 'Item Giat Wajib Diisi!'
         ]);
         Kegiatan::create(array_merge($request->all(), [
-            'user_id'   => Auth::user()->id
+            'user_id'   => auth()->user()->id
         ]));
         Alert::success('Success!', 'Data Created Successfully');
         return redirect()->route('admin-kegiatan.index');
@@ -63,7 +63,7 @@ class KegiatanController extends Controller
         ]);
         $kegiatan = Kegiatan::findOrFail($id);
         $kegiatan->update(array_merge($request->all(), [
-            'user_id' => Auth::user()->id
+            'user_id' => auth()->user()->id
         ]));
         Alert::success('Success!', 'Data Updated Successfully');
         return redirect()->route('admin-kegiatan.index');

@@ -39,7 +39,7 @@ class JadwalKegiatanController extends Controller
             JadwalKegiatan::create(array_merge($request->all(), [
                 'filename'  => $filename,
                 'file'      => $file->getClientOriginalName(),
-                'user_id'   => Auth::user()->id
+                'user_id'   => auth()->user()->id
             ]));
             Alert::success('Success!', 'Data Created Successfully');
             return redirect()->back();
@@ -70,11 +70,11 @@ class JadwalKegiatanController extends Controller
             $jadwalKegiatan->update(array_merge($request->all(), [
                 'filename'  => $filename,
                 'file'      => $file->getClientOriginalName(),
-                'user_id'   => Auth::user()->id
+                'user_id'   => auth()->user()->id
             ]));
         } else {
             $jadwalKegiatan->update(array_merge($request->all(), [
-                'user_id'   => Auth::user()->id
+                'user_id'   => auth()->user()->id
             ]));
             Alert::success('Success!', 'Data Updated Successfully');
             return redirect()->back();

@@ -9,7 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Kategori extends Model
 {
-    use HasFactory, Uuid, SoftDeletes;
+    use HasFactory;
+    use Uuid;
+    use SoftDeletes;
     protected $table = 'kategoris';
     protected $primaryKey = 'id';
     public $incrementing = false;
@@ -20,4 +22,9 @@ class Kategori extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function peserta()
+    {
+        return $this->hasMany(Peserta::class);
+    }
 }

@@ -20,11 +20,11 @@ class BerkasController extends Controller
 
     public function index()
     {
-        if (Auth::user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $berkas = Berkas::with('status', 'user')->orderBy('updated_at', 'DESC')->get();
             $status = Status::orderBy('name', 'ASC')->get();
         } else {
-            $berkas = Berkas::with('status', 'user')->where('user_id', Auth::user()->id)->orderBy('updated_at', 'DESC')->get();
+            $berkas = Berkas::with('status', 'user')->where('user_id', auth()->user()->id)->orderBy('updated_at', 'DESC')->get();
             $status = Status::orderBy('name', 'ASC')->get();
         }
         return view('berkas.index', compact('berkas','status'));
@@ -47,7 +47,7 @@ class BerkasController extends Controller
             'name'  => 'Surat Tugas',
             'filename'  => $filename,
             'file'      => $file->getClientOriginalName(),
-            'user_id'   => Auth::user()->id,
+            'user_id'   => auth()->user()->id,
             'status_id' => $status->id
         ]));
 
@@ -78,12 +78,12 @@ class BerkasController extends Controller
             $berkas->update(array_merge($request->all(), [
                 'filename'  => $filename,
                 'file'      => $file->getClientOriginalName(),
-                'user_id'   => Auth::user()->id,
+                'user_id'   => auth()->user()->id,
                 'status_id' => $status->id
             ]));
         } else {
             $berkas->update(array_merge($request->all(), [
-                'user_id'   => Auth::user()->id,
+                'user_id'   => auth()->user()->id,
                 'status_id' => $status->id
             ]));
             return redirect()->back();

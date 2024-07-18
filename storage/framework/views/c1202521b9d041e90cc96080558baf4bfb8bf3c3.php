@@ -32,8 +32,8 @@
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="<?php echo e(isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg')); ?>" alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1" key="t-henry"><?php echo e(ucfirst(Auth::user()->name)); ?></span>
+                    <img class="rounded-circle header-profile-user" src="<?php echo e(isset(auth()->user()->avatar) ? asset(auth()->user()->avatar) : asset('/assets/images/users/avatar-1.jpg')); ?>" alt="Header Avatar">
+                    <span class="d-none d-xl-inline-block ms-1" key="t-henry"><?php echo e(ucfirst(auth()->user()->name)); ?></span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -61,7 +61,7 @@
             <div class="modal-body">
                 <form method="POST" id="change-password">
                     <?php echo csrf_field(); ?>
-                    <input type="hidden" value="<?php echo e(Auth::user()->id); ?>" id="data_id">
+                    <input type="hidden" value="<?php echo e(auth()->user()->id); ?>" id="data_id">
                     <div class="mb-3">
                         <label for="current_password">Current Password</label>
                         <input id="current-password" type="password" class="form-control <?php $__errorArgs = ['current_password'];
@@ -95,7 +95,7 @@ unset($__errorArgs, $__bag); ?>" name="password" autocomplete="new_password" pla
                     </div>
 
                     <div class="mt-3 d-grid">
-                        <button class="btn btn-primary waves-effect waves-light UpdatePassword" data-id="<?php echo e(Auth::user()->id); ?>" type="submit">Update Password</button>
+                        <button class="btn btn-primary waves-effect waves-light UpdatePassword" data-id="<?php echo e(auth()->user()->id); ?>" type="submit">Update Password</button>
                     </div>
                 </form>
             </div>

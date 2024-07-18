@@ -59,12 +59,12 @@ class DokumentasiKegiatanController extends Controller
             $cover   = $request->file('cover');
             $cover->storeAs('public/img/dokumentasi/cover', $cover->getClientOriginalName());
             DokumentasiKegiatan::create(array_merge($request->all(), [
-                'user_id' => Auth::user()->id,
+                'user_id' => auth()->user()->id,
                 'cover'      => $cover->getClientOriginalName()
             ]));
         } else {
             DokumentasiKegiatan::create(array_merge($request->all(), [
-                'user_id' => Auth::user()->id,
+                'user_id' => auth()->user()->id,
             ]));
         }
         Alert::success('Success', 'Data Created Successfully');
@@ -121,12 +121,12 @@ class DokumentasiKegiatanController extends Controller
             Storage::delete('public/img/dokumentasi/cover', $dokumentasiKegiatan->cover);
             $cover->storeAs('public/img/dokumentasi/cover', $cover->getClientOriginalName());
             $dokumentasiKegiatan->update(array_merge($request->all(), [
-                'user_id' => Auth::user()->id,
+                'user_id' => auth()->user()->id,
                 'cover'      => $cover->getClientOriginalName()
             ]));
         } else {
             $dokumentasiKegiatan->update(array_merge($request->all(), [
-                'user_id' => Auth::user()->id,
+                'user_id' => auth()->user()->id,
             ]));
         }
         Alert::success('Success', 'Data Updated Successfully');

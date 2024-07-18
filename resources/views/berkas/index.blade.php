@@ -25,7 +25,7 @@
 
                     <h4 class="card-title mb-5">Berkas</h4>
 
-                    @if (auth()->user()->role_id != 1 && count($berkas->where('user_id', auth()->user()->id)) == NULL)
+                    @if (auth()->user()->role_id != 1 && count($berkas->where('user_id', auth()->user()->id)) == null)
                         <div class="card-title mb-5">
                             <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2"
                                 data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add
@@ -84,7 +84,7 @@
                                     <td class="text-center">{{ $data->user->name }}</td>
                                     <td class="text-center">
                                         @if (
-                                            (auth()->user()->role_id == 1 && $data->status->name == 'Terkirim') ||
+                                            (auth()->user()->role_id == 1 || auth()->user()->role_id == 4 && $data->status->name == 'Terkirim') ||
                                                 $data->status->name == 'Ditolak' ||
                                                 $data->status->name == 'Revisi')
                                             <button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light"

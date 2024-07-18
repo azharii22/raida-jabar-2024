@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-sm-4 text-center">
                             <div class="avatar-md profile-user-wid mb-3">
-                                <img src="{{ isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}"
+                                <img src="{{ isset(auth()->user()->avatar) ? asset(auth()->user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}"
                                     alt="" class="img-thumbnail rounded-circle">
                             </div>
                             <h5 class="font-size-15 text-truncate">Hi, {{ auth()->user()->fullname }}. <br /> Welcome back To {{ config('settings.main.1_app_name') }}</h5>
@@ -50,13 +50,14 @@
         </div>
         <div class="col-xl-8">
             <div class="row">
+                @foreach ($kategoriCount as $kategoriHitung)
                 <div class="col-md-4">
                     <div class="card mini-stats-wid" style="margin-bottom: 12px">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Bindamping</p>
-                                    <h4 class="mb-0">{{ $userBindamping }}</h4>
+                                    <p class="text-muted fw-medium">{{ $kategoriHitung->name }}</p>
+                                    <h4 class="mb-0">{{ $kategoriHitung->peserta_count }}</h4>
                                 </div>
 
                                 <div class="flex-shrink-0 align-self-center">
@@ -70,113 +71,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Peserta</p>
-                                    <h4 class="mb-0">{{ $userPeserta }}</h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center ">
-                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @if (auth()->user()->role_id != 2)
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Pinkoncab</p>
-                                    <h4 class="mb-0">{{ $userPinkoncab }}</h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center">
-                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Pinkonran</p>
-                                    <h4 class="mb-0">{{ $userPinkonran }}</h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center">
-                                    <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
-                                        <span class="avatar-title">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @if (auth()->user()->role_id != 2)
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Staff Kontingen</p>
-                                    <h4 class="mb-0">{{ $userStaffKontingen }}</h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center ">
-                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mini-stats-wid" style="margin-bottom: 12px">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Tenaga Medis</p>
-                                    <h4 class="mb-0">{{ $userTenagaMedis }}</h4>
-                                </div>
-
-                                <div class="flex-shrink-0 align-self-center">
-                                    <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
-                                        <span class="avatar-title rounded-circle bg-primary">
-                                            <i class="bx bx-user font-size-24"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
+                @endforeach
             </div>
             <!-- end row -->
         </div>
+
         <div class="col">
             <div class="card" style="height: 95%">
                 <div class="card-body">

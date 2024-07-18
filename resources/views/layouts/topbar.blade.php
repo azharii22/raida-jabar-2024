@@ -32,8 +32,8 @@
 
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="{{ isset(Auth::user()->avatar) ? asset(Auth::user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
-                    <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ucfirst(Auth::user()->name)}}</span>
+                    <img class="rounded-circle header-profile-user" src="{{ isset(auth()->user()->avatar) ? asset(auth()->user()->avatar) : asset('/assets/images/users/avatar-1.jpg') }}" alt="Header Avatar">
+                    <span class="d-none d-xl-inline-block ms-1" key="t-henry">{{ucfirst(auth()->user()->name)}}</span>
                     <i class="mdi mdi-chevron-down d-none d-xl-inline-block"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end">
@@ -61,7 +61,7 @@
             <div class="modal-body">
                 <form method="POST" id="change-password">
                     @csrf
-                    <input type="hidden" value="{{ Auth::user()->id }}" id="data_id">
+                    <input type="hidden" value="{{ auth()->user()->id }}" id="data_id">
                     <div class="mb-3">
                         <label for="current_password">Current Password</label>
                         <input id="current-password" type="password" class="form-control @error('current_password') is-invalid @enderror" name="current_password" autocomplete="current_password" placeholder="Enter Current Password" value="{{ old('current_password') }}">
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="mt-3 d-grid">
-                        <button class="btn btn-primary waves-effect waves-light UpdatePassword" data-id="{{ Auth::user()->id }}" type="submit">Update Password</button>
+                        <button class="btn btn-primary waves-effect waves-light UpdatePassword" data-id="{{ auth()->user()->id }}" type="submit">Update Password</button>
                     </div>
                 </form>
             </div>

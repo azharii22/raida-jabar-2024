@@ -25,7 +25,7 @@ class PembayaranController extends Controller
 
     public function index()
     {
-        if (Auth::user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $pembayaran = Pembayaran::with('user')->orderBy('user_id', 'ASC')->get();
             $terdaftar  = Pembayaran::sum('jumlah_terdaftar');
             $nominal    = Pembayaran::sum('nominal');
@@ -66,7 +66,7 @@ class PembayaranController extends Controller
         Pembayaran::create(array_merge($request->all(), [
             'file'  => $image->hashName(),
             'tanggal_upload'    => Carbon::now()->format('Y-m-d H:i:s'),
-            'user_id'           => Auth::user()->id,
+            'user_id'           => auth()->user()->id,
             'status_id'           => $status->id
         ]));
         Alert::success('Success!', 'Data has been created');
@@ -100,7 +100,7 @@ class PembayaranController extends Controller
             $pembayaran->update(array_merge($request->all(), [
                 'file'  => $image->hashName(),
                 'tanggal_upload'    => Carbon::now()->format('Y-m-d H:i:s'),
-                'user_id'           => Auth::user()->id
+                'user_id'           => auth()->user()->id
             ]));
         } else {
             $pembayaran->update($request->all());

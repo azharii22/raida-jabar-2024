@@ -23,18 +23,18 @@ class UnsurKontingenExport implements
     public function collection()
     {
         $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
-        if (auth()->user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $peserta = Peserta::where('villages_id', NULL)->whereIn(
                 'kategori_id',
                 $kategoriNotPeserta
             )->orderBy('regency_id')->get();
         } elseif (auth()->user()->role_id == 2) {
-            $peserta = Peserta::where('user_id', Auth::user()->id)->whereIn(
+            $peserta = Peserta::where('user_id', auth()->user()->id)->whereIn(
                 'kategori_id',
                 $kategoriNotPeserta
             )->orderBy('regency_id')->get();
         } elseif (auth()->user()->role_id == 3) {
-            $peserta = Peserta::where('regency_id', Auth::user()->regency_id)->whereIn(
+            $peserta = Peserta::where('regency_id', auth()->user()->regency_id)->whereIn(
                 'kategori_id',
                 $kategoriNotPeserta
             )->orderBy('regency_id')->get();

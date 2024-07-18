@@ -17,7 +17,7 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
 
             return redirect()->intended('/admin');
@@ -29,7 +29,7 @@ class LoginController extends Controller
     }
     public function logout(Request $request)
     {
-        Auth::logout();
+        auth()->logout();
 
         $request->session()->invalidate();
 

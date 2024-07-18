@@ -28,18 +28,18 @@ class UnsurKontingenController extends Controller
     {
         $kategori = Kategori::orderBy('updated_at', 'DESC')->where('name', '!=', 'Peserta')->get();
         $status = Status::orderBy('name', 'DESC')->get();
-        if (auth()->user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $regency = Regency::orderBy('name')->get();
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $unsurKontingen = Peserta::where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
             return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status', 'regency'));
         } elseif (auth()->user()->role_id == 2) {
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
-            $unsurKontingen = Peserta::where('user_id', Auth::user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
+            $unsurKontingen = Peserta::where('user_id', auth()->user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
             return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
         } elseif (auth()->user()->role_id == 3) {
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
-            $unsurKontingen = Peserta::where('regency_id', Auth::user()->regency_id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('regency_id')->get();
+            $unsurKontingen = Peserta::where('regency_id', auth()->user()->regency_id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('regency_id')->get();
             return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status'));
         }
     }
@@ -71,7 +71,7 @@ class UnsurKontingenController extends Controller
         $status = Status::where('name', 'Terkirim')->first();
         Peserta::create(array_merge($request->all(), [
             'status_id' => $status->id,
-            'user_id'   => Auth::user()->id,
+            'user_id'   => auth()->user()->id,
         ]));
         Alert::success('Success!', 'Data Created Successfully');
         return back();
@@ -86,7 +86,7 @@ class UnsurKontingenController extends Controller
     {
         $unsurKontingen = Peserta::findOrFail($id);
         $unsurKontingen->update(array_merge($request->all(), [
-            'user_id' => Auth::user()->id,
+            'user_id' => auth()->user()->id,
         ]));
         Alert::success('Success!', 'Data Updated Successfully');
         return back();
@@ -195,11 +195,11 @@ class UnsurKontingenController extends Controller
     public function exportExcel()
     {
         $date = Carbon::now()->format('d-m-Y');
-        if (Auth::user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             return Excel::download(new UnsurKontingenExport(), 'Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.xlsx');
-        } elseif (Auth::user()->role_id == 2) {
+        } elseif (auth()->user()->role_id == 2) {
             return Excel::download(new UnsurKontingenExport(), 'Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->villages->name . ' ' . $date . '.xlsx');
-        } elseif (Auth::user()->role_id == 3) {
+        } elseif (auth()->user()->role_id == 3) {
             return Excel::download(new UnsurKontingenExport(), 'Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->regency->name . ' ' . $date . '.xlsx');
         }
     }
@@ -209,16 +209,16 @@ class UnsurKontingenController extends Controller
     {
         $date = Carbon::now()->format('d-m-Y');
         $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
-        if (auth()->user()->role_id == 1) {
+        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $data = Peserta::where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
             $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
             return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
         } elseif (auth()->user()->role_id == 2) {
-            $data = Peserta::where('user_id', Auth::user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
+            $data = Peserta::where('user_id', auth()->user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
             $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
             return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->villages->name . ' ' . $date . '.pdf');
         } elseif (auth()->user()->role_id == 3) {
-            $data = Peserta::where('regency_id', Auth::user()->regency_id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('regency_id')->get();
+            $data = Peserta::where('regency_id', auth()->user()->regency_id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('regency_id')->get();
             $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
             return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . auth()->user()->regency->name . ' ' . $date . '.pdf');
         }
