@@ -227,6 +227,8 @@
                                 <th>Nama Lengkap</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Kategori</th>
+                                <th>No HP</th>
+                                <th>Ukuran Kaos</th>
                                 <th>Status</th>
                                 <th>Berkas Peserta</th>
                                 <th>Catatan</th>
@@ -248,6 +250,8 @@
                                     @endif
                                 </td>
                                 <td>{{ $data->kategori?->name }}</td>
+                                <td>{{ $data->no_hp }}</td>
+                                <td>{{ $data->ukuran_kaos }}</td>
                                 <td>
                                     @if ($data->status->name == 'Terkirim')
                                     <span class="badge text-bg-primary">Terkirim</span>

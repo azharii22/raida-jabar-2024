@@ -44,7 +44,7 @@ class PesertaExport implements
                 'kategori'              => $data->kategori?->name,
                 'nama_lengkap'          => $data->nama_lengkap,
                 'tempat_lahir'          => $data->tempat_lahir,
-                'tanggal_lahir'         => date('d-F-Y', strtotime($data->tempat_lahir)),
+                'tanggal_lahir'         => date('d-F-Y', strtotime($data->tanggal_lahir)),
                 'jenis_kelamin'         => $data->jenis_kelamin == 1 ? "Laki-laki" : "Perempuan", // 1 = laki-laki, 2 = perempuan
                 'ukuran_kaos'           => $data->ukuran_kaos,
                 'no_hp'                 => $data->no_hp,
