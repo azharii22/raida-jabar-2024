@@ -76,6 +76,10 @@ Route::get('/admin-edit-dkc-{id}', [UserController::class, 'editDkc'])->name('ed
 Route::get('/admin-edit-dkr-{id}', [UserController::class, 'editDkr'])->name('editDkr');
 
 Route::get('selectRegency', [RegencyController::class, 'index'])->name('regency.index');
+Route::post('storeRegency', [RegencyController::class, 'store'])->name('regency.store');
+Route::get('regency/{id}/edit', [RegencyController::class, 'edit'])->name('regency.edit');
+Route::put('regency/{id}', [RegencyController::class, 'update'])->name('regency.update');
+Route::delete('regency/{id}', [RegencyController::class, 'destroy'])->name('regency.destroy');
 Route::get('selectVillages-{id}', [RegencyController::class, 'villages'])->name('villages.index');
 Route::resource('/admin-user', UserController::class);
 

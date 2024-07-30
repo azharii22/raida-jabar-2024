@@ -240,6 +240,7 @@
                                         <option value="XL" @selected(old('ukuran_kaos') == 'XL')>XL</option>
                                         <option value="XXL" @selected(old('ukuran_kaos') == 'XXL')>XXL</option>
                                         <option value="XXXL" @selected(old('ukuran_kaos') == 'XXXL')>XXXL</option>
+                                        <option value="XXXXL" @selected(old('ukuran_kaos') == 'XXXXL')>XXXXL</option>
                                     </select>
                                 </div>
                             </div>
@@ -385,6 +386,7 @@
                                             <option value="XL" @selected($data->ukuran_kaos == 'XL')>XL</option>
                                             <option value="XXL" @selected($data->ukuran_kaos == 'XXL')>XXL</option>
                                             <option value="XXXL" @selected($data->ukuran_kaos == 'XXXL')>XXXL</option>
+                                            <option value="XXXXL" @selected($data->ukuran_kaos == 'XXXXL')>XXXXL</option>
                                         </select>
                                     </div>
                                 </div>

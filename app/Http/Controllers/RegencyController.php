@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Regency;
 use App\Models\Villages;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RegencyController extends Controller
 {
@@ -15,8 +16,8 @@ class RegencyController extends Controller
 
     public function index()
     {
-        $data = Regency::where('name', 'LIKE', '%'.request('q').'%')->paginate(27);
-        return response()->json($data);
+        $regencies = Regency::all(['id', 'name']); // Pastikan hanya mengambil id dan name
+        return response()->json($regencies);
     }
 
     public function villages($id)
@@ -25,25 +26,16 @@ class RegencyController extends Controller
         return response()->json($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'regency_id' => 'required|exists:regencies,id',
+        ]);
+
+        Villages::create($validatedData);
+        Alert::success('Success!', 'Data Created SuccessFully');
+        return response()->json(['success' => 'Data added successfully']);
     }
 
     /**
@@ -54,40 +46,31 @@ class RegencyController extends Controller
      */
     public function show(Regency $regency)
     {
-        //
+        return $regency;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Regency  $regency
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Regency $regency)
+    public function edit($id)
     {
-        //
+        $data = Villages::find($id);
+        $regencies = Regency::all(); 
+        return response()->json([
+            'data' => $data,
+            'regencies' => $regencies
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Regency  $regency
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Regency $regency)
+    public function update(Request $request, $id)
     {
-        //
+        $data = Villages::find($id);
+        $data->update($request->all());
+        Alert::success('Success!', 'Data Updated SuccessFully');
+        return response()->json(['success' => 'Data updated successfully']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Regency  $regency
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Regency $regency)
+    public function destroy($id)
     {
-        //
+        Villages::find($id)->delete();
+        Alert::success('Success!', 'Data Deleted SuccessFully');
+        return response()->json(['success' => 'Data deleted successfully']);
     }
 }
