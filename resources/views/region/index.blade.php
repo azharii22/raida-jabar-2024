@@ -166,7 +166,10 @@
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
-                        searchable: false
+                        searchable: false,
+                        render: function (data, type, row, meta) {
+                        return '<div class="text-center">' + data + '</div>';
+                    }
                     },
                     {
                         data: 'regency_name',
