@@ -64,15 +64,6 @@
                             {{-- <tbody>
                                 @foreach ($peserta as $i => $data)
                                     <tr>
-                                        <td>
-                                            @if ($data->status->name == 'Revisi')
-                                                <div style="color: red;">
-                                                    <li>{{ $data->catatan }}</li>
-                                                </div>
-                                            @else
-                                                {{ $data->catatan }}
-                                            @endif
-                                        </td>
                                         <td class="text-center">
                                             @if (auth()->user()->role_id == 1 || (auth()->user()->role_id == 4 && $data->status->name != 'Diterima'))
                                                 <button type="button"

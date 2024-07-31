@@ -135,9 +135,16 @@ class PesertaController extends Controller
                     return $buttons;
                 })
                 ->addColumn('action', function ($row) {
-                    $editBtn = '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-' . $row->id . '"><i class="bx bx-pencil"></i> Edit</button>';
-                    $deleteBtn = '<button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-' . $row->id . '"><i class="bx bx-trash"></i> Delete</button>';
-                    return $editBtn . ' ' . $deleteBtn;
+                    $buttons = '';
+                    if (auth()->user()->role_id == 1 || (auth()->user()->role_id == 4 && $row->status->name != 'Diterima')) {
+                        $buttons .= '<button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-'. $row->id .'"><i class=" bx bx-check-circle"></i> Verifikasi</button> &nbsp';
+                    }
+                    $buttons    .= '<button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-'. $row->id .'"><i class="bx bx-show"></i> Detail</button> &nbsp';
+                    if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4){
+                        $buttons .= '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-' . $row->id . '"><i class="bx bx-pencil"></i> Edit</button> &nbsp';
+                        $buttons .= '<button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-' . $row->id . '"><i class="bx bx-trash"></i> Delete</button> &nbsp';
+                    } 
+                    return $buttons;
                 })
                 ->make(true);
         }
