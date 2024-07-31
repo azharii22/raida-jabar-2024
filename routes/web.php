@@ -75,6 +75,7 @@ Route::get('/admin-edit-dkd-{id}', [UserController::class, 'editDkd'])->name('ed
 Route::get('/admin-edit-dkc-{id}', [UserController::class, 'editDkc'])->name('editDkc');
 Route::get('/admin-edit-dkr-{id}', [UserController::class, 'editDkr'])->name('editDkr');
 
+Route::get('selectRegencyUser', [RegencyController::class, 'regencies'])->name('RegencyUser.index');
 Route::get('selectRegency', [RegencyController::class, 'index'])->name('regency.index');
 Route::post('storeRegency', [RegencyController::class, 'store'])->name('regency.store');
 Route::get('regency/{id}/edit', [RegencyController::class, 'edit'])->name('regency.edit');
@@ -82,6 +83,7 @@ Route::put('regency/{id}', [RegencyController::class, 'update'])->name('regency.
 Route::delete('regency/{id}', [RegencyController::class, 'destroy'])->name('regency.destroy');
 Route::get('selectVillages-{id}', [RegencyController::class, 'villages'])->name('villages.index');
 Route::resource('/admin-user', UserController::class);
+Route::get('/dataUser-get', [UserController::class, 'getData'])->name('dataUser.get');
 
 Route::resource('/admin-dokumentasi-kegiatan', DokumentasiKegiatanController::class);
 Route::get('/add-Photos{id}', [ImageUploadController::class, 'create'])->name('addPhotos');
@@ -126,7 +128,6 @@ Route::get('peserta-exportExcel', [PesertaController::class, 'exportExcel'])->na
 Route::resource('/admin-data-pembayaran', PembayaranController::class);
 Route::get('export-pembayaran', [\App\Http\Controllers\PembayaranController::class, 'export'])->name('export-pembayaran');
 Route::put('/pembayaran-verifikasi{id}', [App\Http\Controllers\PembayaranController::class, 'verifikasiPembayaran'])->name('verifikasiPembayaran');
-Route::get('pembayaran-exportPDF{id}', [PembayaranController::class, 'exportPDF'])->name('pembayaran.pdf');
 Route::get('pembayaran-exportExcel{id}', [PembayaranController::class, 'exportExcel'])->name('pembayaran.excel');
 Route::get('pembayaran-exportadminExcel', [PembayaranController::class, 'exportAdminExcel'])->name('pembayaran.admin-excel');
 Route::get('pembayaran-export-PDF', [PembayaranController::class, 'exportPDF'])->name('pembayaran.pdf');

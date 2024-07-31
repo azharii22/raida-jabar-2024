@@ -139,7 +139,7 @@
             $("#selectRegency").select2({
                 placeholder: "Select Regency",
                 ajax: {
-                    url: '/selectRegency',
+                    url: '/selectRegencyUser',
                     processResults: function({data}){
                         return {
                             results: $.map(data, function(item){

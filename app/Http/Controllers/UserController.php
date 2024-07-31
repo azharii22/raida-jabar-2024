@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
@@ -44,10 +45,55 @@ class UserController extends Controller
 
     public function index()
     {
-        $user   = User::with('role', 'regency', 'villages')->orderBy('updated_at', 'DESC')->get();
-        $role   = Role::all();
-        $region = Villages::orderBy('regency_id')->get();
-        return view('user.index', compact('user', 'role', 'region'));
+        // $user   = User::with('role', 'regency', 'villages')->orderBy('updated_at', 'DESC')->get();
+        // $role   = Role::all();
+        // $region = Villages::orderBy('regency_id')->get();
+        // return view('user.index', compact('user', 'role', 'region'));
+        return view('user.index');
+    }
+
+    public function getData()
+    {
+        $users = User::with('role', 'regency','villages')->orderBy('updated_at', 'DESC')->get();
+        // $users = User::with('role', 'regency', 'villages')
+        //     ->join('roles', 'roles.id', '=', 'users.role_id')
+        //     ->join('regencies', 'regencies.id', '=', 'users.regency_id')
+        //     ->select('users.*', 'roles.name as role_name', 'regencies.name as regency_name')
+        //     ->orderBy('roles.name')
+        //     ->orderBy('updated_at', 'DESC')
+        //     ->get();
+        return DataTables::of($users)
+            ->addIndexColumn()
+            ->addColumn('region_name', function ($row) {
+                $villages = $row->villages->name ?? '';
+                $regency = $row->regency->name ?? '';
+                if ($row->role_id == 1 || $row->role_id == 4) {
+                    return '';
+                } elseif ($row->role_id == 3) {
+                    return "$regency";
+                } elseif ($row->role_id == 2) {
+                    return "$villages, $regency";
+                }
+            })
+            ->addColumn('action', function ($row) {
+                $editBtn = '';
+                $deleteBtn = '';
+
+                if ($row->role_id == 1 || $row->role_id == 4) {
+                    $editBtn = '<a href="' . route('editDkd', $row->id) . '" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>';
+                    $deleteBtn = '<button class="delete btn btn-danger btn-sm mr-2 waves-effect waves-light" data-id="' . $row->id . '"><i class="bx bx-trash"></i> Delete</button>';
+                } elseif ($row->role_id == 3) {
+                    $editBtn = '<a href="' . route('editDkc', $row->id) . '" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>';
+                    $deleteBtn = '<button class="delete btn btn-danger btn-sm mr-2 waves-effect waves-light" data-id="' . $row->id . '"><i class="bx bx-trash"></i> Delete</button>';
+                } elseif ($row->role_id == 2) {
+                    $editBtn = '<a href="' . route('editDkr', $row->id) . '" class="btn btn-warning btn-sm mr-2 waves-effect waves-light"><i class="bx bx-pencil"></i> Edit</a>';
+                    $deleteBtn = '<button class="delete btn btn-danger btn-sm mr-2 waves-effect waves-light" data-id="' . $row->id . '"><i class="bx bx-trash"></i> Delete</button>';
+                }
+
+                return $editBtn . ' ' . $deleteBtn;
+            })
+            ->rawColumns(['avatar', 'action'])
+            ->make(true);
     }
 
     public function store(Request $request)
@@ -153,8 +199,12 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
-        $user->delete();
-        Alert::success('Success!', 'Data Deleted Successfully');
-        return back();
+        if ($user) {
+            $user->delete();
+            Alert::success('Success!', 'Data Deleted Successfully');
+            return response()->json(['success' => true]);
+        }else{
+            return response()->json(['success' => false, 'message' => 'Data not found']);
+        }
     }
 }

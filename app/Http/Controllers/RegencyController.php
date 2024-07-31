@@ -19,6 +19,11 @@ class RegencyController extends Controller
         $regencies = Regency::all(['id', 'name']); // Pastikan hanya mengambil id dan name
         return response()->json($regencies);
     }
+    public function regencies()
+    {
+        $data = Regency::where('name', 'LIKE', '%'.request('q').'%')->paginate(27);
+        return response()->json($data);
+    }
 
     public function villages($id)
     {
@@ -71,6 +76,6 @@ class RegencyController extends Controller
     {
         Villages::find($id)->delete();
         Alert::success('Success!', 'Data Deleted SuccessFully');
-        return response()->json(['success' => 'Data deleted successfully']);
+        return response()->json(['success' => true]);
     }
 }
