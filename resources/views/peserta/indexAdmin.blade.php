@@ -24,21 +24,34 @@
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title mb-5">Peserta Wilayah {{ $regency->name }} dengan jumlah peserta
-                        : {{ count($peserta->where('regency_id', $regency_id)) }}</h4>
-                    
-                        <div class="card-title mb-5">
-                        <a href="{{ route('admin-data-peserta.index') }}" type="button"
-                            class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-undo"></i> Back To
-                            Peserta</a>
+                    <h4 class="card-title mb-5">Peserta</h4>
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                            Error! <br />
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+                    <div class="card-title mb-5">
+                        <a href="{{ route('peserta.excel') }}" type="button"
+                            class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                        <a href="{{ route('peserta.pdf') }}" type="button"
+                            class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                     </div>
 
                     <div class="table-responsive">
-                        <table id="villagesTable" class="table table-bordered table-striped dt-responsive nowrap w-100">
+                        <table id="regenciesTable" class="table table-bordered table-striped dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Nama Wilayah</th>
+                                    <th>Kwarcab</th>
                                     <th>Jumlah Pendaftar</th>
                                     <th>Action</th>
                                 </tr>
@@ -60,10 +73,10 @@
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#villagesTable').DataTable({
+            $('#regenciesTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '/get-villages/{{ $regency_id }}',
+                ajax: '{{ route('data.getRegencies') }}',
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',

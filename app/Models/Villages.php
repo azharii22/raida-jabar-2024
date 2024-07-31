@@ -24,4 +24,9 @@ class Villages extends Model
     {
         return $this->belongsTo(Regency::class);
     }
+    
+    public function peserta()
+    {
+        return $this->hasMany(Peserta::class, 'villages_id', 'id');
+    }
 }

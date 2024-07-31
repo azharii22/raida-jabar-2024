@@ -37,15 +37,15 @@
                     @endif
 
                     <div class="card-title mb-5">
-                        <a href="{{ route('admin-data-peserta.detailRegency', $regency->regency_id) }}" type="button"
+                        <a href="{{ route('data.showVillages', $villages->regency_id) }}" type="button"
                             class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-undo"></i> Back To
-                            Peserta {{ $regency->regency->name }}</a>
+                            Peserta {{ $villages->regency->name }}</a>
                     </div>
 
-                    <h4 class="card-title mb-5">Peserta Wilayah {{ $pesertaVillages->villages->name }}</h4>
+                    <h4 class="card-title mb-5">Peserta Wilayah {{ $villages->name }}</h4>
 
                     <div class="table-responsive">
-                        <table id='datatable' class="table table-bordered dt-responsive nowrap w-100">
+                        <table id='pesertaTable' class="table table-bordered dt-responsive nowrap w-100">
                             <thead>
                                 <tr>
                                     <th style="width: 10px;">No</th>
@@ -55,85 +55,15 @@
                                     <th style="width: 15px;">Kategori</th>
                                     <th>Status</th>
                                     <th>Berkas Peserta</th>
-                                    <th>Catatan</th>
-                                    <th style="width: 10px;">Action</th>
+                                    <th style="width: 15px;">Catatan</th>
+                                    <th style="width: 15px;">Action</th>
                                 </tr>
                             </thead>
 
 
-                            <tbody>
+                            {{-- <tbody>
                                 @foreach ($peserta as $i => $data)
                                     <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $data->regency->name }}</td>
-                                        <td class="text-uppercase">{{ $data->nama_lengkap }}</td>
-                                        <td>
-                                            @if ($data->jenis_kelamin == 1)
-                                                <span>Laki - Laki</span>
-                                            @else
-                                                <span>Perempuan</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $data->kategori?->name }}</td>
-                                        <td>
-                                            @if ($data->status->name == 'Terkirim')
-                                                <span class="badge text-bg-primary">Terkirim</span>
-                                            @elseif ($data->status->name == 'Diterima')
-                                                <span class="badge text-bg-success">Diterima</span>
-                                            @elseif ($data->status->name == 'Revisi')
-                                                <span class="badge text-bg-warning">Revisi</span>
-                                            @elseif ($data->status->name == 'Ditolak')
-                                                <span class="badge text-bg-danger">Ditolak</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($data->foto != null)
-                                                <a class="btn btn-success waves-effect waves-light btn-sm mr-2"
-                                                    href="{{ Storage::url('public/img/peserta/foto/') . $data->foto }}"
-                                                    target="_blank"><i class="bx bx-check-circle"></i> Foto</a>
-                                            @else
-                                                <button type="button"
-                                                    class="btn btn-warning waves-effect waves-light btn-sm mr-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-foto-{{ $data->id }}"><i
-                                                        class="bx bx-upload"></i> Foto</button>
-                                            @endif
-                                            @if ($data->KTA != null)
-                                                <a class="btn btn-success waves-effect waves-light btn-sm mr-2"
-                                                    href="{{ Storage::url('public/img/peserta/kta/') . $data->KTA }}"
-                                                    target="_blank"><i class="bx bx-check-circle"></i> KTA</a>
-                                            @else
-                                                <button type="button"
-                                                    class="btn btn-warning waves-effect waves-light btn-sm mr-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-kta-{{ $data->id }}"><i
-                                                        class="bx bx-upload"></i> KTA</button>
-                                            @endif
-                                            @if ($data->asuransi_kesehatan != null)
-                                                <a class="btn btn-success waves-effect waves-light btn-sm mr-2"
-                                                    href="{{ Storage::url('public/img/peserta/asuransi-kesehatan/') . $data->asuransi_kesehatan }}"
-                                                    target="_blank"><i class="bx bx-check-circle"></i> Asuransi
-                                                    Kesehatan </a>
-                                            @else
-                                                <button type="button"
-                                                    class="btn btn-warning waves-effect waves-light btn-sm mr-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-asuransi-{{ $data->id }}"><i
-                                                        class="bx bx-upload"></i> Asuransi Kesehatan </button>
-                                            @endif
-                                            @if ($data->sertif_sfh != null)
-                                                <a class="btn btn-success waves-effect waves-light btn-sm mr-2"
-                                                    href="{{ Storage::url('public/img/peserta/sertif-sfh/') . $data->sertif_sfh }}"
-                                                    target="_blank"><i class="bx bx-check-circle"></i> Sertif
-                                                    SFH</a>
-                                            @else
-                                                <button type="button"
-                                                    class="btn btn-warning waves-effect waves-light btn-sm mr-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-sertif-{{ $data->id }}"><i
-                                                        class="bx bx-upload"></i> Sertif SFH</button>
-                                            @endif
-                                        </td>
                                         <td>
                                             @if ($data->status->name == 'Revisi')
                                                 <div style="color: red;">
@@ -144,7 +74,7 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4 && $data->status->name != 'Diterima')
+                                            @if (auth()->user()->role_id == 1 || (auth()->user()->role_id == 4 && $data->status->name != 'Diterima'))
                                                 <button type="button"
                                                     class="btn btn-info btn-sm mr-2 waves-effect waves-light"
                                                     data-bs-toggle="modal"
@@ -170,7 +100,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                            </tbody>
+                            </tbody> --}}
                         </table>
                     </div>
                 </div>
@@ -197,9 +127,8 @@
                                 <div class="mb-3">
                                     <label for="validationCustom02" class="form-label">Nama Lengkap <i
                                             class="mdi mdi-exclamation-thick" style="color: red;"></i></label>
-                                    <input name="nama_lengkap" type="text" class="form-control"
-                                        id="validationCustom02" value="{{ old('nama_lengkap') }}"
-                                        placeholder="Nama Lengkap" required>
+                                    <input name="nama_lengkap" type="text" class="form-control" id="validationCustom02"
+                                        value="{{ old('nama_lengkap') }}" placeholder="Nama Lengkap" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -322,7 +251,6 @@
     </div>
     <!-- End modal add -->
 
-    <!-- Start modal Delete-->
     @foreach ($peserta as $data)
         <!-- Start modal Edit -->
         <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
@@ -451,8 +379,8 @@
                                         <input name="riwayat_penyakit" type="text" id="riwayat_penyakit"
                                             value="{{ $data->riwayat_penyakit }}" placeholder="Riwayat Penyakit"
                                             class="form-control">
-                                        <input name="regency_id" value="{{ auth()->user()->regency_id }}" hidden>
-                                        <input name="villages_id" value="{{ auth()->user()->villages_id }}" hidden>
+                                        {{-- <input name="regency_id" value="{{ auth()->user()->regency_id }}" hidden>
+                                        <input name="villages_id" value="{{ auth()->user()->villages_id }}" hidden> --}}
                                     </div>
                                 </div>
                             </div>
@@ -467,6 +395,7 @@
             </div><!-- /.modal-dialog -->
         </div>
         <!-- End modal Edit -->
+        <!-- Start modal Delete-->
         <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
             id="modal-delete-{{ $data->id }}">
             <div class="modal-dialog">
@@ -772,4 +701,128 @@
     <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    <script type="text/javascript">
+        var baseUrl = "{{ Storage::url('public/img/peserta/') }}";
+        $(document).ready(function() {
+            $('#pesertaTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/get-peserta/{{ $villages_id }}',
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row, meta) {
+                            return '<div class="text-center">' + data + '</div>';
+                        }
+                    },
+                    {
+                        data: 'wilayah_cabang',
+                        name: 'wilayah_cabang'
+                    },
+                    {
+                        data: 'nama_lengkap',
+                        name: 'nama_lengkap',
+                        className: 'text-uppercase'
+                    },
+                    {
+                        data: 'jenis_kelamin',
+                        name: 'jenis_kelamin'
+                    },
+                    {
+                        data: 'kategori',
+                        name: 'kategori'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        render: function(data, type, row, meta) {
+                            var statusClass = {
+                                'Terkirim': 'text-bg-primary',
+                                'Diterima': 'text-bg-success',
+                                'Revisi': 'text-bg-warning',
+                                'Ditolak': 'text-bg-danger'
+                            };
+                            return '<span class="badge ' + statusClass[data] + '">' + data +
+                                '</span>';
+                        }
+                    },
+                    {
+                        data: 'berkas_peserta',
+                        name: 'berkas_peserta',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row, meta) {
+                            var buttons = '';
+                            if (row.foto) {
+                                buttons +=
+                                    '<a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="' +
+                                    baseUrl + 'foto/' +
+                                    row.foto +
+                                    '" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>&nbsp';
+                            } else {
+                                buttons +=
+                                    '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-' +
+                                    row.id + '"><i class="bx bx-upload"></i> Foto</button>&nbsp';
+                            }
+                            if (row.KTA) {
+                                buttons +=
+                                    '<a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="' +
+                                    baseUrl + 'kta/' +
+                                    row.KTA +
+                                    '" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>&nbsp';
+                            } else {
+                                buttons +=
+                                    '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-' +
+                                    row.id + '"><i class="bx bx-upload"></i> KTA</button>&nbsp';
+                            }
+                            if (row.asuransi_kesehatan) {
+                                buttons +=
+                                    '<a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="' +
+                                    baseUrl + 'asuransi-kesehatan/' +
+                                    row.asuransi_kesehatan +
+                                    '" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan</a>&nbsp';
+                            } else {
+                                buttons +=
+                                    '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-' +
+                                    row.id +
+                                    '"><i class="bx bx-upload"></i> Asuransi Kesehatan</button>&nbsp';
+                            }
+                            if (row.sertif_sfh) {
+                                buttons +=
+                                    '<a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="' +
+                                    baseUrl + 'sertif-sfh/' +
+                                    row.sertif_sfh +
+                                    '" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>&nbsp';
+                            } else {
+                                buttons +=
+                                    '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-' +
+                                    row.id +
+                                    '"><i class="bx bx-upload"></i> Sertif SFH</button>&nbsp';
+                            }
+                            return buttons;
+                        }
+                    },
+                    {
+                        data: 'catatan',
+                        name: 'catatan',
+                        render: function(data, type, row, meta) {
+                            if (data) {
+                                return '<div style="color: red;"><li>' + row.catatan + '</li></div>';
+                            }else{
+                                return row.catatan;
+                            }
+                        }
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
+            });
+        });
+    </script>
 @endsection
