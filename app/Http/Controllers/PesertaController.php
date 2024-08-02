@@ -35,14 +35,15 @@ class PesertaController extends Controller
     public function showVillages($regency_id)
     {
         $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
-        $villages = Villages::wherewith([
-            'regency',
-            'peserta' => function ($q) use ($regency_id, $notKontingen) {
-                $q->where('regency_id', $regency_id)
-                    ->where('kategori_id', $notKontingen->id);
-            }
-        ])
-            ->get();
+        $peserta = Villages::whereHas('peserta', function ($query) use ($regency_id, $notKontingen) {
+            $query->where('regency_id', $regency_id)
+                  ->where('kategori_id', $notKontingen->id);
+        })
+        ->with(['regency', 'peserta' => function ($query) use ($regency_id, $notKontingen) {
+            $query->where('regency_id', $regency_id)
+                  ->where('kategori_id', $notKontingen->id);
+        }])
+        ->get();
         $regency    = Regency::find($regency_id);
         return view('peserta.detail', compact('regency_id', 'peserta', 'regency'));
     }
