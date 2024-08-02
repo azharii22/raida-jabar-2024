@@ -59,39 +59,6 @@
                                     <th style="width: 15px;">Action</th>
                                 </tr>
                             </thead>
-
-
-                            {{-- <tbody>
-                                @foreach ($peserta as $i => $data)
-                                    <tr>
-                                        <td class="text-center">
-                                            @if (auth()->user()->role_id == 1 || (auth()->user()->role_id == 4 && $data->status->name != 'Diterima'))
-                                                <button type="button"
-                                                    class="btn btn-info btn-sm mr-2 waves-effect waves-light"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-verifikasi-{{ $data->id }}"><i
-                                                        class=" bx bx-check-circle"></i> Verifikasi</button>
-                                            @endif
-                                            <button type="button"
-                                                class="btn btn-light waves-effect waves-light btn-sm mr-2"
-                                                data-bs-toggle="modal" data-bs-target="#modal-detail-{{ $data->id }}">
-                                                <i class="bx bx-show"></i> Detail</button>
-                                            @if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4)
-                                                <button type="button"
-                                                    class="btn btn-warning waves-effect waves-light btn-sm mr-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-edit-{{ $data->id }}"> <i
-                                                        class="bx bx-pencil"></i> Edit</button>
-                                                <button type="button"
-                                                    class="btn btn-danger waves-effect waves-light btn-sm mr-2"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modal-delete-{{ $data->id }}"> <i
-                                                        class="bx bx-trash"></i> Delete</button>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody> --}}
                         </table>
                     </div>
                 </div>

@@ -25,7 +25,6 @@ class PesertaFactory extends Factory
             'status_id'     => Status::inRandomOrder()->first()->id,
             'nama_lengkap'  => $this->faker->name(),
             'regency_id'    => Regency::inRandomOrder()->first()->id,
-            'villages_id'   => Villages::inRandomOrder()->first()->id,
         ];
     }
 }

@@ -42,7 +42,7 @@
                 @endif
 
                 <div class="table-responsive">
-                    <table id="datatable" class="table table-bordered table-striped dt-responsive nowrap w-100">
+                    <table id="regenciesTable" class="table table-bordered table-striped dt-responsive nowrap w-100">
                         <thead>
                             <tr>
                                 <th style="width: 10px;">No</th>
@@ -51,23 +51,6 @@
                                 <th class="text-center">Action</th>
                             </tr>
                         </thead>
-
-
-                        <tbody>
-                            @foreach ($regency as $i =>$data)
-                            <tr>
-                                <td>{{ ++$i }}</td>
-                                <td class="text-uppercase text-center">{{ $data->name }}</td>
-                                <?php 
-                                    $UnsurKontingenCabang = count($unsurKontingen->where('regency_id', $data->id)->where('villages_id', NULL));
-                                ?>
-                                <td class="text-uppercase text-center">{{ $UnsurKontingenCabang }} Unsur Kontingen Cabang</td>
-                                <td class="text-center">
-                                    <a href="{{ route('admin-data-unsurKontingen.detail',$data->id) }}" class="btn btn-success waves-effect waves-light btn-sm mr-2"> Lihat <i class="bx bx-right-arrow-alt"></i></a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -434,7 +417,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 <!-- End modal add -->
-
+{{-- 
 @foreach ($unsurKontingen as $data)
 <!-- Start modal Edit -->
 <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -815,7 +798,7 @@
     </div>
 </div>
 <!-- End Verifikasi Modal -->
-@endforeach
+@endforeach --}}
 @endsection
 
 
@@ -829,4 +812,37 @@
 <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
 <!-- Datatable init js -->
 <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#regenciesTable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '{{ route('data.getRegenciesKontingen') }}',
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false,
+                    render: function(data, type, row, meta) {
+                        return '<div class="text-center">' + data + '</div>';
+                    }
+                },
+                {
+                    data: 'name',
+                    name: 'name'
+                },
+                {
+                    data: 'jumlah_pendaftar',
+                    name: 'jumlah_pendaftar'
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
+    });
+</script>
 @endsection

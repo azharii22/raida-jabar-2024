@@ -14,14 +14,119 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
+use Yajra\DataTables\Facades\DataTables;
 
 class UnsurKontingenController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function showRegencies()
+    {
+        return view('regencies');
+    }
+
+    public function showPeserta($regency_id)
+    {
+        // $villages   = Villages::with('regency')->find($regency_id);
+        $kategori   = Kategori::orderBy('name')->get();
+        $status     = Status::orderBy('name')->get();
+        $peserta    = Peserta::with('villages')->where('regency_id', $regency_id)->where('villages_id', NULL)->orderBy('nama_lengkap')->get();
+        return view('unsurKontingen.detail', compact('regency_id', 'kategori', 'peserta', 'status'));
+    }
+
+    public function getRegencies(Request $request)
+    {
+        if ($request->ajax()) {
+            $regencies = Regency::all();
+            $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+            return DataTables::of($regencies)
+                ->addIndexColumn()
+                ->addColumn('jumlah_pendaftar', function ($row) use($kategoriNotPeserta) {
+                    $regency = $row->peserta->where('regency_id', $row->id)->where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->count() ?? '';
+                    return "$regency" . " Unsur Kontingen Cabang";
+                })
+                ->addColumn('action', function ($row) {
+                    return '<a href="' . route('data.showPesertaKontingen', $row->id) . '" class="view-villages btn btn-success btn-sm" data-id="' . $row->id . '">Lihat <i class="bx bx-right-arrow-alt"></i></a>';
+                })
+                ->make(true);
+        }
+    }
+
+    public function getPeserta($regency_id, Request $request)
+    {
+        if ($request->ajax()) {
+            $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+            $peserta = Peserta::with('user', 'kategori', 'status', 'regency', 'villages')
+                ->where('regency_id', $regency_id)
+                ->where('villages_id', NULL)
+                ->whereIn('kategori_id', $kategoriNotPeserta)
+                ->get();
+            return DataTables::of($peserta)
+                ->addIndexColumn()
+                ->addColumn('wilayah_cabang', function ($row) {
+                    $peserta = $row->regency->name ?? '';
+                    return "$peserta";
+                })
+                ->addColumn('jenis_kelamin', function ($row) {
+                    $cowo = $row->jenis_kelamin == 1;
+                    if ($cowo) {
+                        return 'Laki - Laki';
+                    } else {
+                        return 'Perempuan';
+                    }
+                })
+                ->addColumn('kategori', function ($row) {
+                    $peserta = $row->kategori->name ?? '';
+                    return "$peserta";
+                })
+                ->addColumn('status', function ($row) {
+                    $peserta = $row->status->name ?? '';
+                    return "$peserta";
+                })
+                ->addColumn('berkas_peserta', function ($row) {
+                    $buttons = '';
+                    if ($row->foto) {
+                        $buttons .= '<a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="' . Storage::url('public/img/peserta/foto/' . $row->foto) . '" target="_blank"><i class="bx bx-check-circle"></i> Foto</a>';
+                    } else {
+                        $buttons .= '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-foto-' . $row->id . '"><i class="bx bx-upload"></i> Foto</button>';
+                    }
+                    if ($row->KTA) {
+                        $buttons .= '<a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="' . Storage::url('public/img/peserta/kta/' . $row->KTA) . '" target="_blank"><i class="bx bx-check-circle"></i> KTA</a>';
+                    } else {
+                        $buttons .= '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-kta-' . $row->id . '"><i class="bx bx-upload"></i> KTA</button>';
+                    }
+                    if ($row->asuransi_kesehatan) {
+                        $buttons .= '<a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="' . Storage::url('public/img/peserta/asuransi-kesehatan/' . $row->asuransi_kesehatan) . '" target="_blank"><i class="bx bx-check-circle"></i> Asuransi Kesehatan</a>';
+                    } else {
+                        $buttons .= '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-asuransi-' . $row->id . '"><i class="bx bx-upload"></i> Asuransi Kesehatan</button>';
+                    }
+                    if ($row->sertif_sfh) {
+                        $buttons .= '<a class="btn btn-success waves-effect waves-light btn-sm mr-2" href="' . Storage::url('public/img/peserta/sertif-sfh/' . $row->sertif_sfh) . '" target="_blank"><i class="bx bx-check-circle"></i> Sertif SFH</a>';
+                    } else {
+                        $buttons .= '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-sertif-' . $row->id . '"><i class="bx bx-upload"></i> Sertif SFH</button>';
+                    }
+                    return $buttons;
+                })
+                ->addColumn('action', function ($row) {
+                    $buttons = '';
+                    if (auth()->user()->role_id == 1 || (auth()->user()->role_id == 4 && $row->status->name != 'Diterima')) {
+                        $buttons .= '<button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-' . $row->id . '"><i class=" bx bx-check-circle"></i> Verifikasi</button> &nbsp';
+                    }
+                    $buttons    .= '<button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-' . $row->id . '"><i class="bx bx-show"></i> Detail</button> &nbsp';
+                    if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
+                        $buttons .= '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-' . $row->id . '"><i class="bx bx-pencil"></i> Edit</button> &nbsp';
+                        $buttons .= '<button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-' . $row->id . '"><i class="bx bx-trash"></i> Delete</button> &nbsp';
+                    }
+                    return $buttons;
+                })
+                ->make(true);
+        }
     }
 
     public function index()
@@ -33,6 +138,7 @@ class UnsurKontingenController extends Controller
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $unsurKontingen = Peserta::where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
             return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status', 'regency'));
+            // return view('unsurKontingen.index', compact('kategori'));
         } elseif (auth()->user()->role_id == 2) {
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $unsurKontingen = Peserta::where('user_id', auth()->user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
