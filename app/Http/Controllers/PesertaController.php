@@ -36,10 +36,10 @@ class PesertaController extends Controller
     {
         $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
         $villages = Villages::where('regency_id', $regency_id)->first();
-        $peserta    = Villages::with('regency', 'peserta', function ($q) use ($regency_id) {
-            return $q->where('regency_id', $regency_id);
+        $peserta    = Villages::with('regency', 'peserta', function ($q) use ($regency_id, $notKontingen) {
+            return $q->where('regency_id', $regency_id)
+            ->where('kategori_id', $notKontingen->id);
         })
-            ->where('kategori_id', $notKontingen->id)
             ->get();
         $regency    = Regency::find($regency_id);
         return view('peserta.detail', compact('regency_id', 'peserta', 'regency'));
