@@ -34,7 +34,12 @@ class PesertaController extends Controller
 
     public function showVillages($regency_id)
     {
-        $peserta    = Peserta::with('regency')->where('regency_id', $regency_id)->get();
+        $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
+        $peserta    = Peserta::with('regency')
+            ->where('regency_id', $regency_id)
+            ->where('villages_id', '!=', NULL)
+            // ->where('kategori_id', $notKontingen)
+            ->get();
         $regency    = Regency::find($regency_id);
         return view('peserta.detail', compact('regency_id', 'peserta', 'regency'));
     }
@@ -137,13 +142,13 @@ class PesertaController extends Controller
                 ->addColumn('action', function ($row) {
                     $buttons = '';
                     if (auth()->user()->role_id == 1 || (auth()->user()->role_id == 4 && $row->status->name != 'Diterima')) {
-                        $buttons .= '<button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-'. $row->id .'"><i class=" bx bx-check-circle"></i> Verifikasi</button> &nbsp';
+                        $buttons .= '<button type="button" class="btn btn-info btn-sm mr-2 waves-effect waves-light" data-bs-toggle="modal" data-bs-target="#modal-verifikasi-' . $row->id . '"><i class=" bx bx-check-circle"></i> Verifikasi</button> &nbsp';
                     }
-                    $buttons    .= '<button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-'. $row->id .'"><i class="bx bx-show"></i> Detail</button> &nbsp';
-                    if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4){
+                    $buttons    .= '<button type="button" class="btn btn-light waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-detail-' . $row->id . '"><i class="bx bx-show"></i> Detail</button> &nbsp';
+                    if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
                         $buttons .= '<button type="button" class="btn btn-warning waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-edit-' . $row->id . '"><i class="bx bx-pencil"></i> Edit</button> &nbsp';
                         $buttons .= '<button type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-delete-' . $row->id . '"><i class="bx bx-trash"></i> Delete</button> &nbsp';
-                    } 
+                    }
                     return $buttons;
                 })
                 ->make(true);
