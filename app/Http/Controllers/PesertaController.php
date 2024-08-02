@@ -39,7 +39,6 @@ class PesertaController extends Controller
             ->where('villages_id', '!=', NULL)
             ->where('regency_id', $regency_id)
             ->where('kategori_id', $notKontingen->id)
-            ->orderBy('updated_at', 'DESC')
             ->get();
         $regency    = Regency::find($regency_id);
         return view('peserta.detail', compact('regency_id', 'peserta', 'regency'));
