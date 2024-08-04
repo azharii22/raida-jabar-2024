@@ -67,7 +67,7 @@
         </div> <!-- end col -->
     </div> <!-- end row -->
 
-    {{-- @foreach ($unsurKontingen as $data)
+    @foreach ($unsurKontingen as $data)
         <!-- Start modal Edit -->
         <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
             id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -504,7 +504,7 @@
             </div>
         </div>
         <!-- End Verifikasi Modal -->
-    @endforeach --}}
+    @endforeach
 
 
 @endsection

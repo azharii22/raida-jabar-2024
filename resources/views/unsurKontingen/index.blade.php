@@ -220,8 +220,7 @@
                             @foreach ($unsurKontingen as $i =>$data)
                             <tr>
                                 <td>{{ ++$i }}</td>
-                                <td class="text-uppercase">{{ $data->villages?->name ?  $data->villages?->name : $data->regency->name }}</td>
-
+                                <td class="text-uppercase">{{ $data->villages?->name ?  $data->villages?->name : $data->regency?->name }}</td>
                                 <td class="text-uppercase">{{ $data->nama_lengkap }}</td>
                                 <td>
                                     @if ($data->jenis_kelamin == 1)
@@ -417,7 +416,6 @@
     </div><!-- /.modal-dialog -->
 </div>
 <!-- End modal add -->
-{{-- 
 @foreach ($unsurKontingen as $data)
 <!-- Start modal Edit -->
 <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -798,7 +796,7 @@
     </div>
 </div>
 <!-- End Verifikasi Modal -->
-@endforeach --}}
+@endforeach
 @endsection
 
 

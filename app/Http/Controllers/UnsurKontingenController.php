@@ -134,11 +134,11 @@ class UnsurKontingenController extends Controller
         $kategori = Kategori::orderBy('updated_at', 'DESC')->where('name', '!=', 'Peserta')->get();
         $status = Status::orderBy('name', 'DESC')->get();
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
-            $regency = Regency::orderBy('name')->get();
-            $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
-            $unsurKontingen = Peserta::where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
-            return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status', 'regency'));
-            // return view('unsurKontingen.index', compact('kategori'));
+            // $regency = Regency::orderBy('name')->get();
+            // $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+            // $unsurKontingen = Peserta::where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
+            // return view('unsurKontingen.index', compact('unsurKontingen', 'kategori', 'status', 'regency'));
+            return view('unsurKontingen.indexAdmin', compact('kategori'));
         } elseif (auth()->user()->role_id == 2) {
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $unsurKontingen = Peserta::where('user_id', auth()->user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Peserta')
+@section('title', 'Unsur Kontingen')
 
 @section('css')
     <!-- DataTables -->
@@ -15,7 +15,7 @@
             Dashboard
         @endslot
         @slot('title')
-            Peserta
+            Unsur Kontingen
         @endslot
     @endcomponent
 
@@ -24,7 +24,7 @@
             <div class="card">
                 <div class="card-body">
 
-                    <h4 class="card-title mb-5">Peserta</h4>
+                    <h4 class="card-title mb-5">Unsur Kontingen</h4>
                     @if (count($errors) > 0)
                         <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
                             Error! <br />
