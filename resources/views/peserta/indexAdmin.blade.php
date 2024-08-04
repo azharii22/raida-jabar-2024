@@ -76,7 +76,7 @@
             $('#regenciesTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('data.getRegencies') }}',
+                ajax: '{{ route('data.getRegenciesPeserta') }}',
                 columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',

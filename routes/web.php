@@ -113,10 +113,10 @@ Route::get('unsur-kontingen-exportadminExcel', [UnsurKontingenController::class,
 Route::get('unsur-kontingen-exportadminPDF', [UnsurKontingenController::class, 'exportAdminPDF'])->name('unsur-kontingen.admin-pdf');
 Route::get('/admin-data-unsur-kontingen-regency-{id}', [UnsurKontingenController::class, 'detailRegency'])->name('admin-data-unsurKontingen.detail');
 
-Route::get('/get-regencies', [PesertaController::class, 'getRegencies'])->name('data.getRegencies');
+Route::get('/get-regencies', [PesertaController::class, 'getRegencies'])->name('data.getRegenciesPeserta');
 Route::get('/get-villages/{regency_id}', [PesertaController::class, 'getVillages'])->name('data.getVillages');
 Route::get('/get-peserta/{villages_id}', [PesertaController::class, 'getPeserta'])->name('data.getPeserta');
-Route::get('/get-regencies', [UnsurKontingen::class, 'getRegencies'])->name('data.getRegenciesKontingen');
+Route::get('/get-regenciesKontingen', [UnsurKontingen::class, 'getRegencies'])->name('data.getRegenciesKontingen');
 Route::get('/get-kontingen/{regency_id}', [UnsurKontingenController::class, 'getPeserta'])->name('data.getPesertaKontingen');
 Route::get('/get-regencies-kontingen', [UnsurKontingenController::class, 'getRegencies'])->name('data.getRegenciesKontingen');
 
