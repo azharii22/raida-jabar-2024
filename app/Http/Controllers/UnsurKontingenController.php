@@ -28,7 +28,7 @@ class UnsurKontingenController extends Controller
 
     public function showRegencies()
     {
-        return view('regencies');
+        return view('unsurKontingen.index');
     }
 
     public function showPeserta($regency_id)
@@ -36,8 +36,8 @@ class UnsurKontingenController extends Controller
         // $villages   = Villages::with('regency')->find($regency_id);
         $kategori   = Kategori::orderBy('name')->get();
         $status     = Status::orderBy('name')->get();
-        $peserta    = Peserta::with('villages')->where('regency_id', $regency_id)->where('villages_id', NULL)->orderBy('nama_lengkap')->get();
-        return view('unsurKontingen.detail', compact('regency_id', 'kategori', 'peserta', 'status'));
+        $unsurKontingen    = Peserta::with('regency')->where('regency_id', $regency_id)->where('villages_id', NULL)->orderBy('nama_lengkap')->get();
+        return view('unsurKontingen.detail', compact('regency_id', 'kategori', 'unsurKontingen', 'status'));
     }
 
     public function getRegencies(Request $request)
@@ -52,7 +52,7 @@ class UnsurKontingenController extends Controller
                     return "$regency" . " Unsur Kontingen Cabang";
                 })
                 ->addColumn('action', function ($row) {
-                    return '<a href="' . route('data.showPesertaKontingen', $row->id) . '" class="view-villages btn btn-success btn-sm" data-id="' . $row->id . '">Lihat <i class="bx bx-right-arrow-alt"></i></a>';
+                    return '<a href="' . route('data.showKontingen', $row->id) . '" class="view-villages btn btn-success btn-sm" data-id="' . $row->id . '">Lihat <i class="bx bx-right-arrow-alt"></i></a>';
                 })
                 ->make(true);
         }
