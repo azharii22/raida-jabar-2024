@@ -518,7 +518,7 @@
     <!-- Datatable init js -->
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
     <script type="text/javascript">
-        var baseUrl = "{{ Storage::url('public/img/unsur-kontingen/') }}";
+        var baseUrl = "{{ Storage::url('public/img/peserta/') }}";
         $(document).ready(function() {
             $('#pesertaTable').DataTable({
                 processing: true,
