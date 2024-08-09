@@ -64,7 +64,7 @@ class PesertaExport implements FromCollection, WithHeadings, WithStyles
 
     public function cleanAndSaveImage($path, $outputPath)
     {
-        $image = Image::make($path);
+        $image = Image::make($path)->getRealPath();
         $image->save($outputPath);
         return $outputPath;
     }
@@ -144,6 +144,7 @@ class PesertaExport implements FromCollection, WithHeadings, WithStyles
     {
         if (!is_null($imagePath)) {
             $path = public_path(Storage::url('public/img/peserta/foto/') . $imagePath);
+            Log::info('Generated image path: ' . $path);
             $cleanPath = $this->cleanAndSaveImage($path, public_path('cleaned_' . basename($path)));
 
             if (file_exists($cleanPath)) {
