@@ -64,7 +64,7 @@ class PesertaExport implements FromCollection, WithHeadings, WithStyles
 
     public function cleanAndSaveImage($path, $outputPath)
     {
-        $image = Image::make($path)->getRealPath();
+        $image = Image::make($path);
         $image->save($outputPath);
         return $outputPath;
     }
