@@ -64,10 +64,27 @@ class PesertaExport implements FromCollection, WithHeadings, WithStyles
 
     public function cleanAndSaveImage($path, $outputPath)
     {
-        $image = Image::make($path);
-        $image->save($outputPath);
-        return $outputPath;
+        try {
+            // Periksa apakah file ada sebelum memproses
+            if (!file_exists($path)) {
+                Log::error('File not found: ' . $path);
+                return false;
+            }
+
+            // Coba membuat instance gambar
+            $image = Image::make($path);
+
+            // Simpan gambar ke output path
+            $image->save($outputPath);
+
+            return $outputPath;
+        } catch (\Exception $e) {
+            // Tangkap dan log error jika terjadi
+            Log::error('Error processing image: ' . $e->getMessage());
+            return false;
+        }
     }
+
 
     public function headings(): array
     {
