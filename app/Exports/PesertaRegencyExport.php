@@ -58,9 +58,25 @@ class PesertaRegencyExport implements FromCollection, WithHeadings, WithStyles
 
     public function cleanAndSaveImage($path, $outputPath)
     {
-        $image = Image::make($path);
-        $image->save($outputPath);
-        return $outputPath;
+        try {
+            // Periksa apakah file ada sebelum memproses
+            if (!file_exists($path)) {
+                Log::error('File not found: ' . $path);
+                return false;
+            }
+
+            // Coba membuat instance gambar
+            $image = Image::make($path);
+
+            // Simpan gambar ke output path
+            $image->save($outputPath);
+
+            return $outputPath;
+        } catch (\Exception $e) {
+            // Tangkap dan log error jika terjadi
+            Log::error('Error processing image: ' . $e->getMessage());
+            return false;
+        }
     }
 
     public function headings(): array
@@ -137,9 +153,19 @@ class PesertaRegencyExport implements FromCollection, WithHeadings, WithStyles
     protected function insertImage(Worksheet $sheet, $imagePath, $cell, &$maxHeight)
     {
         if (!is_null($imagePath)) {
-            $path = public_path(Storage::url('public/img/peserta/foto/') . $imagePath);
+            // Misalkan Anda menyimpan informasi folder di dalam model atau konfigurasi
+            $folderPath = $this->determineFolderPath($imagePath);
+
+            // Buat path lengkap untuk gambar
+            $path = public_path($folderPath . $imagePath);
+
+            // Log untuk memverifikasi path gambar
+            Log::info('Generated image path: ' . $path);
+
+            // Bersihkan dan simpan gambar
             $cleanPath = $this->cleanAndSaveImage($path, public_path('cleaned_' . basename($path)));
 
+            // Periksa apakah file gambar benar-benar ada
             if (file_exists($cleanPath)) {
                 $drawing = new Drawing();
                 $drawing->setPath($cleanPath);
@@ -158,6 +184,24 @@ class PesertaRegencyExport implements FromCollection, WithHeadings, WithStyles
         } else {
             Log::warning('File path is null for image: ' . $cell);
         }
+    }
+
+    protected function determineFolderPath($imagePath)
+    {
+        // Logika untuk menentukan folder berdasarkan nama file atau informasi lain
+        // Misalnya, Anda bisa menggunakan ekstensi file atau nama file untuk menentukan folder
+        if (strpos($imagePath, 'foto') !== false) {
+            return 'storage/img/peserta/foto/';
+        } elseif (strpos($imagePath, 'kta') !== false) {
+            return 'storage/img/peserta/kta/';
+        } elseif (strpos($imagePath, 'asuransi-kesehatan') !== false) {
+            return 'storage/img/peserta/asuransi-kesehatan/';
+        } elseif (strpos($imagePath, 'sertif-sfh') !== false) {
+            return 'storage/img/peserta/sertif-sfh/';
+        }
+
+        // Default folder jika tidak ada kecocokan
+        return 'storage/img/peserta/default/';
     }
 
     protected function mergeCellsAndCenterText(Worksheet $sheet, $peserta, $column)
