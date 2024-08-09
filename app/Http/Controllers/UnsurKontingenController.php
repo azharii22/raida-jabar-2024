@@ -331,7 +331,6 @@ class UnsurKontingenController extends Controller
             ->whereIn('kategori_id', $kategoriNotPeserta)
             ->get();
         $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
-        // return Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
         return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
     }
 
@@ -340,11 +339,8 @@ class UnsurKontingenController extends Controller
         $date = Carbon::now()->format('d-m-Y');
         $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
-            $userId = auth()->id();
-            $fileName = 'Unsur-Kontingen ' . $userId . '.pdf';
+            $fileName = 'Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf';
             $filePath = 'pdfUnsurKontingen/' . $fileName;
-            // $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
-            // return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
             ExportLargePdf::dispatch($filePath);
             session(['pdf_file_path' => $filePath]);
             return response()->json(['progress' => 0]);
@@ -384,10 +380,7 @@ class UnsurKontingenController extends Controller
     public function startExport()
     {
         try {
-            // Dispatch job
             ExportLargePdf::dispatch();
-
-            // Return JSON response
             return response()->json([
                 'message' => 'PDF is being generated and will be available soon'
             ]);
@@ -406,16 +399,5 @@ class UnsurKontingenController extends Controller
         }
 
         return response()->json(['progress' => 0, 'downloadUrl' => null]);
-    }
-
-    public function downloadPdf()
-    {
-        $filePath = storage_path('app/public/large_pdf.pdf');
-
-        if (file_exists($filePath)) {
-            return response()->download($filePath);
-        }
-
-        return response()->json(['message' => 'PDF not found'], 404);
     }
 }

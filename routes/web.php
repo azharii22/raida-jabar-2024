@@ -144,10 +144,11 @@ Route::put('/peserta-verifikasi{id}', [PesertaController::class, 'verifikasi'])-
 
 Route::get('peserta-exportPDF', [PesertaController::class, 'exportPDF'])->name('peserta.pdf');
 Route::get('peserta-exportExcel', [PesertaController::class, 'exportExcel'])->name('peserta.excel');
-Route::get('peserta-regency-exportPDF', [PesertaController::class, 'exportPDFRegency'])->name('peserta-regency.pdf');
+Route::get('peserta-regency-exportPDF-{regency_id}', [PesertaController::class, 'exportPDFRegency'])->name('peserta-regency.pdf');
+Route::get('peserta-villages-exportPDF-{villages_id}', [PesertaController::class, 'exportPDFVillages'])->name('peserta-villages.pdf');
 Route::get('peserta-regency-exportExcel-{id}', [PesertaController::class, 'exportExcelRegency'])->name('peserta-regency.excel');
 Route::get('peserta-villages-exportExcel-{id}', [PesertaController::class, 'exportExcelVillages'])->name('peserta-villages.excel');
-
+Route::get('/export-pdf-status-peserta', [PesertaController::class, 'exportPdfStatus'])->name('export-peserta.pdf.status');
 
 Route::resource('/admin-data-pembayaran', PembayaranController::class);
 Route::get('export-pembayaran', [\App\Http\Controllers\PembayaranController::class, 'export'])->name('export-pembayaran');

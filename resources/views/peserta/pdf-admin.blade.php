@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Export PDF Unsur Kontingen &mdash; {{ config('settings.main.1_app_name') }}</title>
+    <title>Export PDF Peserta &mdash; {{ config('settings.main.1_app_name') }}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384=Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcjlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
@@ -30,7 +30,7 @@
                     <tr>
                         <td align="center">
                             <span>
-                                LAPORAN DATA UNSUR KONTINGEN
+                                LAPORAN DATA PESERTA
                                 <br>{{ config('settings.main.1_app_name') }}
                             </span>
                         </td>
@@ -38,7 +38,7 @@
                 </table>
                 <hr class="line-title">
                 <p align="center">
-                    Laporan Data Unsur Kontingen
+                    Laporan Data Peserta
                 </p>
                 </hr>
                 <p>Total Peserta : {{ count($data) }}</p>
@@ -47,6 +47,7 @@
                         <tr>
                             <th style="width: 10px;">No</th>
                             <th>Wilayah Cabang</th>
+                            <th>Wilayah Ranting</th>
                             <th>Kategori</th>
                             <th>Nama Lengkap</th>
                             <th>Tempat, Tanggal Lahir</th>
@@ -56,7 +57,6 @@
                             <th>Agama</th>
                             <th>Golongan Darah</th>
                             <th>Riwayat Penyakit</th>
-                            <th>Status</th>
                             <th>Catatan</th>
                         </tr>
                     </thead>
@@ -65,6 +65,7 @@
                         <tr>
                             <td>{{ ++$index }}</td>
                             <td class="text-capitalize">{{ $dt->regency->name }}</td>
+                            <td class="text-capitalize">{{ $dt->villages->name }}</td>
                             <td class="text-capitalize">{{ $dt->kategori?->name }}</td>
                             <td class="text-capitalize">{{ $dt->nama_lengkap }}</td>
                             <td class="text-capitalize">{{ $dt->tempat_lahir }}, {{ date('d-F-Y', strtotime($dt->tanggal_lahir)) }}</td>
@@ -80,15 +81,14 @@
                             <td>{{ $dt->agama }}</td>
                             <td>{{ $dt->golongan_darah }}</td>
                             <td>{{ $dt->riwayat_penyakit }}</td>
-                            <td>{{ $dt->status?->name }}</td>
-                            <td> {{ $dt->catatan }} </td>
+                            <td>{{ $dt->catatan }}</td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
             @else
-            <b>Laporan Data Unsur Kontingen Belum tersedia</b>
+            <b>Laporan Data Peserta Belum tersedia</b>
             @endif
         </div>
     </div>

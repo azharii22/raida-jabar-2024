@@ -7,6 +7,7 @@ use App\Exports\PesertaExport;
 use App\Exports\PesertaRegencyExport;
 use App\Exports\PesertaVillagesExport;
 use App\Jobs\ExportLargePdf;
+use App\Jobs\PesertaAllPdfJob;
 use App\Models\Kategori;
 use App\Models\Peserta;
 use App\Models\Regency;
@@ -19,6 +20,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -94,7 +96,9 @@ class PesertaController extends Controller
     {
         if ($request->ajax()) {
             $peserta = Peserta::with('user', 'kategori', 'status', 'regency', 'villages')
-                ->where('villages_id', $villages_id)->get();
+                ->where('villages_id', $villages_id)
+                ->orderBy('nama_lengkap')
+                ->get();
             return DataTables::of($peserta)
                 ->addIndexColumn()
                 ->addColumn('wilayah_cabang', function ($row) {
@@ -167,7 +171,8 @@ class PesertaController extends Controller
             // $kategori = Kategori::orderBy('name', 'DESC')->get();
             // $status = Status::orderBy('name', 'DESC')->get();
             // return view('peserta.index', compact('peserta', 'kategori', 'status', 'regency', 'unsurKontingen'));
-            return view('peserta.indexAdmin');
+            $peserta = Peserta::where('villages_id', '!=' ,NULL)->count();
+            return view('peserta.indexAdmin', compact('peserta'));
         } elseif (auth()->user()->role_id == 2) {
             $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
             $peserta = Peserta::where('villages_id', auth()->user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
@@ -349,12 +354,11 @@ class PesertaController extends Controller
         $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
         $date = Carbon::now()->format('d-m-Y');
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
-            // $peserta = Peserta::orderBy('nama_lengkap')->where('villages_id', '!=', NULL)->get();
-            // $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
-            // return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
-            $jobId = ExportLargePdf::dispatch();
-            Cache::put('export_pdf_job', $jobId, now()->addMinutes(30));
-            return response()->json(['message' => 'PDF is being generated and will be available soon', 'job_id' => $jobId]);
+            $fileName = 'Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf';
+            $filePath = 'pdfPeserta/' . $fileName;
+            PesertaAllPdfJob::dispatch($filePath);
+            session(['pdf_file_path' => $filePath]);
+            return response()->json(['progress' => 0]);
         } elseif (auth()->user()->role_id == 2) {
             $peserta = Peserta::where('villages_id', auth()->user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
             $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
@@ -368,12 +372,14 @@ class PesertaController extends Controller
 
     public function exportPdfStatus()
     {
-        $jobId = Cache::get('export_pdf_job');
-        if ($jobId) {
-            $progress = Cache::get('progress', 0);
-            return response()->json(['progress' => $progress]);
+        $progressFile = storage_path('app/pdfPeserta-progress.json');
+
+        if (File::exists($progressFile)) {
+            $progressData = json_decode(File::get($progressFile), true);
+            return response()->json($progressData);
         }
-        return response()->json(['progress' => 0]);
+
+        return response()->json(['progress' => 0, 'downloadUrl' => null]);
     }
 
     public function exportExcelRegency($id)
@@ -392,9 +398,22 @@ class PesertaController extends Controller
 
     public function exportPDFRegency($regency_id)
     {
+        $regency = Regency::where('id', $regency_id)->first();
         $date = Carbon::now()->format('d-m-Y');
-        $peserta = Peserta::orderBy('nama_lengkap', 'DESC')->where('villages_id', '!=', NULL)->get();
-        $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
+        $data = Peserta::where('villages_id', '!=' ,NULL)
+            ->where('regency_id', $regency_id)
+            ->get();
+        $pdf = Pdf::loadView('peserta.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+        return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+    }
+
+    public function exportPDFVillages($villages_id)
+    {
+        $regency = Regency::where('id', $villages_id)->first();
+        $date = Carbon::now()->format('d-m-Y');
+        $data = Peserta::where('villages_id', $villages_id)
+            ->get();
+        $pdf = Pdf::loadView('peserta.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
         return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
     }
 

@@ -43,7 +43,7 @@
                         <a href="{{ route('peserta-villages.excel', $villages->id) }}" type="button"
                             class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
                                 class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                        <a href="{{ route('peserta.pdf') }}" type="button"
+                        <a href="{{ route('peserta-villages.pdf', $villages->id) }}" type="button"
                             class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
                                 class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                     </div>

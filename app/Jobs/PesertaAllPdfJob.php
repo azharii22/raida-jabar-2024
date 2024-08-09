@@ -6,6 +6,7 @@ use App\Models\Kategori;
 use App\Models\Peserta;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use setasign\Fpdi\Fpdi;
 
-class ExportLargePdf implements ShouldQueue
+class PesertaAllPdfJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -29,7 +30,7 @@ class ExportLargePdf implements ShouldQueue
     public function handle()
     {
         Log::info('Job Started');
-        $progressFile = storage_path('app/pdf-progress.json');
+        $progressFile = storage_path('app/pdfPeserta-progress.json');
         Log::info('Progress File: ' . $progressFile);
 
         try {
@@ -39,7 +40,6 @@ class ExportLargePdf implements ShouldQueue
                     'downloadUrl' => null
                 ]));
             }
-            $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             $tempPdfPath = storage_path('app/public/' . $this->filePath);
             Log::info('File Path: ' . $tempPdfPath);
 
@@ -54,8 +54,7 @@ class ExportLargePdf implements ShouldQueue
                 Storage::delete('public/' . $this->filePath);
             }
 
-            $totalEntries = Peserta::where('villages_id', null)
-                ->whereIn('kategori_id', $kategoriNotPeserta)
+            $totalEntries = Peserta::where('villages_id', '!=' ,null)
                 ->count();
             Log::info('Total entries: ' . $totalEntries);
             $chunksProcessed = 0;
@@ -65,9 +64,8 @@ class ExportLargePdf implements ShouldQueue
             $tempPdfFiles = [];
             $currentRowNumber = 1;  // Initialize row number
 
-            Peserta::where('villages_id', null)
-                ->whereIn('kategori_id', $kategoriNotPeserta)
-                ->orderBy('updated_at', 'DESC')
+            Peserta::where('villages_id', '!=' ,null)
+                ->orderBy('regency_id')
                 ->chunk($chunkSize, function ($entries) use (&$allHtml, $totalEntries, &$chunksProcessed, $progressFile, &$tempPdfFiles, &$currentRowNumber, $chunkSize) {
                     Log::info('Processing chunk of ' . count($entries) . ' entries');
                     $chunksProcessed += count($entries);
@@ -82,10 +80,10 @@ class ExportLargePdf implements ShouldQueue
 
                     $isFirstChunk = ($chunksProcessed <= $chunkSize);
 
-                    $html = view('unsurKontingen.pdf', [
-                        'entries' => $entries,
-                        'currentRowNumber' => $currentRowNumber,
-                        'isFirstChunk' => $isFirstChunk
+                    $html = view('peserta.pdf', [
+                        'entries'           => $entries,
+                        'currentRowNumber'  => $currentRowNumber,
+                        'isFirstChunk'      => $isFirstChunk
                     ])->render();
 
                     $currentRowNumber += count($entries);

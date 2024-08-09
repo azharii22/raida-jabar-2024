@@ -42,18 +42,13 @@
                         <a href="{{ route('unsur-kontingen.excel') }}" type="button"
                             class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
                                 class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                        {{-- <a href="{{ route('unsur-kontingen.pdf') }}" type="button"
-                            class="btn btn-danger waves-effect waves-light btn-sm mr-2"> <i
-                                class="mdi mdi-file-excel-outline"></i> Export PDF</a> --}}
-                        {{-- <button id="startExport" class="btn btn-danger waves-effect waves-light btn-sm mr-2"> <i
-                                class="mdi mdi-file-pdf-outline"></i> Export PDF</button> --}}
                         <button id="startExport" class="btn btn-danger waves-effect waves-light btn-sm mr-2">
                             <i class="mdi mdi-file-pdf-outline"></i> Export PDF
                         </button>
 
                         <!-- Modal -->
                         <div class="modal fade" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel"
-                            aria-hidden="true">
+                            aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -161,39 +156,13 @@
             document.getElementById('progressText').innerText = 'Progress: ' + progress + '%';
         }
 
-        // function checkProgress() {
-        //     fetch('{{ url('/export-pdf-status') }}')
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             console.log(data);
-
-        //             if (data.progress < 100) {
-        //                 updateProgressBar(data.progress);
-        //                 setTimeout(checkProgress, 1000); // Check every second
-        //             } else {
-        //                 updateProgressBar(100);
-        //                 setTimeout(() => {
-        //                     var progressModalElement = document.getElementById('progressModal');
-        //                     var progressModal = bootstrap.Modal.getInstance(progressModalElement);
-        //                     progressModal.hide();
-
-        //                     if (data.downloadUrl) {
-        //                         window.open(data.downloadUrl, '_blank'); // Open download in new tab
-        //                     } else {
-        //                         console.log('Download URL is null');
-        //                     }
-        //                 }, 1000);
-        //             }
-        //         })
-        //         .catch(error => console.log('Error checking progress:', error));
-        // }
         function checkProgress() {
             fetch('{{ url('/export-pdf-status') }}')
                 .then(response => response.json())
                 .then(data => {
                     if (data.progress < 100) {
                         updateProgressBar(data.progress);
-                        setTimeout(checkProgress, 120000); // Check every second (2 Menit)
+                        setTimeout(checkProgress, 10000); // Check every second (10 Detik)
                     } else {
                         updateProgressBar(100);
                         setTimeout(() => {
