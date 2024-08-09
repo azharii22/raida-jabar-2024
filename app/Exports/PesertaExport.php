@@ -22,9 +22,9 @@ class PesertaExport implements FromCollection, WithHeadings, WithStyles
         $kategori = Kategori::where('name', 'LIKE', 'Peserta')->first();
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
             $peserta = Peserta::with('villages', 'regency')
-            ->where('villages_id','!=', NULL)
-            ->orderBy('regency_id')
-            ->get();
+                ->where('villages_id', '!=', NULL)
+                ->orderBy('regency_id')
+                ->get();
         } elseif (auth()->user()->role_id == 2) {
             $peserta = Peserta::where(
                 'villages_id',
@@ -143,10 +143,19 @@ class PesertaExport implements FromCollection, WithHeadings, WithStyles
     protected function insertImage(Worksheet $sheet, $imagePath, $cell, &$maxHeight)
     {
         if (!is_null($imagePath)) {
-            $path = public_path(Storage::url('public/img/peserta/foto/') . $imagePath);
+            // Misalkan Anda menyimpan informasi folder di dalam model atau konfigurasi
+            $folderPath = $this->determineFolderPath($imagePath);
+
+            // Buat path lengkap untuk gambar
+            $path = public_path($folderPath . $imagePath);
+
+            // Log untuk memverifikasi path gambar
             Log::info('Generated image path: ' . $path);
+
+            // Bersihkan dan simpan gambar
             $cleanPath = $this->cleanAndSaveImage($path, public_path('cleaned_' . basename($path)));
 
+            // Periksa apakah file gambar benar-benar ada
             if (file_exists($cleanPath)) {
                 $drawing = new Drawing();
                 $drawing->setPath($cleanPath);
@@ -166,6 +175,25 @@ class PesertaExport implements FromCollection, WithHeadings, WithStyles
             Log::warning('File path is null for image: ' . $cell);
         }
     }
+
+    protected function determineFolderPath($imagePath)
+    {
+        // Logika untuk menentukan folder berdasarkan nama file atau informasi lain
+        // Misalnya, Anda bisa menggunakan ekstensi file atau nama file untuk menentukan folder
+        if (strpos($imagePath, 'foto') !== false) {
+            return 'storage/img/peserta/foto/';
+        } elseif (strpos($imagePath, 'kta') !== false) {
+            return 'storage/img/peserta/kta/';
+        } elseif (strpos($imagePath, 'asuransi-kesehatan') !== false) {
+            return 'storage/img/peserta/asuransi-kesehatan/';
+        } elseif (strpos($imagePath, 'sertif-sfh') !== false) {
+            return 'storage/img/peserta/sertif-sfh/';
+        }
+
+        // Default folder jika tidak ada kecocokan
+        return 'storage/img/peserta/default/';
+    }
+
 
     protected function mergeCellsAndCenterText(Worksheet $sheet, $peserta, $column)
     {
