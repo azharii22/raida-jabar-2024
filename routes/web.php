@@ -107,16 +107,23 @@ Route::put('/upload-kta-unsur-kontingen{id}', [UnsurKontingenController::class, 
 Route::put('/upload-asuransi-unsur-kontingen{id}', [UnsurKontingenController::class, 'uploadAsuransi'])->name('unsur-kontingen.asuransi');
 Route::put('/upload-suket-unsur-kontingen{id}', [UnsurKontingenController::class, 'uploadSertif'])->name('unsur-kontingen.sertif');
 Route::put('/unsur-kontingen-verifikasi{id}', [UnsurKontingenController::class, 'verifikasi'])->name('unsur-kontingen.verifikasi');
-Route::get('unsur-kontingen-exportPDF', [UnsurKontingenController::class, 'exportPDF'])->name('unsur-kontingen.pdf');
-Route::get('unsur-kontingen-exportExcel', [UnsurKontingenController::class, 'exportExcel'])->name('unsur-kontingen.excel');
-Route::get('unsur-kontingen-exportadminExcel', [UnsurKontingenController::class, 'exportAdminExcel'])->name('unsur-kontingen.admin-excel');
-Route::get('unsur-kontingen-exportadminPDF', [UnsurKontingenController::class, 'exportAdminPDF'])->name('unsur-kontingen.admin-pdf');
 Route::get('/admin-data-unsur-kontingen-regency-{id}', [UnsurKontingenController::class, 'detailRegency'])->name('admin-data-unsurKontingen.detail');
+
+Route::get('unsur-kontingen-exportPDF', [UnsurKontingenController::class, 'exportPDF'])->name('unsur-kontingen.pdf');
+Route::get('unsur-kontingen-exportExcel', [UnsurKontingenController::class, 'exportExcel'])->name('unsur-kontingen.excel'); 
+Route::get('unsur-kontingen-regency-exportPDF-{id}', [UnsurKontingenController::class, 'exportPDFRegency'])->name('unsur-kontingen-regency.pdf');
+Route::get('unsur-kontingen-regency-exportExcel-{id}', [UnsurKontingenController::class, 'exportExcelRegency'])->name('unsur-kontingen-regency.excel'); 
+
+Route::get('/export-pdf-unsur', [UnsurKontingenController::class, 'exportPdf'])->name('export-unsur.pdf');
+Route::get('/export-pdf-status', [UnsurKontingenController::class, 'exportPdfStatus'])->name('export-unsur.pdf.status');
+Route::post('/start-export', [UnsurKontingenController::class, 'exportPDF'])->name('startExport');
+Route::get('/pdf-progress', [UnsurKontingenController::class, 'checkProgress']);
+Route::get('/download-pdf', [UnsurKontingenController::class, 'downloadPdf']);
 
 Route::get('/get-regencies', [PesertaController::class, 'getRegencies'])->name('data.getRegenciesPeserta');
 Route::get('/get-villages/{regency_id}', [PesertaController::class, 'getVillages'])->name('data.getVillages');
 Route::get('/get-peserta/{villages_id}', [PesertaController::class, 'getPeserta'])->name('data.getPeserta');
-Route::get('/get-regenciesKontingen', [UnsurKontingen::class, 'getRegencies'])->name('data.getRegenciesKontingen');
+// Route::get('/get-regenciesKontingen', [UnsurKontingen::class, 'getRegencies'])->name('data.getRegenciesKontingen');
 Route::get('/get-kontingen/{regency_id}', [UnsurKontingenController::class, 'getPeserta'])->name('data.getPesertaKontingen');
 Route::get('/get-regencies-kontingen', [UnsurKontingenController::class, 'getRegencies'])->name('data.getRegenciesKontingen');
 
@@ -134,8 +141,12 @@ Route::put('/upload-kta{id}', [PesertaController::class, 'uploadKta'])->name('pe
 Route::put('/upload-asuransi{id}', [PesertaController::class, 'uploadAsuransi'])->name('peserta.asuransi');
 Route::put('/upload-sertif{id}', [PesertaController::class, 'uploadSertif'])->name('peserta.sertif');
 Route::put('/peserta-verifikasi{id}', [PesertaController::class, 'verifikasi'])->name('peserta.verifikasi');
+
 Route::get('peserta-exportPDF', [PesertaController::class, 'exportPDF'])->name('peserta.pdf');
 Route::get('peserta-exportExcel', [PesertaController::class, 'exportExcel'])->name('peserta.excel');
+Route::get('peserta-regency-exportPDF', [PesertaController::class, 'exportPDFRegency'])->name('peserta-regency.pdf');
+Route::get('peserta-regency-exportExcel-{id}', [PesertaController::class, 'exportExcelRegency'])->name('peserta-regency.excel');
+Route::get('peserta-villages-exportExcel-{id}', [PesertaController::class, 'exportExcelVillages'])->name('peserta-villages.excel');
 
 
 Route::resource('/admin-data-pembayaran', PembayaranController::class);

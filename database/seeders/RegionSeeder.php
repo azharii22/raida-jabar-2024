@@ -18,8 +18,8 @@ class RegionSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('villages')->truncate();
-        DB::table('regencies')->truncate();
+        // DB::table('villages')->truncate();
+        // DB::table('regencies')->truncate();
 
 
         $dataRegency = [

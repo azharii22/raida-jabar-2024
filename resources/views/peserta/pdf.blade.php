@@ -64,7 +64,7 @@
                         @foreach ($peserta as $i =>$dt)
                         <tr>
                             <td>{{ ++$i }}</td>
-                            <td class="text-capitalize">{{ $dt->regency->name }}</td>
+                            <td class="text-capitalize">{{ $dt->regency?->name }}</td>
                             <td class="text-capitalize">{{ $dt->villages?->name }}</td>
                             <td class="text-capitalize">{{ $dt->kategori?->name }}</td>
                             <td class="text-capitalize">{{ $dt->nama_lengkap }}</td>

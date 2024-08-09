@@ -15,30 +15,23 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Intervention\Image\Facades\Image;
 
-class UnsurKontingenExport implements
-    FromCollection,
-    WithHeadings,
-    WithStyles
+class UnsurKontingenRegencyExport implements FromCollection, WithHeadings, WithStyles
 {
+    protected $id;
+
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
+
     public function collection()
     {
         $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
-            $peserta = Peserta::where('villages_id', NULL)->whereIn(
-                'kategori_id',
-                $kategoriNotPeserta
-            )->orderBy('regency_id')->get();
-        } elseif (auth()->user()->role_id == 2) {
-            $peserta = Peserta::where('user_id', auth()->user()->id)->whereIn(
-                'kategori_id',
-                $kategoriNotPeserta
-            )->orderBy('regency_id')->get();
-        } elseif (auth()->user()->role_id == 3) {
-            $peserta = Peserta::where('regency_id', auth()->user()->regency_id)->whereIn(
-                'kategori_id',
-                $kategoriNotPeserta
-            )->orderBy('regency_id')->get();
-        }
+        $peserta = Peserta::where('regency_id', $this->id)
+            ->where('villages_id', NULL)
+            ->whereIn('kategori_id', $kategoriNotPeserta)
+            ->orderBy('regency_id')
+            ->get();
         $datas = $peserta->map(function ($data) {
             return [
                 'regency_id'            => $data->regency?->name,

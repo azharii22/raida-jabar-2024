@@ -40,6 +40,12 @@
                         <a href="{{ route('data.showVillages', $villages->regency_id) }}" type="button"
                             class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-undo"></i> Back To
                             Peserta {{ $villages->regency->name }}</a>
+                        <a href="{{ route('peserta-villages.excel', $villages->id) }}" type="button"
+                            class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                        <a href="{{ route('peserta.pdf') }}" type="button"
+                            class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                     </div>
 
                     <h4 class="card-title mb-5">Peserta Wilayah {{ $villages->name }}</h4>
@@ -53,9 +59,9 @@
                                     <th style="width: 20px;">Nama Lengkap</th>
                                     <th style="width: 15px;">Jenis Kelamin</th>
                                     <th style="width: 15px;">Kategori</th>
-                                    <th>Status</th>
+                                    <th style="width: 5px;">Status</th>
                                     <th>Berkas Peserta</th>
-                                    <th style="width: 15px;">Catatan</th>
+                                    <th style="width: 5px;">Catatan</th>
                                     <th style="width: 15px;">Action</th>
                                 </tr>
                             </thead>
@@ -767,8 +773,9 @@
                         name: 'catatan',
                         render: function(data, type, row, meta) {
                             if (data) {
-                                return '<div style="color: red;"><li>' + row.catatan + '</li></div>';
-                            }else{
+                                return '<div style="color: red;"><li>' + row.catatan +
+                                '</li></div>';
+                            } else {
                                 return row.catatan;
                             }
                         }

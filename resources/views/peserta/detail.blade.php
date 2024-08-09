@@ -26,11 +26,17 @@
 
                     <h4 class="card-title mb-5">Peserta Wilayah {{ $regency->name }} dengan jumlah peserta
                         : {{ count($peserta) }}</h4>
-                    
-                        <div class="card-title mb-5">
+
+                    <div class="card-title mb-5">
                         <a href="{{ route('admin-data-peserta.index') }}" type="button"
                             class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-undo"></i> Back To
                             Peserta</a>
+                        <a href="{{ route('peserta-regency.excel', $regency->id) }}" type="button"
+                            class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                        <a href="{{ route('peserta-regency.pdf') }}" type="button"
+                            class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                     </div>
 
                     <div class="table-responsive">

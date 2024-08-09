@@ -30,6 +30,12 @@
                         <a href="{{ route('admin-data-unsur-kontingen.index') }}" type="button"
                             class="btn btn-primary waves-effect waves-light btn-sm mr-2"> <i class="bx bx-undo"></i> Back To
                             Unsur Kontingen Cabang</a>
+                        <a href="{{ route('unsur-kontingen-regency.excel', $regency->id) }}" type="button"
+                            class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="mdi mdi-file-excel-outline"></i> Export Excel</a>
+                        <a href="{{ route('unsur-kontingen-regency.pdf', $regency->id) }}" type="button"
+                            class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
                     </div>
 
                     @if (count($errors) > 0)
@@ -67,7 +73,7 @@
         </div> <!-- end col -->
     </div> <!-- end row -->
 
-    @foreach ($unsurKontingen as $data)
+    {{-- @foreach ($unsurKontingen as $data)
         <!-- Start modal Edit -->
         <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
             id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -504,7 +510,7 @@
             </div>
         </div>
         <!-- End Verifikasi Modal -->
-    @endforeach
+    @endforeach --}}
 
 
 @endsection
@@ -625,8 +631,9 @@
                         name: 'catatan',
                         render: function(data, type, row, meta) {
                             if (data) {
-                                return '<div style="color: red;"><li>' + row.catatan + '</li></div>';
-                            }else{
+                                return '<div style="color: red;"><li>' + row.catatan +
+                                    '</li></div>';
+                            } else {
                                 return row.catatan;
                             }
                         }

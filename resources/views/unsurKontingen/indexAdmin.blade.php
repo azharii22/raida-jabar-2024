@@ -6,6 +6,7 @@
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ URL::asset('/assets/libs/select2/select2.min.css') }}" rel="stylesheet" type="text/css" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('content')
@@ -38,12 +39,40 @@
                     @endif
 
                     <div class="card-title mb-5">
-                        <a href="{{ route('peserta.excel') }}" type="button"
+                        <a href="{{ route('unsur-kontingen.excel') }}" type="button"
                             class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i
                                 class="mdi mdi-file-excel-outline"></i> Export Excel</a>
-                        <a href="{{ route('peserta.pdf') }}" type="button"
-                            class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
-                                class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                        {{-- <a href="{{ route('unsur-kontingen.pdf') }}" type="button"
+                            class="btn btn-danger waves-effect waves-light btn-sm mr-2"> <i
+                                class="mdi mdi-file-excel-outline"></i> Export PDF</a> --}}
+                        {{-- <button id="startExport" class="btn btn-danger waves-effect waves-light btn-sm mr-2"> <i
+                                class="mdi mdi-file-pdf-outline"></i> Export PDF</button> --}}
+                        <button id="startExport" class="btn btn-danger waves-effect waves-light btn-sm mr-2">
+                            <i class="mdi mdi-file-pdf-outline"></i> Export PDF
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="progressModalLabel">Processing PDF</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Your PDF is being processed. Please wait...</p>
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" style="width: 0%;"
+                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div id="progressText">Progress: 0%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <div class="table-responsive">
@@ -104,4 +133,88 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        document.getElementById('startExport').addEventListener('click', function() {
+            var progressModalElement = document.getElementById('progressModal');
+            var progressModal = new bootstrap.Modal(progressModalElement, {
+                backdrop: 'static',
+                keyboard: false
+            });
+            progressModal.show();
+
+            // Trigger the job
+            fetch('{{ route('unsur-kontingen.pdf') }}')
+                .then(response => response.json())
+                .then(data => {
+                    // Start checking progress after the job is triggered
+                    checkProgress();
+                })
+                .catch(error => console.log('Error triggering job:', error));
+        });
+
+        function updateProgressBar(progress) {
+            let progressBar = document.querySelector('.progress-bar');
+            progressBar.style.width = progress + '%';
+            progressBar.setAttribute('aria-valuenow', progress);
+            document.getElementById('progressText').innerText = 'Progress: ' + progress + '%';
+        }
+
+        // function checkProgress() {
+        //     fetch('{{ url('/export-pdf-status') }}')
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log(data);
+
+        //             if (data.progress < 100) {
+        //                 updateProgressBar(data.progress);
+        //                 setTimeout(checkProgress, 1000); // Check every second
+        //             } else {
+        //                 updateProgressBar(100);
+        //                 setTimeout(() => {
+        //                     var progressModalElement = document.getElementById('progressModal');
+        //                     var progressModal = bootstrap.Modal.getInstance(progressModalElement);
+        //                     progressModal.hide();
+
+        //                     if (data.downloadUrl) {
+        //                         window.open(data.downloadUrl, '_blank'); // Open download in new tab
+        //                     } else {
+        //                         console.log('Download URL is null');
+        //                     }
+        //                 }, 1000);
+        //             }
+        //         })
+        //         .catch(error => console.log('Error checking progress:', error));
+        // }
+        function checkProgress() {
+            fetch('{{ url('/export-pdf-status') }}')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.progress < 100) {
+                        updateProgressBar(data.progress);
+                        setTimeout(checkProgress, 120000); // Check every second (2 Menit)
+                    } else {
+                        updateProgressBar(100);
+                        setTimeout(() => {
+                            var progressModalElement = document.getElementById('progressModal');
+                            var progressModal = bootstrap.Modal.getInstance(progressModalElement);
+                            progressModal.hide();
+
+                            setTimeout(() => {
+                                if (data.downloadUrl) {
+                                    window.open(data.downloadUrl, '_blank'); // Open download in new tab
+                                } else {
+                                    console.log('Download URL is null');
+                                    alert(
+                                    'File tidak tersedia untuk diunduh. Silakan coba lagi nanti.');
+                                }
+                            }, 500);
+                        }, 1000);
+                    }
+                })
+                .catch(error => console.log('Error checking progress:', error));
+        }
+    </script>
+
 @endsection

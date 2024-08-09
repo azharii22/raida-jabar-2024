@@ -1,4 +1,3 @@
-3
 <!DOCTYPE html>
 <html>
 
@@ -24,8 +23,9 @@
     </style>
     <div class="row">
         <div class="col-md-12">
-            @if (count($data))
+            @if (count($entries))
             <div class="card-body">
+                @if($isFirstChunk)
                 <table style="width: 100%;">
                     <tr>
                         <td align="center">
@@ -41,6 +41,7 @@
                     Laporan Data Unsur Kontingen
                 </p>
                 </hr>
+                @endif
                 <table class="table table-bordered">
                     <thead class="thead-dark" align="center">
                         <tr>
@@ -60,9 +61,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $index =>$dt)
+                        @foreach ($entries as $index =>$dt)
                         <tr>
-                            <td>{{ ++$index }}</td>
+                            <td>{{ $currentRowNumber + $index }}</td>
                             <td class="text-capitalize">{{ $dt->regency->name }}</td>
                             <td class="text-capitalize">{{ $dt->kategori?->name }}</td>
                             <td class="text-capitalize">{{ $dt->nama_lengkap }}</td>

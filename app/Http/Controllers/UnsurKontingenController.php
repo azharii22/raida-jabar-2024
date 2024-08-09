@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exports\UnsurKontingenAdminExport;
 use App\Exports\UnsurKontingenExport;
+use App\Exports\UnsurKontingenRegencyExport;
+use App\Jobs\ExportLargePdf;
 use App\Models\Kategori;
 use App\Models\Peserta;
 use App\Models\Regency;
@@ -14,6 +16,8 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -33,21 +37,21 @@ class UnsurKontingenController extends Controller
 
     public function showPeserta($regency_id)
     {
-        // $villages   = Villages::with('regency')->find($regency_id);
-        $kategori   = Kategori::orderBy('name')->get();
-        $status     = Status::orderBy('name')->get();
-        $unsurKontingen    = Peserta::with('regency')->where('regency_id', $regency_id)->where('villages_id', NULL)->orderBy('nama_lengkap')->get();
-        return view('unsurKontingen.detail', compact('regency_id', 'kategori', 'unsurKontingen', 'status'));
+        $regency        = Regency::find($regency_id);
+        $kategori       = Kategori::orderBy('name')->get();
+        $status         = Status::orderBy('name')->get();
+        $unsurKontingen = Peserta::with('regency')->where('regency_id', $regency_id)->where('villages_id', NULL)->orderBy('nama_lengkap')->get();
+        return view('unsurKontingen.detail', compact('regency_id', 'kategori', 'unsurKontingen', 'status', 'regency'));
     }
 
     public function getRegencies(Request $request)
     {
         if ($request->ajax()) {
-            $regencies = Regency::all();
+            $regencies = Regency::orderBy('name')->get();
             $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
             return DataTables::of($regencies)
                 ->addIndexColumn()
-                ->addColumn('jumlah_pendaftar', function ($row) use($kategoriNotPeserta) {
+                ->addColumn('jumlah_pendaftar', function ($row) use ($kategoriNotPeserta) {
                     $regency = $row->peserta->where('regency_id', $row->id)->where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->count() ?? '';
                     return "$regency" . " Unsur Kontingen Cabang";
                 })
@@ -310,15 +314,40 @@ class UnsurKontingenController extends Controller
         }
     }
 
+    public function exportExcelRegency($id)
+    {
+        $date = Carbon::now()->format('d-m-Y');
+        $regency = Regency::where('id', $id)->first();
+        return Excel::download(new UnsurKontingenRegencyExport($id), 'Unsur-Kontingen ' . config('settings.main.1_app_name') . ' Wilayah ' . $regency->name . ' ' . $date . '.xlsx');
+    }
+
+    public function exportPDFRegency($id)
+    {
+        $regency = Regency::where('id', $id)->first();
+        $date = Carbon::now()->format('d-m-Y');
+        $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+        $data = Peserta::where('villages_id', NULL)
+            ->where('regency_id', $id)
+            ->whereIn('kategori_id', $kategoriNotPeserta)
+            ->get();
+        $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+        // return Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+        return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+    }
 
     public function exportPDF()
     {
         $date = Carbon::now()->format('d-m-Y');
         $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
-            $data = Peserta::where('villages_id', NULL)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
-            $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
-            return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+            $userId = auth()->id();
+            $fileName = 'Unsur-Kontingen ' . $userId . '.pdf';
+            $filePath = 'pdfUnsurKontingen/' . $fileName;
+            // $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+            // return $pdf->download('Unsur-Kontingen ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+            ExportLargePdf::dispatch($filePath);
+            session(['pdf_file_path' => $filePath]);
+            return response()->json(['progress' => 0]);
         } elseif (auth()->user()->role_id == 2) {
             $data = Peserta::where('user_id', auth()->user()->id)->whereIn('kategori_id', $kategoriNotPeserta)->orderBy('updated_at', 'DESC')->get();
             $pdf = Pdf::loadView('unsurKontingen.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
@@ -330,6 +359,18 @@ class UnsurKontingenController extends Controller
         }
     }
 
+    public function exportPdfStatus()
+    {
+        $progressFile = storage_path('app/pdf-progress.json');
+
+        if (File::exists($progressFile)) {
+            $progressData = json_decode(File::get($progressFile), true);
+            return response()->json($progressData);
+        }
+
+        return response()->json(['progress' => 0, 'downloadUrl' => null]);
+    }
+
     public function detailRegency($id)
     {
         $kategori = Kategori::orderBy('updated_at', 'DESC')->where('name', '!=', 'Peserta')->get();
@@ -338,5 +379,43 @@ class UnsurKontingenController extends Controller
         $pesertaVillages = Villages::where('regency_id', $id)->first();
         $unsurKontingen = Peserta::where('villages_id', NULL)->get();
         return view('unsurKontingen.detail', compact('villages', 'unsurKontingen', 'pesertaVillages', 'id', 'kategori', 'status'));
+    }
+
+    public function startExport()
+    {
+        try {
+            // Dispatch job
+            ExportLargePdf::dispatch();
+
+            // Return JSON response
+            return response()->json([
+                'message' => 'PDF is being generated and will be available soon'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function checkProgress()
+    {
+        $progressFile = storage_path('app/pdf-progress.json');
+
+        if (File::exists($progressFile)) {
+            $progressData = json_decode(File::get($progressFile), true);
+            return response()->json($progressData);
+        }
+
+        return response()->json(['progress' => 0, 'downloadUrl' => null]);
+    }
+
+    public function downloadPdf()
+    {
+        $filePath = storage_path('app/public/large_pdf.pdf');
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        }
+
+        return response()->json(['message' => 'PDF not found'], 404);
     }
 }

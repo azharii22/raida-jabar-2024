@@ -2,7 +2,6 @@
 
 namespace App\Exports;
 
-use App\Models\Kategori;
 use App\Models\Peserta;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -15,33 +14,25 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Intervention\Image\Facades\Image;
 
-class UnsurKontingenExport implements
-    FromCollection,
-    WithHeadings,
-    WithStyles
+class PesertaVillagesExport implements FromCollection, WithHeadings, WithStyles
 {
+    protected $id;
+
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
+
     public function collection()
     {
-        $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
-        if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
-            $peserta = Peserta::where('villages_id', NULL)->whereIn(
-                'kategori_id',
-                $kategoriNotPeserta
-            )->orderBy('regency_id')->get();
-        } elseif (auth()->user()->role_id == 2) {
-            $peserta = Peserta::where('user_id', auth()->user()->id)->whereIn(
-                'kategori_id',
-                $kategoriNotPeserta
-            )->orderBy('regency_id')->get();
-        } elseif (auth()->user()->role_id == 3) {
-            $peserta = Peserta::where('regency_id', auth()->user()->regency_id)->whereIn(
-                'kategori_id',
-                $kategoriNotPeserta
-            )->orderBy('regency_id')->get();
-        }
+        $peserta = Peserta::where('villages_id', $this->id)
+            ->orderBy('nama_lengkap')
+            ->get();
+
         $datas = $peserta->map(function ($data) {
             return [
                 'regency_id'            => $data->regency?->name,
+                'villages_id'           => $data->villages?->name ?: $data->regency?->name,
                 'kategori'              => $data->kategori?->name,
                 'nama_lengkap'          => $data->nama_lengkap,
                 'tempat_lahir'          => $data->tempat_lahir,
@@ -70,35 +61,37 @@ class UnsurKontingenExport implements
         $image->save($outputPath);
         return $outputPath;
     }
+
     public function headings(): array
     {
         return [
-            'Wilayah Cabang', //A
-            'Kategori', //B
-            'Nama Lengkap', //C
-            'Tempat Lahir', //D
-            'Tanggal Lahir', //E
-            'Jenis Kelamin', //F
-            'Ukuran Kaos', //G
-            'No HP', //H
-            'Agama', //I
-            'Golongan Darah', //J
-            'Riwayat Penyakit', //K
-            'Status', //L
-            'Catatan', //M
-            'Foto', //N
-            'KTA', //O
-            'Asuransi Kesehatan', //P
-            'Sertif SFH', //Q
+            'Wilayah Cabang',
+            'Wilayah Ranting',
+            'Kategori',
+            'Nama Lengkap',
+            'Tempat Lahir',
+            'Tanggal Lahir',
+            'Jenis Kelamin',
+            'Ukuran Kaos',
+            'No HP',
+            'Agama',
+            'Golongan Darah',
+            'Riwayat Penyakit',
+            'Status',
+            'Catatan',
+            'Foto',
+            'KTA',
+            'Asuransi Kesehatan',
+            'Sertif SFH',
         ];
     }
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A1:Q1')->getFont()->setBold(true);
-        $sheet->getStyle('A1:Q1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+        $sheet->getStyle('A1:R1')->getFont()->setBold(true);
+        $sheet->getStyle('A1:R1')->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
-        $columns = range('A', 'Q');
+        $columns = range('A', 'R');
         foreach ($columns as $column) {
             $sheet->getColumnDimension($column)->setWidth(30);
         }
@@ -109,10 +102,10 @@ class UnsurKontingenExport implements
         foreach ($peserta as $data) {
             $maxHeight = 100;
 
-            $this->insertImage($sheet, $data['foto'], 'N' . $rowIndex, $maxHeight);
-            $this->insertImage($sheet, $data['KTA'], 'O' . $rowIndex, $maxHeight);
-            $this->insertImage($sheet, $data['asuransi_kesehatan'], 'P' . $rowIndex, $maxHeight);
-            $this->insertImage($sheet, $data['sertif_sfh'], 'Q' . $rowIndex, $maxHeight);
+            $this->insertImage($sheet, $data['foto'], 'O' . $rowIndex, $maxHeight);
+            $this->insertImage($sheet, $data['KTA'], 'P' . $rowIndex, $maxHeight);
+            $this->insertImage($sheet, $data['asuransi_kesehatan'], 'Q' . $rowIndex, $maxHeight);
+            $this->insertImage($sheet, $data['sertif_sfh'], 'R' . $rowIndex, $maxHeight);
 
             $sheet->getRowDimension($rowIndex)->setRowHeight($maxHeight);
             $rowIndex++;
@@ -120,16 +113,16 @@ class UnsurKontingenExport implements
 
         // Menghapus path gambar dari sel
         for ($i = 2; $i <= $peserta->count() + 1; $i++) {
-            $sheet->setCellValue('N' . $i, '');
             $sheet->setCellValue('O' . $i, '');
             $sheet->setCellValue('P' . $i, '');
             $sheet->setCellValue('Q' . $i, '');
+            $sheet->setCellValue('R' . $i, '');
         }
 
         $this->mergeCellsAndCenterText($sheet, $peserta, 'A');
 
         return [
-            'A1:Q' . ($peserta->count() + 1) => [
+            'A1:R' . ($peserta->count() + 1) => [
                 'borders' => [
                     'allBorders' => [
                         'borderStyle' => Border::BORDER_THIN,
