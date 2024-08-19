@@ -230,7 +230,7 @@
                                 <th>Jenis Kelamin</th>
                                 <th>Kategori</th>
                                 <th>No HP</th>
-                                <th>Ukuran Kaos</th>
+                                <th>Ukuran Kaos__</th>
                                 <th>Status</th>
                                 <th>Berkas Peserta</th>
                                 <th>Catatan</th>
