@@ -13,14 +13,14 @@
             <div class="row g-5">
                 <div class="col-lg-4 wow zoomIn" data-wow-delay="0.1s"
                     style="visibility: visible; animation-delay: 0.1s; animation-name: zoomIn;">
-                    <div class="peserta justify-content-center p-4" style="height: 150px; width: 100%;">
+                    <!-- <div class="peserta justify-content-center p-4" style="height: 150px; width: 100%;">
                         <div class="text-center">
                             <p style="font-weight: bold" class="text-uppercase">Peserta</p>
                             <hr class="new" />
                             <p style="color: black; font-weight: bold">{{ count($peserta) }} Peserta</p>
                         </div>
                         <hr>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="col-lg-4 wow zoomIn" data-wow-delay="0.1s"
                     style="visibility: visible; animation-delay: 0.1s; animation-name: zoomIn;">
@@ -33,7 +33,7 @@
                         <hr>
                     </div>
                 </div>
-                <div class="col-lg-4 wow zoomIn" data-wow-delay="0.1s"
+                <!-- <div class="col-lg-4 wow zoomIn" data-wow-delay="0.1s"
                     style="visibility: visible; animation-delay: 0.1s; animation-name: zoomIn;">
                     <div class="peserta justify-content-center p-4" style="height: 150px; width: 100%;">
                         <div class="text-center">
@@ -43,7 +43,7 @@
                         </div>
                         <hr>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
