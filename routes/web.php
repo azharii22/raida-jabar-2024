@@ -37,6 +37,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('phpinfo', function () {
     return phpinfo();
 });
+Route::get('test-card', function () {
+    return view('test-card');
+});
 // Auth::routes();
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.authenticate');
@@ -75,8 +78,8 @@ Route::get('/admin-edit-dkd-{id}', [UserController::class, 'editDkd'])->name('ed
 Route::get('/admin-edit-dkc-{id}', [UserController::class, 'editDkc'])->name('editDkc');
 Route::get('/admin-edit-dkr-{id}', [UserController::class, 'editDkr'])->name('editDkr');
 
-Route::get('selectRegencyUser', [RegencyController::class, 'regencies'])->name('RegencyUser.index');
-Route::get('selectRegency', [RegencyController::class, 'index'])->name('regency.index');
+Route::get('selectRegencyUser', [RegencyController::class, 'index'])->name('RegencyUser.index');
+Route::get('selectRegency', [RegencyController::class, 'regencies'])->name('regency.index');
 Route::post('storeRegency', [RegencyController::class, 'store'])->name('regency.store');
 Route::get('regency/{id}/edit', [RegencyController::class, 'edit'])->name('regency.edit');
 Route::put('regency/{id}', [RegencyController::class, 'update'])->name('regency.update');
