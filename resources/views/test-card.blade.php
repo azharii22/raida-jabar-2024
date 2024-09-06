@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ID Card Peserta | {{ config('settings.main.1_app_name') }}</title>
-    
+
     <style>
         * {
             margin: 0;
@@ -76,7 +76,6 @@
             width: 100%;
             height: 13rem;
             border-bottom-right-radius: 35px
-
         }
 
         .card-body {
@@ -124,54 +123,66 @@
 
 <body>
     @foreach ($peserta as $data)
-    <?php
-    if ($data->kategori?->name == 'Peserta') {
-        $color = '#FFD23F';
-    }
-    if ($data->kategori?->name == 'Bindamping') {
-        $color = '#8F378D';
-    }
-    if ($data->kategori?->name == 'Staff Kontingen') {
-        $color = '#58B0BC';
-    }
-    if ($data->kategori?->name == 'Pinkonran') {
-        $color = '#D5318A';
-    }
-    if ($data->kategori?->name == 'Pinkoncab') {
-        $color = '#28D3C0';
-    }
-    
-    ?>
-    <div class="card">
-        <div class="card-header">
-            <div class="card-photo" style="background-color: {{ $color }};">
-                <img src="{{ asset(Storage::url('public/img/peserta/foto/').$data->foto) }}" alt="Logo" class="logo">
-            </div>
-            <div class="header-text" style="margin-left: auto;">
-                
-                <div class="m-5">
-                    <img src="{{ asset('assets/images/idCard/logo dkd kwarda.png') }}" alt="Logo"
-                        style="width:70%; margin-top: 1rem;">
+        <?php
+        if ($data->kategori->name == 'Bindamping') {
+            $color = '#8F378D';
+        }
+        if ($data->kategori->name == 'Panitia') {
+            $color = '#FA602C';
+        }
+        if ($data->kategori->name == 'Peserta') {
+            $color = '#FFD23F';
+        }
+        if ($data->kategori->name == 'Pinkoncab') {
+            $color = '#28D3C0';
+        }
+        if ($data->kategori->name == 'Staff Kontingen') {
+            $color = '#58B0BC';
+        }
+        if ($data->kategori->name == 'Petugas Anjungan') {
+            $color = '#E73C3A';
+        }
+        if ($data->kategori->name == 'Pinkonran') {
+            $color = '#D5318A';
+        }
+        
+        ?>
+        <div class="card">
+            <div class="card-header">
+                <div class="card-photo" style="background-color: {{ $color }};">
+                    <img src="{{ asset(Storage::url('public/img/peserta/foto/') . $data->foto) }}" alt="Logo"
+                        class="logo">
+                </div>
+                <div class="header-text" style="margin-left: auto;">
+
+                    <div class="m-5">
+                        <img src="{{ asset('assets/images/idCard/logo dkd kwarda.png') }}" alt="Logo"
+                            style="width:70%; margin-top: 1rem;">
                     </div>
                     <img src="{{ asset('assets/images/idCard/logo.png') }}" alt="Logo"
                         style="width:50%; margin-top: 2rem;">
                     <img src="{{ asset('assets/images/idCard/berdampak serentak.png') }}" alt="Logo"
                         style="width:50%; margin-top: 1rem;">
+                </div>
             </div>
-        </div>
-        <div class="card-body">
-            <div class="side-banner" style="background-color: {{ $color }};">
-                <h3>{{ $data->kategori->name }}</h3>
-            </div>
-            <div class="info">
-                <div class="info-box" style="background-color: {{ $color }};">{{ $data->nama_lengkap }}</div>
-                <div class="info-box" style="background-color: {{ $color }};">{{ $data->villages?->name }}</div>
-                <div class="info-box" style="background-color: {{ $color }};">{{ $data->regency?->name }}</div>
-                <img src="{{ asset('assets/images/idCard/mascot.png') }}" alt="Logo"
+            <div class="card-body">
+                <div class="side-banner" style="background-color: {{ $color }};">
+                    <h3>{{ $data->kategori->name }}</h3>
+                </div>
+                <div class="info">
+                    <div class="info-box" style="background-color: {{ $color }};">{{ $data->nama_lengkap }}
+                    </div>
+                    <div class="info-box" style="background-color: {{ $color }};">{{ $data->villages?->name }}
+                    </div>
+                    @if ($data->kategori->name == 'Peserta' && $data->kategori->name == 'Pinkonran')
+                        <div class="info-box" style="background-color: {{ $color }};">
+                            {{ $data->regency?->name }}</div>
+                    @endif
+                    <img src="{{ asset('assets/images/idCard/mascot.png') }}" alt="Logo"
                         style="width:100%; margin-top: -2rem;">
+                </div>
             </div>
         </div>
-    </div>
     @endforeach
 </body>
 
