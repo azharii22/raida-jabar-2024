@@ -137,6 +137,9 @@
     if ($data->kategori?->name == 'Pinkonran') {
         $color = '#D5318A';
     }
+    if ($data->kategori?->name == 'Pinkoncab') {
+        $color = '#28D3C0';
+    }
     
     ?>
     <div class="card">
