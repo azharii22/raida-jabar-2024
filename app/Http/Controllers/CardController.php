@@ -15,7 +15,7 @@ class CardController extends Controller
 
     public function index()
     {
-        $peserta = Peserta::paginate(4);
+        $peserta = Peserta::where('foto', '!=', NULL)->orderBy('created_at')->paginate(4);
         return view('test-card', compact('peserta'));
     }
 }

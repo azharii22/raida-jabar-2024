@@ -125,16 +125,16 @@
 <body>
     @foreach ($peserta as $data)
     <?php
-    if ($data->kategori->name == 'Peserta') {
+    if ($data->kategori?->name == 'Peserta') {
         $color = '#FFD23F';
     }
-    if ($data->kategori->name == 'Bindamping') {
+    if ($data->kategori?->name == 'Bindamping') {
         $color = '#8F378D';
     }
-    if ($data->kategori->name == 'Staff Kontingen') {
+    if ($data->kategori?->name == 'Staff Kontingen') {
         $color = '#58B0BC';
     }
-    if ($data->kategori->name == 'Pinkonran') {
+    if ($data->kategori?->name == 'Pinkonran') {
         $color = '#D5318A';
     }
     
@@ -162,8 +162,8 @@
             </div>
             <div class="info">
                 <div class="info-box" style="background-color: {{ $color }};">{{ $data->nama_lengkap }}</div>
-                <div class="info-box" style="background-color: {{ $color }};">{{ $data->villages->name }}</div>
-                <div class="info-box" style="background-color: {{ $color }};">{{ $data->regency->name }}</div>
+                <div class="info-box" style="background-color: {{ $color }};">{{ $data->villages?->name }}</div>
+                <div class="info-box" style="background-color: {{ $color }};">{{ $data->regency?->name }}</div>
                 <img src="{{ asset('assets/images/idCard/mascot.png') }}" alt="Logo"
                         style="width:100%; margin-top: -2rem;">
             </div>
