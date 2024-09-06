@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\BerkasController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\DokumenPentingController;
 use App\Http\Controllers\DokumentasiKegiatanController;
 use App\Http\Controllers\ImageUploadController;
@@ -37,9 +38,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('phpinfo', function () {
     return phpinfo();
 });
-Route::get('test-card', function () {
-    return view('test-card');
-});
+Route::get('/id-card', [CardController::class, 'index'])->name('idCard');
+// Route::get('test-card', function () {
+//     return view('test-card');
+// });
 // Auth::routes();
 Route::get('/login', [LoginController::class, 'login'])->name('login');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.authenticate');
