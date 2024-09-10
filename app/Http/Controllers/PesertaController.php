@@ -366,7 +366,7 @@ class PesertaController extends Controller
         } elseif (auth()->user()->role_id == 3) {
             $peserta = Peserta::with('villages')->where('regency_id', auth()->user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
             $pdf = Pdf::loadView('peserta.pdf-admin', compact('peserta'))->setPaper('a3', 'landscape');
-            return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+            return $pdf->stream('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
         }
     }
 
@@ -400,10 +400,10 @@ class PesertaController extends Controller
     {
         $regency = Regency::where('id', $regency_id)->first();
         $date = Carbon::now()->format('d-m-Y');
-        $data = Peserta::where('villages_id', '!=' ,NULL)
+        $peserta = Peserta::where('villages_id', '!=' ,NULL)
             ->where('regency_id', $regency_id)
             ->get();
-        $pdf = Pdf::loadView('peserta.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+        $pdf = Pdf::loadView('peserta.pdf-admin', compact('peserta'))->setPaper('a3', 'landscape');
         return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
     }
 
@@ -411,9 +411,9 @@ class PesertaController extends Controller
     {
         $regency = Regency::where('id', $villages_id)->first();
         $date = Carbon::now()->format('d-m-Y');
-        $data = Peserta::where('villages_id', $villages_id)
+        $peserta = Peserta::where('villages_id', $villages_id)
             ->get();
-        $pdf = Pdf::loadView('peserta.pdf-admin', compact('data'))->setPaper('a3', 'landscape');
+        $pdf = Pdf::loadView('peserta.pdf-admin', compact('peserta'))->setPaper('a3', 'landscape');
         return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
     }
 
