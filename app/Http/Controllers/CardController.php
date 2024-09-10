@@ -76,9 +76,9 @@ class CardController extends Controller
                 ->orderBy('villages_id')
                 ->first();
         }
-        return view('test-card', compact('data'));
-        // $pdf = Pdf::loadView('test-card', compact('data'))->setPaper('a3', 'potrait');
-        // return $pdf->stream('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
+        // return view('test-card', compact('data'));
+        $pdf = Pdf::loadView('test-card', compact('data'))->setPaper('a3', 'potrait');
+        return $pdf->stream('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
 
         $html = view('test-card', compact('data'))->render();
 
