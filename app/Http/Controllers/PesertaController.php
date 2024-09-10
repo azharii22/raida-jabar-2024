@@ -361,11 +361,11 @@ class PesertaController extends Controller
             return response()->json(['progress' => 0]);
         } elseif (auth()->user()->role_id == 2) {
             $peserta = Peserta::where('villages_id', auth()->user()->villages_id)->where('kategori_id', $notKontingen->id)->orderBy('nama_lengkap')->get();
-            $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
+            $pdf = Pdf::loadView('peserta.pdf-admin', compact('peserta'))->setPaper('a3', 'landscape');
             return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
         } elseif (auth()->user()->role_id == 3) {
             $peserta = Peserta::with('villages')->where('regency_id', auth()->user()->regency_id)->where('kategori_id', $notKontingen->id)->orderBy('villages_id')->get();
-            $pdf = Pdf::loadView('peserta.pdf', compact('peserta'))->setPaper('a3', 'landscape');
+            $pdf = Pdf::loadView('peserta.pdf-admin', compact('peserta'))->setPaper('a3', 'landscape');
             return $pdf->download('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
         }
     }

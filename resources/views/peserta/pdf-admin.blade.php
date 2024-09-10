@@ -24,7 +24,7 @@
     </style>
     <div class="row">
         <div class="col-md-12">
-            @if (count($data))
+            @if (count($peserta))
             <div class="card-body">
                 <table style="width: 100%;">
                     <tr>
@@ -41,7 +41,7 @@
                     Laporan Data Peserta
                 </p>
                 </hr>
-                <p>Total Peserta : {{ count($data) }}</p>
+                <p>Total Peserta : {{ count($peserta) }}</p>
                 <table class="table table-bordered">
                     <thead class="thead-dark" align="center">
                         <tr>
@@ -61,7 +61,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $index =>$dt)
+                        @foreach ($peserta as $index =>$dt)
                         <tr>
                             <td>{{ ++$index }}</td>
                             <td class="text-capitalize">{{ $dt->regency->name }}</td>
