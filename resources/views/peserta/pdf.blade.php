@@ -1,4 +1,3 @@
-3
 <!DOCTYPE html>
 <html>
 
@@ -25,7 +24,7 @@
     </style>
     <div class="row">
         <div class="col-md-12">
-            @if (count($entries))
+            @if (count($peserta))
                 <div class="card-body">
                     @if ($isFirstChunk)
                         <table style="width: 100%;">
@@ -63,7 +62,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($entries as $i => $dt)
+                            @foreach ($peserta as $i => $dt)
                                 <tr>
                                     <td>{{ $currentRowNumber + $i }}</td>
                                     <td class="text-capitalize">{{ $dt->regency?->name }}</td>
