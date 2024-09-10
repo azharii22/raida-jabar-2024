@@ -34,30 +34,6 @@ class CardController extends Controller
         $this->middleware('auth');
     }
 
-    // public function generateIdCards()
-    // {
-    //     $notKontingen = Kategori::where('name', 'LIKE', 'Peserta')->first();
-    //     $date = Carbon::now()->format('d-m-Y');
-    //     if (auth()->user()->role_id == 2) {
-    //         $peserta = Peserta::where('villages_id', auth()->user()->villages_id)
-    //             ->where('kategori_id', $notKontingen->id)
-    //             ->orderBy('nama_lengkap')
-    //             ->get();
-    //     } elseif (auth()->user()->role_id == 3) {
-    //         $peserta = Peserta::with('villages')
-    //             ->where('regency_id', auth()->user()->regency_id)
-    //             ->where('kategori_id', $notKontingen->id)
-    //             ->orderBy('villages_id')
-    //             ->first();
-    //     }
-    //     foreach ($peserta as $pesertaItem) {
-    //         $imagePath = public_path('images/' . $pesertaItem->foto);
-    //         $img = Image::make($imagePath)->resize(300, 300);
-    //         $img->save(public_path('images/converted_' . $pesertaItem->foto));
-    //     }
-    //     return view('test-card', compact('peserta'));
-    // }
-
     public function generateIdCards()
     {
         $kategoriPeserta = Kategori::where('name', 'Peserta')->first();
@@ -70,27 +46,13 @@ class CardController extends Controller
                 ->get();
             Log::info('Peserta yang diambil untuk villages_id:', ['villages_id' => auth()->user()->villages_id, 'jumlah_peserta' => $peserta->count()]);
         } elseif (auth()->user()->role_id == 3) {
-            $data = Peserta::with('villages')
+            $peserta = Peserta::with('villages')
                 ->where('regency_id', auth()->user()->regency_id)
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->orderBy('villages_id')
-                ->first();
+                ->get();
         }
-        // return view('test-card', compact('data'));
-        $pdf = Pdf::loadView('test-card', compact('data'))->setPaper('a3', 'potrait');
+        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'potrait');
         return $pdf->stream('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
-
-        $html = view('test-card', compact('data'))->render();
-
-        $image = SnappyImage::loadHTML($html)
-            ->setOption('format', 'jpeg')
-            ->setOption('quality', 90)
-            ->setOption('width', 1200)
-            ->setOption('height', 2400);
-
-        $outputFile = storage_path('app/public/id-card/' . $data->id . '-' . $data->nama_lengkap . '.jpg');
-        $image->save($outputFile);
-
-        return response()->download($outputFile);
     }
 }

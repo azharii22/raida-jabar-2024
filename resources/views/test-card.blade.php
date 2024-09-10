@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    @foreach ($peserta as $data)
     @php
         $color = '#FFFFFF';
         $fotoUrl = public_path('assets/images/no-images.png');
@@ -45,51 +46,52 @@
         }
         $fotoData = base64_encode(file_get_contents($fotoUrl));
     @endphp
-    <div
-        style="background-image: url('{{ public_path('assets/images/idCard/background.png') }}'); height: 50rem; width: 600px; background-color: white; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); ; background-position: center right; background-repeat: no-repeat; margin-top: 1rem">
-        <div style="">
-            <div
-                style=" width:350px; height: 22rem; background-color: orange; border-bottom-right-radius: 35px;">
-                <img src="data:image/png;base64,{{ $fotoData }}" alt="Foto"
-                    style="height: 22rem; width:350px; object-fit: cover; border-bottom-right-radius: 35px; ">
-            </div>
-            <div style="margin-left: auto; text-align: center;">
-                <div style="margin: 5px; " >
-                    <img src="{{ public_path('assets/images/idCard/logo dkd kwarda.png') }}" alt="Logo" style="width:200px; margin-top:-320px; margin-left:350px">
-                </div>
+        <div
+            style="background-image: url('{{ public_path('assets/images/idCard/background.png') }}'); height: 50rem; width: 600px; background-color: white; border-radius: 15px; overflow: hidden; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); ; background-position: center right; background-repeat: no-repeat; margin-top: 1rem">
             <div style="">
-                <img src="{{ public_path('assets/images/idCard/logo.png') }}" alt="Logo" style="200px; margin-top: -250px; margin-left:350px; ">
-                <img src="{{ public_path('assets/images/idCard/berdampak serentak.png') }}" alt="Logo" style="width:200px; margin-left:350px; margin-top:-100px">
-            </div>
-            </div>
-        </div>
-        <div style="margin-top:-67px">
-            <div style="position: relative; width: 140px; height: 500px; background-color: orange; color: #fff;">
-                <h3 style="font-size: 20px; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: rotate(90deg) translate(-50%, -50%); transform-origin: left center; text-transform: uppercase;">
-                    {{ $kategoriName }}
-                </h3>
-            </div>
-            <div>
                 <div
-                    style="width:350px; float:right; margin-right:50px; margin-top:-450px; color: white; font-weight: bold; text-align: center; padding: 20px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color: orange;">
-                    {{ $namaLengkap }}
+                    style=" width:350px; height: 22rem; background-color: orange; border-bottom-right-radius: 35px;">
+                    <img src="data:image/png;base64,{{ $fotoData }}" alt="Foto"
+                        style="height: 22rem; width:350px; object-fit: cover; border-bottom-right-radius: 35px; ">
                 </div>
-                <div
-                    style="width:350px; float:right; margin-right:50px; margin-top:-380px;  color: white; font-weight: bold; text-align: center; padding: 20px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color: orange;">
-                    {{ $villagesName }}
-                </div>
-                @if (is_object($data) &&
-                        $data->kategori &&
-                        ($data->kategori->name === 'Peserta' || $data->kategori->name === 'Pinkonran'))
-                    <div
-                        style="color: white; font-weight: bold; text-align: center; padding: 10px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color: orange;">
-                        {{ $data->regency->name }}
+                <div style="margin-left: auto; text-align: center;">
+                    <div style="margin: 5px; " >
+                        <img src="{{ public_path('assets/images/idCard/logo dkd kwarda.png') }}" alt="Logo" style="width:200px; margin-top:-320px; margin-left:350px">
                     </div>
-                @endif
-                <img src="{{ public_path('assets/images/idCard/mascot.png') }}" alt="Logo" style="200px; margin-top:-350px; margin-left:80px; ">
+                <div style="">
+                    <img src="{{ public_path('assets/images/idCard/logo.png') }}" alt="Logo" style="200px; margin-top: -250px; margin-left:350px; ">
+                    <img src="{{ public_path('assets/images/idCard/berdampak serentak.png') }}" alt="Logo" style="width:200px; margin-left:350px; margin-top:-100px">
+                </div>
+                </div>
+            </div>
+            <div style="margin-top:-67px">
+                <div style="position: relative; width: 140px; height: 500px; background-color: orange; color: #fff;">
+                    <h3 style="font-size: 20px; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: rotate(90deg) translate(-50%, -50%); transform-origin: left center; text-transform: uppercase;">
+                        {{ $kategoriName }}
+                    </h3>
+                </div>
+                <div>
+                    <div
+                        style="width:350px; float:right; margin-right:50px; margin-top:-450px; color: white; font-weight: bold; text-align: center; padding: 20px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color: orange;">
+                        {{ $namaLengkap }}
+                    </div>
+                    <div
+                        style="width:350px; float:right; margin-right:50px; margin-top:-380px;  color: white; font-weight: bold; text-align: center; padding: 20px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color: orange;">
+                        {{ $villagesName }}
+                    </div>
+                    @if (is_object($data) &&
+                            $data->kategori &&
+                            ($data->kategori->name === 'Peserta' || $data->kategori->name === 'Pinkonran'))
+                        <div
+                            style="color: white; font-weight: bold; text-align: center; padding: 10px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color: orange;">
+                            {{ $data->regency->name }}
+                        </div>
+                    @endif
+                    <img src="{{ public_path('assets/images/idCard/mascot.png') }}" alt="Logo" style="200px; margin-top:-350px; margin-left:80px; ">
+                </div>
             </div>
         </div>
-    </div>
+    @endforeach
 </body>
 
 </html>
