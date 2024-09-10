@@ -51,7 +51,7 @@
             <div
                 style=" width:350px; height: 22rem; background-color: orange; border-bottom-right-radius: 35px;">
                 <img src="data:image/png;base64,{{ $fotoData }}" alt="Foto"
-                    style="height: 22rem; object-fit: cover; border-bottom-right-radius: 35px; ">
+                    style="height: 22rem; width:350px; object-fit: cover; border-bottom-right-radius: 35px; ">
             </div>
             <div style="margin-left: auto; text-align: center;">
                 <div style="margin: 5px; " >
