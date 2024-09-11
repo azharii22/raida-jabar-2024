@@ -11,10 +11,21 @@
                 margin-top: 68px;
             }
 
+        @font-face {
+        font-family: 'Poppins';
+        font-style: normal;
+        font-weight: 900;
+        src: url('{{ public_path('fonts/Poppins-Black.ttf') }}') format('truetype');
+        }
+
+
         body {
             padding: 0;
             margin: 0px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
         }
+
         .id-card-container {
             padding: 0;
             margin: 0;
@@ -60,10 +71,10 @@
                 $kategoriName = $data->kategori->name;
             }
 
-            $fotoUrl = $data->foto
-                ? public_path('storage/img/peserta/foto/' . $data->foto)
-                : public_path('assets/images/no-images.png');
-            // $fotoUrl = public_path('assets/images/no-images.png');
+            // $fotoUrl = $data->foto
+            //     ? public_path('storage/img/peserta/foto/' . $data->foto)
+            //     : public_path('assets/images/no-images.png');
+            $fotoUrl = public_path('assets/images/no-images.png');
 
             $namaLengkap = $data->nama_lengkap ?? $namaLengkap;
             $villagesName = optional($data->villages)->name ?? (optional($data->regency)->name ?? $villagesName);
@@ -94,25 +105,25 @@
             <div style="margin-top:-67px">
                 <div style="">
                 <div  style="background-image: url('{{ public_path('assets/images/idCard/bg.png') }}'); transform:rotate(180deg) ; width:50px; height:210px; background-size:cover; background-position: -60% -80%; position: relative; background-color: {{$color}}; color: #fff; ">
-                    <h3 style="font-size: 20px; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: rotate(90deg) translate(-50%, -50%); transform-origin: left center; text-transform: uppercase;">
+                    <h3 style="font-size: 24px; font-weight: bolder; position: absolute; top: 50%; left: 50%; transform: rotate(90deg) translate(-50%, -50%); transform-origin: left center; text-transform: uppercase;">
                         {{ $kategoriName }}
                     </h3>
                 </div>
                 </div>
                 <div>
                     <div
-                        style="width:130px; float:right; font-size:0.6rem;  margin-top:-200px; color: white; font-weight: bold; text-align: center; padding: 6px; margin-bottom: 5px; border-radius: 10px; text-transform: uppercase; background-color: {{$color}};">
+                        style="width:130px; float:right; font-size:0.7rem;  margin-top:-200px; color: white; font-weight: bold; text-align: center; padding: 6px; margin-bottom: 5px; border-radius: 10px; text-transform: uppercase; background-color: {{$color}};">
                         {{ $namaLengkap }}
                     </div>
                     <div
-                        style="width:130px; float:right; font-size:0.6rem;  margin-top:-160px;  color: white; font-weight: bold; text-align: center; padding: 6px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color:{{ $color }};">
+                        style="width:130px; float:right; font-size:0.7rem;  margin-top:-160px;  color: white; font-weight: bold; text-align: center; padding: 6px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color:{{ $color }};">
                         {{ $villagesName }}
                     </div>
                     @if (is_object($data) &&
                             $data->kategori &&
                             ($data->kategori->name === 'Peserta' || $data->kategori->name === 'Pinkonran'))
                         <div
-                            style="width:130px; float:right; font-size:0.6rem;  margin-top:-120px;  color: white; font-weight: bold; text-align: center; padding: 6px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color: {{$color}};">
+                            style="width:130px; float:right; font-size:0.7rem;  margin-top:-120px;  color: white; font-weight: bold; text-align: center; padding: 6px; margin-bottom: 10px; border-radius: 10px; text-transform: uppercase; background-color: {{$color}};">
                             {{ $data->regency->name }}
                         </div>
                     @endif

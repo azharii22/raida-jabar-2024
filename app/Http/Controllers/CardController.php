@@ -50,16 +50,16 @@ class CardController extends Controller
                 foreach ($peserta as $item) {
                     // Path gambar
                     $path = public_path('storage/img/peserta/foto/' . $item->foto);
-            
+
                     // Cek apakah file gambar ada
                     if (file_exists($path)) {
                         try {
                             // Proses gambar dengan Intervention Image
                             $image = Image::make($path);
-            
+
                             // Simpan ulang gambar untuk membersihkan data yang rusak
                             $image->save($path);
-            
+
                             // Coba membaca ukuran gambar dengan getimagesize()
                             $size = getimagesize($path);
                             Log::info('Ukuran gambar: ' . json_encode($size));
