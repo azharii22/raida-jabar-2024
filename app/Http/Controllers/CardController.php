@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Models\Peserta;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Log;
+use Intervention\Image\Facades\Image;
 
 class CardController extends Controller
 {
@@ -45,6 +47,30 @@ class CardController extends Controller
                 ->where('regency_id', auth()->user()->regency_id)
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->first();
+                foreach ($peserta as $item) {
+                    // Path gambar
+                    $path = public_path('path/to/images/' . $item->image);
+            
+                    // Cek apakah file gambar ada
+                    if (file_exists($path)) {
+                        try {
+                            // Proses gambar dengan Intervention Image
+                            $image = Image::make($path);
+            
+                            // Simpan ulang gambar untuk membersihkan data yang rusak
+                            $image->save($path);
+            
+                            // Coba membaca ukuran gambar dengan getimagesize()
+                            $size = getimagesize($path);
+                            Log::info('Ukuran gambar: ' . json_encode($size));
+                        } catch (\Exception $e) {
+                            Log::error('Gagal memproses gambar: ' . $e->getMessage());
+                            // Anda bisa memilih untuk melanjutkan tanpa gambar ini atau memberikan placeholder
+                        }
+                    } else {
+                        Log::warning('Gambar tidak ditemukan: ' . $path);
+                    }
+                }
             $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
             return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . ' ' . $regency->regency->name . '.pdf');
         }
