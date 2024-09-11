@@ -61,10 +61,10 @@
                 $kategoriName = $data->kategori->name;
             }
 
-            // $fotoUrl = $data->foto
-            //     ? public_path('storage/img/peserta/foto/' . $data->foto)
-            //     : public_path('assets/images/no-images.png');
-            $fotoUrl = public_path('assets/images/no-images.png');
+            $fotoUrl = $data->foto
+                ? public_path('storage/img/peserta/foto/' . $data->foto)
+                : public_path('assets/images/no-images.png');
+            // $fotoUrl = public_path('assets/images/no-images.png');
 
             $namaLengkap = $data->nama_lengkap ?? $namaLengkap;
             $villagesName = optional($data->villages)->name ?? (optional($data->regency)->name ?? $villagesName);
