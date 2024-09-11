@@ -46,6 +46,10 @@
                         <a href="{{ route('peserta-villages.pdf', $villages->id) }}" type="button"
                             class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
                                 class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                        <a href="{{ route('idCardkota', $villages->id) }}" type="button"
+                            class="btn btn-primary waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="bx bx bx-id-card"></i> Export Id Card</a>
+
                     </div>
 
                     <h4 class="card-title mb-5">Peserta Wilayah {{ $villages->name }}</h4>
@@ -774,7 +778,7 @@
                         render: function(data, type, row, meta) {
                             if (data) {
                                 return '<div style="color: red;"><li>' + row.catatan +
-                                '</li></div>';
+                                    '</li></div>';
                             } else {
                                 return row.catatan;
                             }

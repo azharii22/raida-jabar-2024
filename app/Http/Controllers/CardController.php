@@ -31,7 +31,7 @@ class CardController extends Controller
             $villages = Peserta::where('villages_id', auth()->user()->villages_id)
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->orderBy('nama_lengkap')
-                ->get();
+                ->first();
             $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
             return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . ' ' . $villages->villages->name . '.pdf');
         } elseif (auth()->user()->role_id == 3) {
@@ -48,5 +48,24 @@ class CardController extends Controller
             $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
             return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . ' ' . $regency->regency->name . '.pdf');
         }
+    }
+
+    public function generateIdCardsRegency($regency_id)
+    {
+        $peserta = Peserta::where('villages_id', '!=', NULL)
+            ->where('regency_id', $regency_id)
+            ->orderBy('nama_lengkap')
+            ->get();
+        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
+        return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
+    }
+
+    public function IdCardsKota($villages_id)
+    {
+        $peserta = Peserta::where('villages_id', $villages_id)
+            ->orderBy('nama_lengkap')
+            ->get();
+        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
+        return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
     }
 }

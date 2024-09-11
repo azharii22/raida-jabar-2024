@@ -37,6 +37,9 @@
                         <a href="{{ route('peserta-regency.pdf', $regency->id) }}" type="button"
                             class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
                                 class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                        <a href="{{ route('idCardRegency', $regency->id) }}" type="button"
+                            class="btn btn-primary waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="bx bx bx-id-card"></i> Export Id Card</a>
                     </div>
 
                     <div class="table-responsive">

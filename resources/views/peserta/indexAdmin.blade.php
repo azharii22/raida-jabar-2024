@@ -44,10 +44,10 @@
                                 class="mdi mdi-file-excel-outline"></i> Export Excel</a>
                         <button id="startExport" class="btn btn-danger waves-effect waves-light btn-sm mr-2">
                             <i class="mdi mdi-file-pdf-outline"></i> Export PDF
-                            <a href="{{ route('idCard') }}" type="button"
-                                class="btn btn-primary waves-effect waves-light btn-sm mr-2" target="_blank"> <i
-                                    class="bx bx bx-id-card"></i> Export Id Card</a>
                         </button>
+                        <a href="{{ route('idCard') }}" type="button"
+                            class="btn btn-primary waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                class="bx bx bx-id-card"></i> Export Id Card</a>
 
                         <!-- Modal -->
                         <div class="modal fade" id="progressModal" tabindex="-1" aria-labelledby="progressModalLabel"
