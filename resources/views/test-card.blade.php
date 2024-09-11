@@ -87,10 +87,12 @@
                 </div>
             </div>
             <div style="margin-top:-67px">
-                <div style="position: relative; width: 50px; height: 280px; background-color: orange; color: #fff;">
+                <div style="">
+                <div  style="background-image: url('{{ public_path('assets/images/idCard/bg.png') }}'); transform:rotate(180deg) ; width:100px; height:280px; background-size:cover; background-position: -45% -90%; position: relative; width: 50px; height: 280px; background-color: orange; color: #fff; ">
                     <h3 style="font-size: 20px; font-weight: bold; position: absolute; top: 50%; left: 50%; transform: rotate(90deg) translate(-50%, -50%); transform-origin: left center; text-transform: uppercase;">
                         {{ $kategoriName }}
                     </h3>
+                </div>
                 </div>
                 <div>
                     <div

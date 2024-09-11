@@ -50,6 +50,7 @@ class CardController extends Controller
                 ->where('regency_id', auth()->user()->regency_id)
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->orderBy('villages_id')
+                ->limit(10)
                 ->get();
         }
         $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
