@@ -23,7 +23,7 @@ class CardController extends Controller
             $peserta = Peserta::where('villages_id', '!=', NULL)
                 ->orderBy('nama_lengkap')
                 ->get();
-            $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
+            $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
             return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
         } elseif (auth()->user()->role_id == 2) {
             $peserta = Peserta::where('villages_id', auth()->user()->villages_id)
@@ -34,7 +34,7 @@ class CardController extends Controller
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->orderBy('nama_lengkap')
                 ->first();
-            $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
+            $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
             return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . ' ' . $villages->villages->name . '.pdf');
         } elseif (auth()->user()->role_id == 3) {
             $peserta = Peserta::with('villages')
@@ -82,7 +82,7 @@ class CardController extends Controller
             ->where('regency_id', $regency_id)
             ->orderBy('nama_lengkap')
             ->get();
-        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
+        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
         return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
     }
 
@@ -91,7 +91,7 @@ class CardController extends Controller
         $peserta = Peserta::where('villages_id', $villages_id)
             ->orderBy('nama_lengkap')
             ->get();
-        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
+        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
         return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
     }
 }

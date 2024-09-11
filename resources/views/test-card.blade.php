@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ID Card Peserta | {{ config('settings.main.1_app_name') }}</title>
     <style>
-        @page { margin: 0;
-                margin-top: 80px;
+        @page {
+                margin: 0;
+                margin-top: 68px;
             }
-
 
         body {
             padding: 0;
@@ -27,10 +27,9 @@
             height: 321px;
             width: 204px;
             display: inline-block;
-            margin:  3px 5px;
+            margin:  2px 5px;
             transform: scaleX(-1);
         }
-
     </style>
 </head>
 
@@ -61,10 +60,10 @@
                 $kategoriName = $data->kategori->name;
             }
 
-            $fotoUrl = $data->foto
-                ? public_path('storage/img/peserta/foto/' . $data->foto)
-                : public_path('assets/images/no-images.png');
-            // $fotoUrl = public_path('assets/images/no-images.png');
+            // $fotoUrl = $data->foto
+            //     ? public_path('storage/img/peserta/foto/' . $data->foto)
+            //     : public_path('assets/images/no-images.png');
+            $fotoUrl = public_path('assets/images/no-images.png');
 
             $namaLengkap = $data->nama_lengkap ?? $namaLengkap;
             $villagesName = optional($data->villages)->name ?? (optional($data->regency)->name ?? $villagesName);
