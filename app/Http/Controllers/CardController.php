@@ -39,13 +39,13 @@ class CardController extends Controller
                 ->where('regency_id', auth()->user()->regency_id)
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->orderBy('villages_id')
-                // ->limit(10)
+                ->limit(10)
                 ->get();
             $regency = Peserta::with('villages')
                 ->where('regency_id', auth()->user()->regency_id)
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->first();
-            $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
+            $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
             return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . ' ' . $regency->regency->name . '.pdf');
         }
     }
