@@ -49,7 +49,7 @@ class CardController extends Controller
                 ->first();
                 foreach ($peserta as $item) {
                     // Path gambar
-                    $path = public_path('path/to/images/' . $item->image);
+                    $path = public_path('storage/img/peserta/foto/' . $item->foto);
             
                     // Cek apakah file gambar ada
                     if (file_exists($path)) {
