@@ -45,7 +45,7 @@ Route::get('/id-card-{regency_id}', [CardController::class, 'generateIdCardsRege
 //     return view('test-card');
 // });
 // Auth::routes();
-Route::get('/login', [LoginController::class, 'login'])->name('login');
+Route::get('/login', [LoginController::class, 'login'])->name('login')->middleware('guest');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.authenticate');
 
 // Register

@@ -39,7 +39,7 @@ class CardController extends Controller
                 ->where('regency_id', auth()->user()->regency_id)
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->orderBy('villages_id')
-                ->limit(10)
+                // ->limit(10)
                 ->get();
             $regency = Peserta::with('villages')
                 ->where('regency_id', auth()->user()->regency_id)
