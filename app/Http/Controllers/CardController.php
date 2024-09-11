@@ -52,7 +52,10 @@ class CardController extends Controller
                 ->orderBy('villages_id')
                 ->get();
         }
-        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'potrait');
+        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper('a3', 'landscape');
         return $pdf->stream('Peserta ' . config('settings.main.1_app_name') . ' ' . $date . '.pdf');
     }
+
+
+
 }
