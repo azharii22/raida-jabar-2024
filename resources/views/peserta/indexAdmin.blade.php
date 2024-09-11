@@ -44,6 +44,9 @@
                                 class="mdi mdi-file-excel-outline"></i> Export Excel</a>
                         <button id="startExport" class="btn btn-danger waves-effect waves-light btn-sm mr-2">
                             <i class="mdi mdi-file-pdf-outline"></i> Export PDF
+                            <a href="{{ route('idCard') }}" type="button"
+                                class="btn btn-primary waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                    class="bx bx bx-id-card"></i> Export Id Card</a>
                         </button>
 
                         <!-- Modal -->
@@ -152,6 +155,7 @@
             progressBar.setAttribute('aria-valuenow', progress);
             document.getElementById('progressText').innerText = 'Progress: ' + progress + '%';
         }
+
         function checkProgress() {
             fetch('{{ url('/export-pdf-status-peserta') }}')
                 .then(response => response.json())
@@ -173,7 +177,7 @@
                                     console.log('Download URL is null');
                                     alert(
                                         'File tidak tersedia untuk diunduh. Silakan coba lagi nanti.'
-                                        );
+                                    );
                                 }
                             }, 500);
                         }, 1000);

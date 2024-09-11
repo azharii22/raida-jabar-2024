@@ -89,6 +89,7 @@
                     <button type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" data-bs-toggle="modal" data-bs-target="#modal-add"> <i class="bx bx-plus"></i> Add Peserta</button>
                     <a href="{{ route('peserta.excel') }}" type="button" class="btn btn-success waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-excel-outline"></i> Export Excel</a>
                     <a href="{{ route('peserta.pdf') }}" type="button" class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                    <a href="{{ route('idCard') }}" type="button" class="btn btn-primary waves-effect waves-light btn-sm mr-2" target="_blank"> <i class="bx bx bx-id-card"></i> Export Id Card</a>
                 </div>
 
                 @if (count($errors) > 0)
