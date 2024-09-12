@@ -82,6 +82,21 @@ class CardController extends Controller
             ->where('regency_id', $regency_id)
             ->orderBy('nama_lengkap')
             ->get();
+            foreach ($peserta as $item) {
+                $path = public_path('storage/img/peserta/foto/' . $item->foto);
+                if (file_exists($path)) {
+                    try {
+                        $image = Image::make($path);
+                        $image->save($path);
+                        $size = getimagesize($path);
+                        Log::info('Ukuran gambar: ' . json_encode($size));
+                    } catch (\Exception $e) {
+                        Log::error('Gagal memproses gambar: ' . $e->getMessage());
+                    }
+                } else {
+                    Log::warning('Gambar tidak ditemukan: ' . $path);
+                }
+            }
         $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
         return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
     }
