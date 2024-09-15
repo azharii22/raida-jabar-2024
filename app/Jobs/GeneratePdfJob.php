@@ -39,19 +39,30 @@ class GeneratePdfJob implements ShouldQueue
 
         if ($this->roleId == 1 || $this->roleId == 4) {
             try {
-                $peserta = Peserta::where('villages_id', '!=', NULL)
-                    ->orderBy('nama_lengkap')
-                    ->get();
-                
-                Log::info('Fetched peserta data', ['count' => $peserta->count()]);
+                $batchSize = 1000;
+                $offset = 0;
 
-                $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
-                
-                // Simpan file PDF ke storage
-                Storage::put('public/pdf/IDCard_Peserta.pdf', $pdf->output());
+                while (true) {
+                    $peserta = Peserta::where('villages_id', '!=', NULL)
+                        ->orderBy('nama_lengkap')
+                        ->offset($offset)
+                        ->limit($batchSize)
+                        ->get();
 
-                Log::info('PDF generated and stored successfully');
+                    if ($peserta->isEmpty()) {
+                        break; // Hentikan loop jika tidak ada data lagi
+                    }
 
+                    Log::info('Fetched peserta data batch', ['count' => $peserta->count()]);
+
+                    $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
+
+                    Storage::put("public/pdf/IDCard_Peserta_{$offset}.pdf", $pdf->output());
+
+                    Log::info('PDF generated and stored successfully', ['batchOffset' => $offset]);
+
+                    $offset += $batchSize;
+                }
             } catch (\Exception $e) {
                 Log::error('Error generating PDF', ['exception' => $e->getMessage()]);
             }
