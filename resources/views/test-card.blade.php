@@ -59,13 +59,16 @@
         if ($data && is_object($data)) {
             if ($data->kategori) {
                 $colors = [
-                    'Bindamping' => '#8F378D',
-                    'Panitia' => '#FA602C',
+                    'Pinkonran' => '#EB76A3',
+                    'Tenaga Medis' => '#EB76A3',
+                    'Petugas Pameran' => '#EB76A3',
                     'Peserta' => '#FFD23F',
+                    'Bindamping' => '#8F378D',
                     'Pinkoncab' => '#28D3C0',
+                    'Panitia' => '#FA602C',
+                    'Peserta Saka' => '#EB76A3',
                     'Staff Kontingen' => '#58B0BC',
                     'Petugas Anjungan' => '#E73C3A',
-                    'Pinkonran' => '#EB76A3',
                 ];
                 $color = $colors[$data->kategori->name] ?? '#FFFFFF';
                 $kategoriName = $data->kategori->name;
