@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\GeneratePdfJob;
 use App\Models\Kategori;
 use App\Models\Peserta;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -20,11 +21,9 @@ class CardController extends Controller
         $kategoriPeserta = Kategori::where('name', 'Peserta')->first();
 
         if (auth()->user()->role_id == 1 || auth()->user()->role_id == 4) {
-            $peserta = Peserta::where('villages_id', '!=', NULL)
-                ->orderBy('nama_lengkap')
-                ->get();
-            $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
-            return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
+            $roleId = auth()->user()->role_id;
+            GeneratePdfJob::dispatch($roleId);
+            return response()->json(['message' => 'PDF generation in progress'], 202);
         } elseif (auth()->user()->role_id == 2) {
             $peserta = Peserta::where('villages_id', auth()->user()->villages_id)
                 ->where('kategori_id', $kategoriPeserta->id)
