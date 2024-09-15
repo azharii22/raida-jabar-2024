@@ -39,6 +39,8 @@ Route::get('phpinfo', function () {
     return phpinfo();
 });
 Route::get('/id-card-villages-{villages_id}', [CardController::class, 'IdCardsKota'])->name('idCardkota');
+Route::get('/id-card-unsur-kontingen', [CardController::class, 'generateIDCardsUnsurKontingen'])->name('idCardUnsurKontingen');
+Route::get('/id-card-unsur-kontingen-{regency_id}', [CardController::class, 'generateIdCardsRegencyUnsurKontingen'])->name('idCardRegencyUnsurKontingen');
 Route::get('/id-card', [CardController::class, 'generateIDCards'])->name('idCard');
 Route::get('/id-card-{regency_id}', [CardController::class, 'generateIdCardsRegency'])->name('idCardRegency');
 // Route::get('test-card', function () {

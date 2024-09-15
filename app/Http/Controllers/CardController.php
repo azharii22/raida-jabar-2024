@@ -46,30 +46,30 @@ class CardController extends Controller
                 ->where('regency_id', auth()->user()->regency_id)
                 ->where('kategori_id', $kategoriPeserta->id)
                 ->first();
-                foreach ($peserta as $item) {
-                    // Path gambar
-                    $path = public_path('storage/img/peserta/foto/' . $item->foto);
+            foreach ($peserta as $item) {
+                // Path gambar
+                $path = public_path('storage/img/peserta/foto/' . $item->foto);
 
-                    // Cek apakah file gambar ada
-                    if (file_exists($path)) {
-                        try {
-                            // Proses gambar dengan Intervention Image
-                            $image = Image::make($path);
+                // Cek apakah file gambar ada
+                if (file_exists($path)) {
+                    try {
+                        // Proses gambar dengan Intervention Image
+                        $image = Image::make($path);
 
-                            // Simpan ulang gambar untuk membersihkan data yang rusak
-                            $image->save($path);
+                        // Simpan ulang gambar untuk membersihkan data yang rusak
+                        $image->save($path);
 
-                            // Coba membaca ukuran gambar dengan getimagesize()
-                            $size = getimagesize($path);
-                            Log::info('Ukuran gambar: ' . json_encode($size));
-                        } catch (\Exception $e) {
-                            Log::error('Gagal memproses gambar: ' . $e->getMessage());
-                            // Anda bisa memilih untuk melanjutkan tanpa gambar ini atau memberikan placeholder
-                        }
-                    } else {
-                        Log::warning('Gambar tidak ditemukan: ' . $path);
+                        // Coba membaca ukuran gambar dengan getimagesize()
+                        $size = getimagesize($path);
+                        Log::info('Ukuran gambar: ' . json_encode($size));
+                    } catch (\Exception $e) {
+                        Log::error('Gagal memproses gambar: ' . $e->getMessage());
+                        // Anda bisa memilih untuk melanjutkan tanpa gambar ini atau memberikan placeholder
                     }
+                } else {
+                    Log::warning('Gambar tidak ditemukan: ' . $path);
                 }
+            }
             $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
             return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . ' ' . $regency->regency->name . '.pdf');
         }
@@ -81,6 +81,66 @@ class CardController extends Controller
             ->where('regency_id', $regency_id)
             ->orderBy('nama_lengkap')
             ->get();
+        foreach ($peserta as $item) {
+            $path = public_path('storage/img/peserta/foto/' . $item->foto);
+            if (file_exists($path)) {
+                try {
+                    $image = Image::make($path);
+                    $image->save($path);
+                    $size = getimagesize($path);
+                    Log::info('Ukuran gambar: ' . json_encode($size));
+                } catch (\Exception $e) {
+                    Log::error('Gagal memproses gambar: ' . $e->getMessage());
+                }
+            } else {
+                Log::warning('Gambar tidak ditemukan: ' . $path);
+            }
+        }
+        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
+        return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
+    }
+
+    public function IdCardsKota($villages_id)
+    {
+        $peserta = Peserta::where('villages_id', $villages_id)
+            ->orderBy('nama_lengkap')
+            ->get();
+        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
+        return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
+    }
+
+    public function generateIdCardsUnsurKontingen()
+    {
+        $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+
+        if (auth()->user()->role_id == 2) {
+            $peserta = Peserta::where('user_id', auth()->user()->id)
+            ->whereIn('kategori_id', $kategoriNotPeserta)
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+
+            $villages = Peserta::where('user_id', auth()->user()->id)
+                ->whereIn('kategori_id', $kategoriNotPeserta)
+                ->first();
+
+            if ($villages) {
+                $pdf = Pdf::loadView('test-card', compact('peserta'))
+                    ->setPaper([0, 0, 566.93, 850.394], 'landscape');
+                return $pdf->stream('ID Card ' . 'Unsur Kontingen ' . config('settings.main.1_app_name') . ' ' . $villages->villages?->name . '.pdf');
+            } else {
+                return response('Data villages tidak ditemukan', 404);
+            }
+        } elseif (auth()->user()->role_id == 3) {
+            $peserta = Peserta::where('regency_id', auth()->user()->regency_id)
+                ->whereIn('kategori_id', $kategoriNotPeserta)
+                ->orderBy('regency_id')
+                ->get();
+
+            $regency = Peserta::with('regency') // Pastikan relasi dengan 'regency' sudah diatur
+                ->where('regency_id', auth()->user()->regency_id)
+                ->whereIn('kategori_id', $kategoriNotPeserta)
+                ->first();
+
             foreach ($peserta as $item) {
                 $path = public_path('storage/img/peserta/foto/' . $item->foto);
                 if (file_exists($path)) {
@@ -96,16 +156,44 @@ class CardController extends Controller
                     Log::warning('Gambar tidak ditemukan: ' . $path);
                 }
             }
-        $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
-        return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
+
+            if ($regency) {
+                $pdf = Pdf::loadView('test-card', compact('peserta'))
+                    ->setPaper([0, 0, 566.93, 850.394], 'landscape');
+                return $pdf->stream('ID Card ' . 'Unsur Kontingen ' . config('settings.main.1_app_name') . ' ' . $regency->regency->name . '.pdf');
+            } else {
+                // Tangani kasus jika $regency tidak ditemukan
+                return response('Data regency tidak ditemukan', 404);
+            }
+        }
     }
 
-    public function IdCardsKota($villages_id)
+
+    public function generateIdCardsRegencyUnsurKontingen($regency_id)
     {
-        $peserta = Peserta::where('villages_id', $villages_id)
-            ->orderBy('nama_lengkap')
-            ->get();
+        $kategoriNotPeserta = Kategori::whereNotIn('name', ['Peserta'])->pluck('id');
+
+        $peserta = Peserta::where('villages_id', NULL)
+        ->where('regency_id', $regency_id)
+        ->whereIn('kategori_id', $kategoriNotPeserta)
+        ->get();
+        foreach ($peserta as $item) {
+            $path = public_path('storage/img/peserta/foto/' . $item->foto);
+            if (file_exists($path)) {
+                try {
+                    $image = Image::make($path);
+                    $image->save($path);
+                    $size = getimagesize($path);
+                    Log::info('Ukuran gambar: ' . json_encode($size));
+                } catch (\Exception $e) {
+                    Log::error('Gagal memproses gambar: ' . $e->getMessage());
+                }
+            } else {
+                Log::warning('Gambar tidak ditemukan: ' . $path);
+            }
+        }
         $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
-        return $pdf->stream('ID Card ' . 'Peserta ' . config('settings.main.1_app_name') . '.pdf');
+        return $pdf->stream('ID Card ' . 'Unsur Kontingen ' . config('settings.main.1_app_name') . '.pdf');
     }
+
 }

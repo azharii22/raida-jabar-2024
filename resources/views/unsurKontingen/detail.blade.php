@@ -36,6 +36,9 @@
                         <a href="{{ route('unsur-kontingen-regency.pdf', $regency->id) }}" type="button"
                             class="btn btn-danger waves-effect waves-light btn-sm mr-2" target="_blank"> <i
                                 class="mdi mdi-file-pdf-outline"></i> Export PDF</a>
+                                <a href="{{ route('idCardRegencyUnsurKontingen', $regency->id) }}" type="button"
+                                    class="btn btn-primary waves-effect waves-light btn-sm mr-2" target="_blank"> <i
+                                        class="bx bx bx-id-card"></i> Export Id Card</a>
                     </div>
 
                     @if (count($errors) > 0)
@@ -73,7 +76,7 @@
         </div> <!-- end col -->
     </div> <!-- end row -->
 
-    {{-- @foreach ($unsurKontingen as $data)
+    @foreach ($unsurKontingen as $data)
         <!-- Start modal Edit -->
         <div class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true"
             id="modal-edit-{{ $data->id }}" data-bs-backdrop="static" data-bs-keyboard="false">
@@ -510,7 +513,7 @@
             </div>
         </div>
         <!-- End Verifikasi Modal -->
-    @endforeach --}}
+    @endforeach
 
 
 @endsection
