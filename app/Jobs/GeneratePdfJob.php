@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class GeneratePdfJob implements ShouldQueue
@@ -34,14 +35,30 @@ class GeneratePdfJob implements ShouldQueue
      */
     public function handle()
     {
-        if ($this->roleId == 1 || $this->roleId == 4) {
-            $peserta = Peserta::where('villages_id', '!=', NULL)
-                ->orderBy('nama_lengkap')
-                ->get();
+        Log::info('GeneratePdfJob started', ['roleId' => $this->roleId]);
 
-            $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
-            
-            Storage::put('public/pdf/IDCard_Peserta.pdf', $pdf->output());
+        if ($this->roleId == 1 || $this->roleId == 4) {
+            try {
+                $peserta = Peserta::where('villages_id', '!=', NULL)
+                    ->orderBy('nama_lengkap')
+                    ->get();
+                
+                Log::info('Fetched peserta data', ['count' => $peserta->count()]);
+
+                $pdf = Pdf::loadView('test-card', compact('peserta'))->setPaper([0, 0, 566.93, 850.394], 'landscape');
+                
+                // Simpan file PDF ke storage
+                Storage::put('public/pdf/IDCard_Peserta.pdf', $pdf->output());
+
+                Log::info('PDF generated and stored successfully');
+
+            } catch (\Exception $e) {
+                Log::error('Error generating PDF', ['exception' => $e->getMessage()]);
+            }
+        } else {
+            Log::warning('User role not authorized', ['roleId' => $this->roleId]);
         }
+
+        Log::info('GeneratePdfJob completed');
     }
 }
