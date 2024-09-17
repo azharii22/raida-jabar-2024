@@ -88,7 +88,7 @@ class ViewUserController extends Controller
 
     public function photo($id)
     {
-        $photo = ImageUpload::where('dokumentasi_id', $id)->paginate(3);
+        $photo = ImageUpload::where('dokumentasi_id', $id)->paginate(6);
         if (request()->ajax()) {
             return response()->json([
                 'html' => view('viewUser.layouts.partials.photo-item', compact('photo'))->render()
